@@ -285,25 +285,25 @@ class GameEndScene extends Phaser.Scene {
     
 
 
-    // settup game configuration settings
-    var config = {
-        type: Phaser.AUTO,
-        width: 800,
-        height: 600,
-        scene:[MenuScene,GameScene,GameEndScene],
+ // settup game configuration settings
+ var config = {
+     type: Phaser.AUTO,
+     width: 800,
+     height: 600,
+     scene:[MenuScene, GameEndScene, GameScene],
         
-        // using the arcade physics engine
-        physics: {
-            default: 'arcade',
-            arcade: {
-                gravity: { y: 300 },
-                debug: false
-            }
-        },
+     // using the arcade physics engine
+     physics: {
+         default: 'arcade',
+         arcade: {
+             gravity: { y: 300 },
+             debug: false
+         }
+     },
         
 
-    };
+};
 
-	// pass game configuration
-    var game = new Phaser.Game(config);
+// start the game
+var game = new Phaser.Game(config);
 

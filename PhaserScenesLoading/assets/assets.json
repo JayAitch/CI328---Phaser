@@ -1,0 +1,16 @@
+{
+    "image": {
+        
+        "bomb": "assets/bomb.png",
+        "platform": "assets/platform.png",
+        "star":"assets/star.png"
+    },
+
+
+    "spritesheet" : {
+        "dude" : ["assets/dude.png", { "frameWidth": 32, "frameHeight": 48 }]
+    }
+    
+    
+}
+
