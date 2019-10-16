@@ -28,8 +28,23 @@ class BootScene extends Phaser.Scene
     // settup game configuration settings
     var config = {
         type: Phaser.AUTO,
-        width: 800,
-        height: 600,
+       // width: 800,
+       // height: 600,
+        scale: {
+            mode: Phaser.Scale.FIT,
+            parent: 'phaser-example',
+            width: 800,
+            height: 600,
+            min: {
+                width: 800,
+                height: 600
+            },
+            max: {
+                width: 1600,
+                height: 1200
+            }
+        },
+        autoCenter: Phaser.Scale.CENTER_BOTH,
         scene:[BootScene, PreloadScene, MenuScene, LevelLoader, GameScene],
         
         // using the arcade physics engine

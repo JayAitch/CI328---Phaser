@@ -23,6 +23,8 @@
       "brickBlack17": "assets/bricks/Black/brickBlack17.png"
 
     },
+
+    "TODO": "we may not want to have actual images for the bricks and instead use a mask over the white ones, should save on cache size and memory use infact yes do that",
     "bricks": {
       "black": [
         "short1",

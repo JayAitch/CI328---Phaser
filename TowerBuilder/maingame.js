@@ -29,9 +29,13 @@ class GameScene extends Phaser.Scene {
     
     create ()  {
 
+
+
+
+
        //   this.loadAnimations(this.cache.json.get('animations').playercharacter)
         // load background
-		this.add.image(400, 300, 'sky');
+		//this.add.image(400, 300, 'sky');
 
 		// created simulated physics world at the origin, no physics object can pass these bounds
         this.matter.world.setBounds(0, -100, game.config.width, game.config.height);
@@ -78,6 +82,8 @@ class GameScene extends Phaser.Scene {
 
 
         this.currentBlockTypeDisplay = this.add.text((game.config.width /2)-15, game.config.height - 75, blockTypes[this.currentBlockType], { fill: '#000',fontFamily: '"Roboto Condensed"', fontSize: "30px",fontWeight: "bolder"});
+
+
 
     }
 
