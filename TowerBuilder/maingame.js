@@ -34,14 +34,12 @@ class GameScene extends Phaser.Scene {
 		this.add.image(400, 300, 'sky');
 
 		// created simulated physics world at the origin, no physics object can pass these bounds
-        this.matter.world.setBounds(0, 0, game.config.width, game.config.height);
+        this.matter.world.setBounds(0, -100, game.config.width, game.config.height);
 
 
         this.currentBlockType = 0;
         this.pointer = this.input.activePointer;
-
-        // create a text object to display the score
-        this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+        this.createHUD();
 
 
         // place a block at the cursor
@@ -49,16 +47,40 @@ class GameScene extends Phaser.Scene {
             this.spawnCurrentBlockTypeAtCursorPosition();
         }, this);
 
+
+
         // change the type of block about to be placed
         let keyE = this.input.keyboard.addKey('E');
         keyE.on('down', function(event) {
             this.changeBlockType(1);
             }, this);
+
         let keyQ = this.input.keyboard.addKey('Q');
         keyQ.on('down', function(event) {
             this.changeBlockType(-1);
             }, this);
     }
+
+    // move this to a scene
+    createHUD(){
+        // create a text object to display the score
+        this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+
+        this.add.image(400, 300, 'sky');
+        // condense the style out into a config object
+        const downBtn = this.add.text((game.config.width /2) - 100, game.config.height - 75, '<', { fill: '#000',fontFamily: '"Roboto Condensed"', fontSize: "50px",fontWeight: "bolder"});
+        downBtn.setInteractive();
+        downBtn.on('pointerdown', () => { this.changeBlockType(-1); });
+
+        const upBtn = this.add.text((game.config.width /2) + 100, game.config.height - 75, '>', { fill: '#000',fontFamily: '"Roboto Condensed"', fontSize: "50px",fontWeight: "bolder"});
+        upBtn.setInteractive();
+        upBtn.on('pointerdown', () => {   this.changeBlockType(1); });
+
+
+        this.currentBlockTypeDisplay = this.add.text((game.config.width /2)-15, game.config.height - 75, blockTypes[this.currentBlockType], { fill: '#000',fontFamily: '"Roboto Condensed"', fontSize: "30px",fontWeight: "bolder"});
+
+    }
+
 
     // change the block either up or down
     changeBlockType(amount){
@@ -67,7 +89,7 @@ class GameScene extends Phaser.Scene {
         if(this.currentBlockType < 0) this.currentBlockType = Object.keys(blockTypes).length -1;
         if(this.currentBlockType > Object.keys(blockTypes).length -1) this.currentBlockType = 0;
 
-
+        this.currentBlockTypeDisplay.text = blockTypes[this.currentBlockType];
         console.log(this.currentBlockType);
     }
 
@@ -96,6 +118,10 @@ class GameScene extends Phaser.Scene {
         let pointerX = this.pointer.x;
         let pointerY = this.pointer.y;
 
+        if(pointerY > game.config.height - 150)
+        {
+            return;
+        }
         // store this somewhere
         // get the physics controlling th bricks
         // need substantial cleaning up and creating groups so we can delete them
