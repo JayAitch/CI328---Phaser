@@ -38,7 +38,7 @@ class GameScene extends Phaser.Scene {
 
 
         this.currentBlockType = 0;
-
+        this.pointer = this.input.activePointer;
 
         // create a text object to display the score
         this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
