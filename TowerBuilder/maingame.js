@@ -104,7 +104,9 @@ class GameScene extends Phaser.Scene {
 
         // work out what the image was called
         let imageReference =  colour + objectName
-
+        console.log("imge ref:", imageReference);
+        console.log("shape:");
+        console.log(shape);
         //  create a new brick
         let newBrick = this.matter.add.image(pointerX, pointerY, imageReference, 0, {shape: shape});
     }
