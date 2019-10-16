@@ -60,7 +60,7 @@ class PreloadScene extends Phaser.Scene{
         
         // !!! look this up what is action inside this typwise
         let progressbar = this.add.graphics();
-        
+
         
         // create a function to update the progress bar
         let updateProgressbar = function(percentComplete)
@@ -76,6 +76,7 @@ class PreloadScene extends Phaser.Scene{
         
         this.load.once('complete', function ()
         {
+            //todo: move and test this at the end of on create
             this.scene.start('menuscene');
         }, this);
     }

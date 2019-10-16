@@ -16,6 +16,17 @@ const blockTypes = {
     14:"top-sloped4",
     15:"bottom-sloped4"
 };
+
+//TODO: move logic for the brick creation to a seperate class
+//      move HUD logic to another scene to a scene
+//       promote screen center and and such methods to a UI class
+//      create button class
+//      change blocks to spritesheet
+//      find some button asets
+
+
+
+
 class GameScene extends Phaser.Scene {
     
 
@@ -65,23 +76,38 @@ class GameScene extends Phaser.Scene {
             }, this);
     }
 
-    // move this to a scene
     createHUD(){
         // create a text object to display the score
         this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 
         this.add.image(400, 300, 'sky');
         // condense the style out into a config object
-        const downBtn = this.add.text((game.config.width /2) - 100, game.config.height - 75, '<', { fill: '#000',fontFamily: '"Roboto Condensed"', fontSize: "50px",fontWeight: "bolder"});
-        downBtn.setInteractive();
-        downBtn.on('pointerdown', () => { this.changeBlockType(-1); });
+        const textStyle = {
+            fill: '#000',
+            fontFamily: '"Roboto Condensed"',
+            fontSize: "50px",
+            fontWeight: "bolder"
+        };
 
-        const upBtn = this.add.text((game.config.width /2) + 100, game.config.height - 75, '>', { fill: '#000',fontFamily: '"Roboto Condensed"', fontSize: "50px",fontWeight: "bolder"});
+
+
+
+
+        let upBtn = this.add.image((game.config.width /2) + 200, game.config.height - 55, "greenshort1").setScale(2);
+        this.add.text((game.config.width /2) + 200, game.config.height - 75, '>', textStyle);
         upBtn.setInteractive();
         upBtn.on('pointerdown', () => {   this.changeBlockType(1); });
 
 
-        this.currentBlockTypeDisplay = this.add.text((game.config.width /2)-15, game.config.height - 75, blockTypes[this.currentBlockType], { fill: '#000',fontFamily: '"Roboto Condensed"', fontSize: "30px",fontWeight: "bolder"});
+        let dwnBtn = this.add.image((game.config.width /2) - 200, game.config.height - 55, "blackshort1").setScale(2);
+        this.add.text((game.config.width /2) - 200, game.config.height - 45, '<', textStyle);
+        dwnBtn.setInteractive();
+        dwnBtn.on('pointerdown', () => {   this.changeBlockType(1); });
+
+
+
+        this.currentBlockTypeDisplay = this.add.image((game.config.width /2), game.config.height - 55, "blue" + blockTypes[this.currentBlockType]).setScale(1);
+       // this.currentBlockTypeDisplay = this.add.text((game.config.width /2)-15, game.config.height - 75, blockTypes[this.currentBlockType], textStyle);
 
 
 
@@ -95,7 +121,8 @@ class GameScene extends Phaser.Scene {
         if(this.currentBlockType < 0) this.currentBlockType = Object.keys(blockTypes).length -1;
         if(this.currentBlockType > Object.keys(blockTypes).length -1) this.currentBlockType = 0;
 
-        this.currentBlockTypeDisplay.text = blockTypes[this.currentBlockType];
+        this.currentBlockTypeDisplay.setTexture("blue" + blockTypes[this.currentBlockType]);
+  //      this.currentBlockTypeDisplay.image(blockTypes[this.currentBlockType]);
         console.log(this.currentBlockType);
     }
 
