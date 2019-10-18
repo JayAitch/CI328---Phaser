@@ -1,3 +1,5 @@
+// store this against "levels" construct levels with json? tiled?
+
 const blockTypes = {
     0:"short1",
     1:"short2",
@@ -17,12 +19,14 @@ const blockTypes = {
     15:"bottom-sloped4"
 };
 
+
 //TODO: move logic for the brick creation to a seperate class
 //      move HUD logic to another scene to a scene
-//       promote screen center and and such methods to a UI class
+//      promote screen center and and such methods to a UI class
 //      create button class
 //      change blocks to spritesheet
 //      find some button asets
+//      create a generic scene potentially running at all time with the background and music?
 
 
 
@@ -41,46 +45,55 @@ class GameScene extends Phaser.Scene {
     create ()  {
 
 
-
-
-
-       //   this.loadAnimations(this.cache.json.get('animations').playercharacter)
-        // load background
-		//this.add.image(400, 300, 'sky');
+        const brickPhysics = this.cache.json.get('brick-physics');
 
 		// created simulated physics world at the origin, no physics object can pass these bounds
         this.matter.world.setBounds(0, -100, game.config.width, game.config.height);
 
-
-        this.currentBlockType = 0;
-        this.pointer = this.input.activePointer;
+        // todo: move this to a seperate scenee?
+        // create the hud
+        // we shouldnt be passing this in
         this.createHUD();
+
+        this.brickSpawner = new BrickSpawner(brickPhysics, this
+            //     this.cache.json.get('brick-physics'),
+            //   this.matter //this potentially needs to go, i dont want to be passing the physics engine around , its a pretty big object concider using a group/pool
+        );
+
 
 
         // place a block at the cursor
         this.input.on('pointerdown', function(event) {
-            this.spawnCurrentBlockTypeAtCursorPosition();
+        //    this.spawnCurrentBlockTypeAtCursorPosition();
+           // brickSpawner.spawnBrickAtCursorLocation();
+          this.brickSpawner.displayBrickSpawnLocation();
+            console.log("11123");
         }, this);
 
-
+        this.input.on('pointerup', function(event) {
+            //    this.spawnCurrentBlockTypeAtCursorPosition();
+            this.brickSpawner.spawnBrickAtCursorLocation();
+        }, this);
 
         // change the type of block about to be placed
         let keyE = this.input.keyboard.addKey('E');
         keyE.on('down', function(event) {
-            this.changeBlockType(1);
+            this.brickSpawner.changeBlockType(1);
             }, this);
 
         let keyQ = this.input.keyboard.addKey('Q');
         keyQ.on('down', function(event) {
-            this.changeBlockType(-1);
+            this.brickSpawner.changeBlockType(1);
             }, this);
     }
 
-    createHUD(){
-        // create a text object to display the score
-        this.scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 
-        this.add.image(400, 300, 'sky');
+
+    createHUD() {
+        // create a text object to display the score
+        this.scoreText = this.add.text(16, 16, 'score: 0', {fontSize: '32px', fill: '#000'});
+
+
         // condense the style out into a config object
         const textStyle = {
             fill: '#000',
@@ -88,87 +101,141 @@ class GameScene extends Phaser.Scene {
             fontSize: "50px",
             fontWeight: "bolder"
         };
+        this.add.image(400, 300, 'sky');
 
 
-
-
-
-        let upBtn = this.add.image((game.config.width /2) + 200, game.config.height - 55, "greenshort1").setScale(2);
-        this.add.text((game.config.width /2) + 200, game.config.height - 75, '>', textStyle);
+        let upBtn = this.add.image((game.config.width / 2) + 200, game.config.height - 55, "greenshort1").setScale(2);
+        this.add.text((game.config.width / 2) + 200, game.config.height - 75, '>', textStyle);
         upBtn.setInteractive();
-        upBtn.on('pointerdown', () => {   this.changeBlockType(1); });
+        upBtn.on('pointerdown', () => {
 
 
-        let dwnBtn = this.add.image((game.config.width /2) - 200, game.config.height - 55, "blackshort1").setScale(2);
-        this.add.text((game.config.width /2) - 200, game.config.height - 45, '<', textStyle);
+            //naughty duplicate code
+            this.brickSpawner.changeBlockType(1);
+        });
+
+
+        let dwnBtn = this.add.image((game.config.width / 2) - 200, game.config.height - 55, "blackshort1").setScale(2);
+        this.add.text((game.config.width / 2) - 200, game.config.height - 45, '<', textStyle);
         dwnBtn.setInteractive();
-        dwnBtn.on('pointerdown', () => {   this.changeBlockType(1); });
+        dwnBtn.on('pointerdown', () => {
+
+            //naughty duplicate code
+            this.brickSpawner.changeBlockType(-1);
+        });
+
+
+        this.currentBlockTypeDisplay = this.add.image((game.config.width / 2), game.config.height - 55, "blue" + blockTypes[this.currentBlockType]).setScale(1);
+
+        // spawn the cursor block display offscreen, we dont want to see it untill it has the right block
+        this.cursorBlockDisplay = this.add.image((game.config.width * 20), game.config.height * 20, "blue" + blockTypes[this.currentBlockType]).setScale(1);
+
+    }
+
+    update() {
+
+        // need a cleaner way of doing this
+        this.brickSpawner.updateBrickCursorPosition()
+    }
+
+    
+}
 
 
 
-        this.currentBlockTypeDisplay = this.add.image((game.config.width /2), game.config.height - 55, "blue" + blockTypes[this.currentBlockType]).setScale(1);
-       // this.currentBlockTypeDisplay = this.add.text((game.config.width /2)-15, game.config.height - 75, blockTypes[this.currentBlockType], textStyle);
+
+class BrickSpawner {
 
 
+    // most of this constructor is unessisary, there is some intense coupling with this and the maingame scene.
+    // need a way of constructing game objects seperately
+    // UI needs its own classes, eg brick placing cursor
+    constructor(blockPhysics, gameScene){
+        this.currentBlockType = 0;
+        this.gameScene = gameScene;
+        this.pointer = gameScene.input.activePointer;//this.input.activePointer;
+        this.blockPhysics = blockPhysics;
+
+        // use a group here instead of the entire physcis engine
+        this.matterRef = gameScene.matter;
+        this.displayCurrentBrickType();
 
     }
 
 
-    // change the block either up or down
-    changeBlockType(amount){
-        console.log(blockTypes[this.currentBlockType]);
-        this.currentBlockType = this.currentBlockType + amount;
-        if(this.currentBlockType < 0) this.currentBlockType = Object.keys(blockTypes).length -1;
-        if(this.currentBlockType > Object.keys(blockTypes).length -1) this.currentBlockType = 0;
-
-        this.currentBlockTypeDisplay.setTexture("blue" + blockTypes[this.currentBlockType]);
-  //      this.currentBlockTypeDisplay.image(blockTypes[this.currentBlockType]);
-        console.log(this.currentBlockType);
+    updateBrickCursorPosition(){
+        let pointerX = this.pointer.x;
+        let pointerY = this.pointer.y;
+        this.gameScene.cursorBlockDisplay.x = pointerX;
+        this.gameScene.cursorBlockDisplay.y = pointerY;
+        this.gameScene.cursorBlockDisplay.setTint(0x0f0fff);
     }
 
-    // use maths random to calculate a colour
-    // need substancial cleaning up with respect to the references of the image and there relatioship to bodys
+    spawnBrickAtCursorLocation(){
+        let pointerX = this.pointer.x;
+        let pointerY = this.pointer.y;
+
+        // make sure there is space to spawn one and we arn't off screen
+        if(!this.canSpawnBrick(pointerX, pointerY)) return;
+
+        let objectName = blockTypes[this.currentBlockType];
+        this.spawnNewBrick(pointerX, pointerY, objectName);
+    }
+
+
+
+
+
+
+    canSpawnBrick(posX, posY){
+        if(posY < game.config.height - 150)
+        {
+            return true;
+        }
+        return false;
+    }
+
     roleABlockColour(){
         // get these values from somwhere
         // potentially store a collection somewhere when loading them
+        // consider using a single brick asset (white) and running a mask over it
         let colours = ["black","blue","green"];
         let colourNumber =  Math.random() * 3;
         colourNumber = Math.trunc(colourNumber);
         return colours[colourNumber];
     }
 
-    // get the block type that is currently selected and drop it
-    spawnCurrentBlockTypeAtCursorPosition(){
-        let blockType = blockTypes[this.currentBlockType];
-        this.spawnAtCursorPosition(blockType);
-    }
-
-
-    spawnAtCursorPosition(objectName){
-
+    spawnNewBrick(posX, posY, objectName){
         //role a colour from the ones available
         let colour = this.roleABlockColour();
-        let pointerX = this.pointer.x;
-        let pointerY = this.pointer.y;
 
-        if(pointerY > game.config.height - 150)
-        {
-            return;
-        }
-        // store this somewhere
-        // get the physics controlling th bricks
-        // need substantial cleaning up and creating groups so we can delete them
-        let bricktype = this.cache.json.get('brick-physics');
-        let shape = bricktype[objectName];
+        let shape = this.blockPhysics[objectName];
 
         // work out what the image was called
-        let imageReference =  colour + objectName
+        let imageReference =  colour + objectName;
         //  create a new brick
-        let newBrick = this.matter.add.image(pointerX, pointerY, imageReference, 0, {shape: shape});
-    }
-    
-    update() {
+        // this should be done with a group instead
+        let newBrick = this.matterRef.add.image(posX, posY, imageReference, 0, {shape: shape});
+
     }
 
-    
+    changeBlockType(amount){
+        this.currentBlockType = this.currentBlockType + amount;
+        if(this.currentBlockType < 0) this.currentBlockType = Object.keys(blockTypes).length -1;
+        if(this.currentBlockType > Object.keys(blockTypes).length -1) this.currentBlockType = 0;
+        this.displayCurrentBrickType();
+    }
+
+    displayCurrentBrickType(){
+
+        let currentBrickTypeInt = this.currentBlockType;
+        let currentBrickTypeTextureRef = "blue" + blockTypes[currentBrickTypeInt];
+
+        this.gameScene.currentBlockTypeDisplay.setTexture(currentBrickTypeTextureRef);
+       // this.image(blockTypes[this.currentBlockType]);
+        this.gameScene.cursorBlockDisplay.setTexture(currentBrickTypeTextureRef);
+
+    }
+
+
 }
