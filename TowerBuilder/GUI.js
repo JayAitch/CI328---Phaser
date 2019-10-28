@@ -1,4 +1,4 @@
-
+// consider creating these on a seperate scene and managing the block spawner object
 class GUI{
 
     constructor(gameScene){

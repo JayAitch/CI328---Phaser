@@ -2,7 +2,7 @@
 class Controller{
     constructor(gameScene) {
 
-        gameScene.input.on('pointerup', function(event) {
+        gameScene.input.on('pointerdown', function(event) {
             //    this.spawnCurrentBlockTypeAtCursorPosition();
             gameScene.brickSpawner.spawnBrickAtCursorLocation();
         });

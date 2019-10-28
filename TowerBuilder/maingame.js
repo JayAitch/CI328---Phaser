@@ -1,23 +1,5 @@
 // store this against "levels" construct levels with json? tiled?
 
-const blockTypes = {
-    0:"short1",
-    1:"short2",
-    2:"short3",
-    3:"short4",
-    4:"tall1",
-    5:"tall2",
-    6:"tall3",
-    7:"tall4",
-    8:"bottom-sloped1",
-    9:"top-sloped1",
-    10: "top-sloped2",
-    11:"bottom-sloped2",
-    12:"bottom-sloped3",
-    13: "top-sloped3",
-    14:"top-sloped4",
-    15:"bottom-sloped4"
-};
 
 
 //TODO: move logic for the brick creation to a seperate class
@@ -38,7 +20,7 @@ class GameScene extends Phaser.Scene {
         super('maingame');
     }
 
-    
+
     create ()  {
         this.add.image(400, 300, 'sky')
 
@@ -56,37 +38,9 @@ class GameScene extends Phaser.Scene {
 
 		this.controller = new Controller(this);
 
+        this.levelSpawner = new LevelSpawner(this);
 		
-		let levelFinishTriggerVolume = {
-            "type": "fromPhysicsEditor",
-            "label": "top-sloped4",
-            //"inertia": Infinity,
-            "isStatic": true,
-            "density": 0.10000000149011612,
-            "restitution": 0,
-            "friction": 0.10000000149011612,
-            "frictionAir": 0.00999012312,
-            "frictionStatic": 0.5,
-            "collisionFilter": {
-                "group": 0,
-                "category": 1,
-                "mask": 255
-            },
 
-            "fixtures": [
-                {
-                    "label": "levelChangeTrigger",
-                    "isSensor": true,
-                    "circle": {
-                        "x": 32,
-                        "y": 32,
-                        "radius": 20
-                    }
-                }
-            ]
-        }
-
-		let finishDude = this.matter.add.sprite(100, 300, "dude", 0, {shape: levelFinishTriggerVolume});
 
     }
 	
@@ -102,6 +56,12 @@ class GameScene extends Phaser.Scene {
 		return body;
 	}
 
+
+    completeLevel(){
+        this.levelSpawner.currentLevel = level2;
+        this.removeAllSpawnables();
+        this.levelSpawner.loadLevel();
+    }
 
 
     removeAllSpawnables(){

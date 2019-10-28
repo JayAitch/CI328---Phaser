@@ -16,7 +16,7 @@ class CollisionHandler{
                 if(bodyA.label === 'levelChangeTrigger' && bodyB.label === 'munchkin'||
                     bodyB.label === 'levelChangeTrigger' && bodyA.label === 'munchkin')
                 {
-
+                    gameScene.completeLevel();
                     alert('levelcomplete	');
                 }
             }

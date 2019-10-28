@@ -13,7 +13,7 @@ class MunchkinSpawner{
             "label": "munchkin",
             "isStatic": false,
             "density": 0.010000000149011612,
-            "restitution": 0.5,
+            "restitution": 2,
             "friction": 0.100100000149011612,
             "frictionAir": 0.00999012312,
             "frictionStatic": 0.2,
