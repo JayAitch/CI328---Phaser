@@ -43,8 +43,9 @@ class GameScene extends Phaser.Scene {
 
     
     create ()  {
-
-
+        this.add.image(400, 300, 'sky')
+		
+		
         const brickPhysics = this.cache.json.get('brick-physics');
 
 		// created simulated physics world at the origin, no physics object can pass these bounds
@@ -59,17 +60,17 @@ class GameScene extends Phaser.Scene {
             //     this.cache.json.get('brick-physics'),
             //   this.matter //this potentially needs to go, i dont want to be passing the physics engine around , its a pretty big object concider using a group/pool
         );
+        this.dodoSpawner = new DodoSpawner(this);
 
-
-
+/*
         // place a block at the cursor
         this.input.on('pointerdown', function(event) {
         //    this.spawnCurrentBlockTypeAtCursorPosition();
            // brickSpawner.spawnBrickAtCursorLocation();
-          this.brickSpawner.displayBrickSpawnLocation();
-            console.log("11123");
+        //  this.brickSpawner.displayBrickSpawnLocation();
+      //      console.log("11123");
         }, this);
-
+*/
         this.input.on('pointerup', function(event) {
             //    this.spawnCurrentBlockTypeAtCursorPosition();
             this.brickSpawner.spawnBrickAtCursorLocation();
@@ -78,18 +79,103 @@ class GameScene extends Phaser.Scene {
         // change the type of block about to be placed
         let keyE = this.input.keyboard.addKey('E');
         keyE.on('down', function(event) {
-            this.brickSpawner.changeBlockType(1);
+            this.brickSpawner.changeBlockType(-1);
             }, this);
 
         let keyQ = this.input.keyboard.addKey('Q');
-        keyQ.on('down', function(event) {
+        keyQ.on('down', function(event) {	
             this.brickSpawner.changeBlockType(1);
             }, this);
+
+
+        let keySpace = this.input.keyboard.addKey('SPACE');
+        keySpace.on('down', function(event) {
+           // this.brickSpawner.changeBlockType(1);
+            console.log("spawner")
+            this.dodoSpawner.spawnDodo(100,100);
+        }, this);
+		
+		
+		
+		//let finishdude = this.add.image(100,300, 'dude');
+		
+
+  
+		
+		
+		let levelFinishTriggerVolume = {
+            "type": "fromPhysicsEditor",
+            "label": "top-sloped4",
+            //"inertia": Infinity,
+            "isStatic": true,
+            "density": 0.10000000149011612,
+            "restitution": 0,
+            "friction": 0.10000000149011612,
+            "frictionAir": 0.00999012312,
+            "frictionStatic": 0.5,
+            "collisionFilter": {
+                "group": 0,
+                "category": 1,
+                "mask": 255
+            },
+
+            "fixtures": [
+                {
+                    "label": "levelChangeTrigger",
+                    "isSensor": true,
+                    "circle": {
+                        "x": 32,
+                        "y": 32,
+                        "radius": 20
+                    }
+                }
+            ]
+        }
+		console.log(this.Events);
+		
+		
+		let finishDude = this.matter.add.sprite(100, 300, "dude", 0, {shape: levelFinishTriggerVolume});
+		this.matter.world.on('collisionstart', function(event){
+			let collisionPairs = event.pairs;
+
+			for (var i = 0; i < event.pairs.length; i++){
+				// this has potential issues with multiple volumes
+				// other examples get the par
+			//	let bodyA = this.getRootBody(collisionPairs[i].bodyA);
+				//let bodyB = this.getRootBody(collisionPairs[i].bodyB);
+				let bodyA = collisionPairs[i].bodyA;
+				let bodyB = collisionPairs[i].bodyB;
+
+				
+				if(bodyA.label === 'levelChangeTrigger' && bodyB.label === 'marble'||
+				bodyB.label === 'levelChangeTrigger' && bodyA.label === 'marble')
+				{
+					
+					alert('levelcomplete	');
+				}
+			}
+		})
+		
+		
+		
+		
+		
     }
+	
+	//http://labs.phaser.io/edit.html?src=src/game%20objects/tilemap/collision/matter%20detect%20collision%20with%20tile.js
 
-
+	getRootBody(body)
+	{
+		if (body.parent === body) { return body; }
+		while (body.parent !== body)
+		{
+			body = body.parent;
+		}
+		return body;
+	}
 
     createHUD() {
+
         // create a text object to display the score
         this.scoreText = this.add.text(16, 16, 'score: 0', {fontSize: '32px', fill: '#000'});
 
@@ -101,7 +187,7 @@ class GameScene extends Phaser.Scene {
             fontSize: "50px",
             fontWeight: "bolder"
         };
-        this.add.image(400, 300, 'sky');
+;
 
 
         let upBtn = this.add.image((game.config.width / 2) + 200, game.config.height - 55, "greenshort1").setScale(2);
@@ -110,7 +196,7 @@ class GameScene extends Phaser.Scene {
         upBtn.on('pointerdown', () => {
 
 
-            //naughty duplicate code
+            //naughty duplicate code!!!!!!!!!!!!!
             this.brickSpawner.changeBlockType(1);
         });
 
@@ -120,7 +206,7 @@ class GameScene extends Phaser.Scene {
         dwnBtn.setInteractive();
         dwnBtn.on('pointerdown', () => {
 
-            //naughty duplicate code
+            //naughty duplicate code!!!!!!!!!!!!!!!!!
             this.brickSpawner.changeBlockType(-1);
         });
 
@@ -139,6 +225,49 @@ class GameScene extends Phaser.Scene {
     }
 
     
+}
+
+class DodoSpawner{
+    constructor(gameScene)
+    {
+        this.sceneRef = gameScene;
+        this.matterRef = gameScene.matter;
+    }
+    spawnDodo(posX,posY){
+
+
+
+        const shape = {
+            "type": "fromPhysicsEditor",
+            "label": "top-sloped4",
+            //"inertia": Infinity,
+            "isStatic": false,
+            "density": 0.10000000149011612,
+            "restitution": 0,
+            "friction": 0.10000000149011612,
+            "frictionAir": 0.00999012312,
+            "frictionStatic": 0.5,
+            "collisionFilter": {
+                "group": 0,
+                "category": 1,
+                "mask": 255
+            },
+            "fixtures": [
+                {
+                    "label": "marble",
+                    "isSensor": false,
+                    "circle": {
+                        "x": 32,
+                        "y": 32,
+                        "radius": 20
+                    }
+                }
+            ]
+        }
+        // this should be done with a group instead
+         let newDodo = this.matterRef.add.sprite(posX, posY, "dude",0, {shape: shape});
+        newDodo.anims.play("duderight", true);
+    }
 }
 
 

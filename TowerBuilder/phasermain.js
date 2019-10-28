@@ -25,11 +25,11 @@ class BootScene extends Phaser.Scene
 
 
 
+
     // settup game configuration settings
     var config = {
         type: Phaser.AUTO,
-       // width: 800,
-       // height: 600,
+
         scale: {
             mode: Phaser.Scale.FIT,
             parent: 'phaser-example',
@@ -47,7 +47,7 @@ class BootScene extends Phaser.Scene
         autoCenter: Phaser.Scale.CENTER_BOTH,
         scene:[BootScene, PreloadScene, MenuScene, LevelLoader, GameScene],
         
-        // using the arcade physics engine
+
         physics: {
             default: 'matter',
             matter: {
@@ -55,9 +55,9 @@ class BootScene extends Phaser.Scene
                 debug: true
             }
         },
-        
 
     };
 
 	// pass game configuration
     game = new Phaser.Game(config);
+	console.log(Matter.Events)
