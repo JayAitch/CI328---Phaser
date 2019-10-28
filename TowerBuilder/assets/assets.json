@@ -1,6 +1,6 @@
 {
     "image": {
-        
+        "munchkin": "assets/munchkins/MunchkinPink.png",
         "bomb": "assets/bomb.png",
         "platform": "assets/platform.png",
         "star":"assets/star.png",
@@ -13,14 +13,14 @@
         "brickBlack07": "assets/bricks/Black/brickBlack07.png",
         "brickBlack08": "assets/bricks/Black/brickBlack08.png",
         "brickBlack09": "assets/bricks/Black/brickBlack09.png",
-      "brickBlack10": "assets/bricks/Black/brickBlack10.png",
+        "brickBlack10": "assets/bricks/Black/brickBlack10.png",
         "brickBlack11": "assets/bricks/Black/brickBlack11.png",
-      "brickBlack12": "assets/bricks/Black/brickBlack12.png",
-      "brickBlack13": "assets/bricks/Black/brickBlack13.png",
-      "brickBlack14": "assets/bricks/Black/brickBlack14.png",
-      "brickBlack15": "assets/bricks/Black/brickBlack15.png",
-      "brickBlack16": "assets/bricks/Black/brickBlack16png",
-      "brickBlack17": "assets/bricks/Black/brickBlack17.png"
+        "brickBlack12": "assets/bricks/Black/brickBlack12.png",
+        "brickBlack13": "assets/bricks/Black/brickBlack13.png",
+        "brickBlack14": "assets/bricks/Black/brickBlack14.png",
+        "brickBlack15": "assets/bricks/Black/brickBlack15.png",
+        "brickBlack16": "assets/bricks/Black/brickBlack16png",
+        "brickBlack17": "assets/bricks/Black/brickBlack17.png"
 
     },
 
