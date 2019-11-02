@@ -22,6 +22,11 @@ class Controller{
             gameScene.removeAllSpawnables();
         });
 
+        let keyY = gameScene.input.keyboard.addKey('Y');
+        keyY.on('down', function(event) {
+            gameScene.removeLastSpawnable();
+        });
+
         let keySpace = gameScene.input.keyboard.addKey('SPACE');
         keySpace.on('down', function(event) {
             // this.brickSpawner.changeBlockType(1);

@@ -85,6 +85,16 @@ class GameScene extends Phaser.Scene {
 
     }
 
+    removeLastSpawnable(){
+        let currentSpawnables = this.spawnables.children.getArray();
+        let amntCurrentSpawnables = currentSpawnables.length;
+        console.log(currentSpawnables);
+        if(amntCurrentSpawnables <= 0) return;
+
+        let currentSpawnable = currentSpawnables[amntCurrentSpawnables - 1];
+        currentSpawnable.destroy();
+    }
+
     update() {
 
         // need a cleaner way of doing this

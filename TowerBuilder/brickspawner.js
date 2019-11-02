@@ -17,7 +17,24 @@ const blockTypes = {
     14:"top-sloped4",
     15:"bottom-sloped4"
 };
-
+let availableBlocks = [
+    {"amount":10, "type":"short1"},
+    {"amount":10, "type":"short2"},
+    {"amount":10, "type":"short3"},
+    {"amount":10, "type":"short4"},
+    {"amount":10, "type":"tall1"},
+    {"amount":10, "type":"tall2"},
+    {"amount":10, "type":"tall3"},
+    {"amount":10, "type":"tall4"},
+    {"amount":10, "type":"bottom-sloped1"},
+    {"amount":10, "type":"bottom-sloped2"},
+    {"amount":10, "type":"bottom-sloped3"},
+    {"amount":10, "type":"bottom-sloped4"},
+    {"amount":10, "type":"top-sloped1"},
+    {"amount":10, "type":"top-sloped2"},
+    {"amount":10, "type":"top-sloped3"},
+    {"amount":10, "type":"top-sloped4"}
+]
 
 
 
@@ -55,7 +72,7 @@ class BrickSpawner {
         // make sure there is space to spawn one and we arn't off screen
         if(!this.canSpawnBrick(pointerX, pointerY)) return;
 
-        let objectName = blockTypes[this.currentBlockType];
+        let objectName = availableBlocks[this.currentBlockType].type;
         let newBrick = this.spawnNewBrick(pointerX, pointerY, objectName);
         this.addToSpawnables(newBrick);
     }
@@ -91,23 +108,29 @@ class BrickSpawner {
 
         // work out what the image was called
         let imageReference =  colour + objectName;
+        console.log(imageReference);
         //  create a new brick
         // this should be done with a group instead
-        let newBrick = this.matterRef.add.image(posX, posY, imageReference, 0, {shape: shape})  ;
+        let newBrick = this.matterRef.add.image(posX, posY, imageReference, 0, {shape: shape});
         return newBrick;
     }
 
     changeBlockType(amount){
+//        this.currentBlockType = this.currentBlockType + amount;
+//        if(this.currentBlockType < 0) this.currentBlockType = Object.keys(blockTypes).length -1;
+       // if(this.currentBlockType > Object.keys(blockTypes).length -1) this.currentBlockType = 0;
+
         this.currentBlockType = this.currentBlockType + amount;
-        if(this.currentBlockType < 0) this.currentBlockType = Object.keys(blockTypes).length -1;
-        if(this.currentBlockType > Object.keys(blockTypes).length -1) this.currentBlockType = 0;
+        if(this.currentBlockType < 0) this.currentBlockType = availableBlocks.length -1;
+        if(this.currentBlockType > availableBlocks.length -1) this.currentBlockType = 0;
+
         this.displayCurrentBrickType();
     }
 
     displayCurrentBrickType(){
 
         let currentBrickTypeInt = this.currentBlockType;
-        let currentBrickTypeTextureRef = "blue" + blockTypes[currentBrickTypeInt];
+        let currentBrickTypeTextureRef = "blue" + availableBlocks[currentBrickTypeInt].type;
 
         this.gameScene.GUI.currentBlockTypeDisplay.setTexture(currentBrickTypeTextureRef);
         // this.image(blockTypes[this.currentBlockType]);
@@ -118,4 +141,11 @@ class BrickSpawner {
 
     }
 
+}
+
+class Brick{
+    constructor(){
+
+
+    }
 }

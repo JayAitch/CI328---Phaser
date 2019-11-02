@@ -1,5 +1,11 @@
 const level1 =
     {
+        "objectives":[
+            {
+                "x": 700,
+                "y": 400,
+            }
+        ],
         "static": [
             {
                 "colour": "blue",
@@ -60,6 +66,12 @@ const level1 =
 
 const level2 =
     {
+        "objectives":[
+            {
+                "x": 200,
+                "y": 400,
+            }
+        ],
         "static": [
             {
                 "colour": "blue",
@@ -159,34 +171,9 @@ class LevelSpawner{
     }
     
     loadLevel() {
-
-        let staticBlocks = this.currentLevel.static;
-     //   console.log(staticBlocks);
-        let dynamicBlocks = this.currentLevel.dynamic;
         this.removeAllLevelBlocks();
-        for(var blockNum = 0; blockNum < staticBlocks.length; blockNum++){
-         //   console.log(staticBlocks[blockNum]);
-         //   let objectName = staticBlocks[blockNum].type;
 
-         //   let shape = this.blockPhysics[objectName];
-//
-            let currentNewBlockJSON = staticBlocks[blockNum]
-            this.createStaticBlock(currentNewBlockJSON);
-        }
-
-        for(blockNum = 0; blockNum < dynamicBlocks.length; blockNum++){
-            //   console.log(staticBlocks[blockNum]);
-            //   let objectName = staticBlocks[blockNum].type;
-
-            //   let shape = this.blockPhysics[objectName];
-//
-            let currentNewBlockJSON = dynamicBlocks[blockNum]
-            this.createDynamicBlock(currentNewBlockJSON);
-
-        }
-
-
-        let levelFinishTriggerVolume = {
+        this.levelFinishTriggerVolume = {
             "type": "fromPhysicsEditor",
             "label": "top-sloped4",
             //"inertia": Infinity,
@@ -215,7 +202,45 @@ class LevelSpawner{
             ]
         }
 
-        let finishDude = this.gameScene.matter.add.sprite(700, 400, "dude", 0, {shape: levelFinishTriggerVolume});
+        let staticBlocks = this.currentLevel.static;
+        for(var blockNum = 0; blockNum < staticBlocks.length; blockNum++){
+         //   console.log(staticBlocks[blockNum]);
+         //   let objectName = staticBlocks[blockNum].type;
+
+         //   let shape = this.blockPhysics[objectName];
+//
+            let currentNewBlockJSON = staticBlocks[blockNum]
+            this.createStaticBlock(currentNewBlockJSON);
+        }
+
+
+        let dynamicBlocks = this.currentLevel.dynamic;
+        for(blockNum = 0; blockNum < dynamicBlocks.length; blockNum++){
+            //   console.log(staticBlocks[blockNum]);
+            //   let objectName = staticBlocks[blockNum].type;
+
+            //   let shape = this.blockPhysics[objectName];
+//
+            let currentNewBlockJSON = dynamicBlocks[blockNum]
+            this.createDynamicBlock(currentNewBlockJSON);
+
+        }
+
+        let objectives = this.currentLevel.objectives;
+        for(var objectiveNum = 0; objectiveNum < objectives.length; objectiveNum++){
+            //   console.log(staticBlocks[blockNum]);
+            //   let objectName = staticBlocks[blockNum].type;
+
+            //   let shape = this.blockPhysics[objectName];
+//
+            let currentObjectiveJSON = objectives[objectiveNum]
+            //this.createDynamicBlock(currentNewBlockJSON);
+
+            this.createObjective(currentObjectiveJSON);
+        }
+
+
+   //     let finishDude = this.gameScene.matter.add.sprite(700, 400, "dude", 0, {shape: levelFinishTriggerVolume});
 
     }
 
@@ -235,6 +260,7 @@ class LevelSpawner{
         for(var currentLevelObjectIterator = 0; currentLevelObjectIterator < objectsLength; currentLevelObjectIterator++){
 
             let currentLevelObject = currentLevelObjects.get(currentLevelObjectIterator);
+            console.log(currentLevelObject);
             currentLevelObject.destroy();
         }
 
@@ -242,7 +268,10 @@ class LevelSpawner{
     
     
     
-    
+    createObjective(objectiveJSON){
+        let finishDude = this.gameScene.matter.add.sprite(objectiveJSON.x, objectiveJSON.y, "dude", 0, {shape: this.levelFinishTriggerVolume});
+        this.levelObjects.add(finishDude);
+    }
     
     
     createStaticBlock(brickSpawnJson){
