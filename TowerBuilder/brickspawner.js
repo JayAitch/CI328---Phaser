@@ -17,6 +17,28 @@ const blockTypes = {
     14:"top-sloped4",
     15:"bottom-sloped4"
 };
+
+let levelBaseBlocks = [
+    {"amount":10, "type":"short1"},
+    {"amount":10, "type":"short2"},
+    {"amount":10, "type":"short3"},
+    {"amount":10, "type":"short4"},
+    {"amount":10, "type":"tall1"},
+    {"amount":10, "type":"tall2"},
+    {"amount":10, "type":"tall3"},
+    {"amount":10, "type":"tall4"},
+    {"amount":10, "type":"bottom-sloped1"},
+    {"amount":10, "type":"bottom-sloped2"},
+    {"amount":10, "type":"bottom-sloped3"},
+    {"amount":10, "type":"bottom-sloped4"},
+    {"amount":10, "type":"top-sloped1"},
+    {"amount":10, "type":"top-sloped2"},
+    {"amount":10, "type":"top-sloped3"},
+    {"amount":10, "type":"top-sloped4"}
+]
+//let availableBlocks = levelBaseBlocks;
+
+
 let availableBlocks = [
     {"amount":10, "type":"short1"},
     {"amount":10, "type":"short2"},
@@ -75,6 +97,10 @@ class BrickSpawner {
         let objectName = availableBlocks[this.currentBlockType].type;
         let newBrick = this.spawnNewBrick(pointerX, pointerY, objectName);
         this.addToSpawnables(newBrick);
+       console.log(levelBaseBlocks[this.currentBlockType].amount);
+        availableBlocks[this.currentBlockType].amount--;
+        console.log(levelBaseBlocks[this.currentBlockType].amount);
+        console.log(availableBlocks[this.currentBlockType].amount);
     }
 
     addToSpawnables(newBrick){
@@ -84,7 +110,10 @@ class BrickSpawner {
     canSpawnBrick(posX, posY){
         if(posY < game.config.height - 150)
         {
-            return true;
+            if(availableBlocks[this.currentBlockType].amount > 0){
+                return true;
+            }
+
         }
         return false;
     }

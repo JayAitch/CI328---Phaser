@@ -69,6 +69,7 @@ class GameScene extends Phaser.Scene {
         let currentSpawnables = this.spawnables.children;
         let amntCurrentSpawnables = currentSpawnables.entries.length;
 
+
         /**
         this.spawnables.children.iterate(function(spawnable){
             console.log(spawnable);
@@ -82,7 +83,8 @@ class GameScene extends Phaser.Scene {
             let currentSpawnable = currentSpawnables.get(currentSpawnableNum);
             currentSpawnable.destroy();
         }
-
+        // duplicate the array instead of passing by reference
+        availableBlocks = JSON.parse(JSON.stringify( levelBaseBlocks ));
     }
 
     removeLastSpawnable(){

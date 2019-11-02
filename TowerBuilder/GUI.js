@@ -4,7 +4,7 @@ class GUI{
     constructor(gameScene){
 
         // create a text object to display the score
-        this.scoreText = gameScene.add.text(16, 16, 'score: 0', {fontSize: '32px', fill: '#000'});
+        this.scoreText = gameScene.add.text(16, 16, 'score: 0', {fontSize: '16px', fill: '#000'});
 
 
         // condense the style out into a config object
@@ -37,6 +37,14 @@ class GUI{
             gameScene.brickSpawner.changeBlockType(-1);
         });
 
+        let resetBtn = gameScene.add.image((game.config.width / 2) - 300, game.config.height - 55, "blackshort1");
+        gameScene.add.text((game.config.width / 2) - 300, game.config.height - 45, 'R', textStyle);
+        resetBtn.setInteractive();
+        resetBtn.on('pointerdown', () => {
+
+            //naughty duplicate code!!!!!!!!!!!!!!!!!
+            gameScene.removeAllSpawnables();
+        });
 
         this.currentBlockTypeDisplay = gameScene.add.image((game.config.width / 2), game.config.height - 55, "blue" + blockTypes[this.currentBlockType]).setScale(1);
 
