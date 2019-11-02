@@ -29,21 +29,31 @@ class GameScene extends Phaser.Scene {
 		// created simulated physics world at the origin, no physics object can pass these bounds
         this.matter.world.setBounds(0, -100, game.config.width, game.config.height);
 
-        this.GUI = new GUI(this);
+
+        // create brick spawner
         this.brickSpawner = new BrickSpawner(this);
-        this.dodoSpawner = new MunchkinSpawner(this);
+
+        // create any ui graphics
+        this.GUI = new GUI(this);
+
+        // create the munchkin spawner
+        this.munchkinSpawner = new MunchkinSpawner(this);
 
         // create a new collision handler
         this.collisionHandler = new CollisionHandler(this);
 
+        // create keyboard/pointer controls
 		this.controller = new Controller(this);
 
+		// create the level spawner + spawn
         this.levelSpawner = new LevelSpawner(this);
-		
 
-
+        this.updateUI();
     }
-	
+
+
+
+    // we may need this yet when dealing with multiple volumes on the same object
 	//http://labs.phaser.io/edit.html?src=src/game%20objects/tilemap/collision/matter%20detect%20collision%20with%20tile.js
 
 	getRootBody(body)
@@ -63,7 +73,13 @@ class GameScene extends Phaser.Scene {
         this.levelSpawner.loadLevel();
     }
 
+    updateUI(){
+       // if(this.GUI)
+        this.GUI.updateUI();
+    }
 
+
+    // remove munchkins and bricks set the available blocks to be the levels max
     removeAllSpawnables(){
 
         let currentSpawnables = this.spawnables.children;
@@ -78,6 +94,7 @@ class GameScene extends Phaser.Scene {
             }
         });
          **/
+
         for(var currentSpawnableNum = 0; currentSpawnableNum < amntCurrentSpawnables; currentSpawnableNum++){
 
             let currentSpawnable = currentSpawnables.get(currentSpawnableNum);
@@ -85,6 +102,7 @@ class GameScene extends Phaser.Scene {
         }
         // duplicate the array instead of passing by reference
         availableBlocks = JSON.parse(JSON.stringify( levelBaseBlocks ));
+        this.updateUI()
     }
 
     removeLastSpawnable(){

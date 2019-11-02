@@ -74,8 +74,7 @@ class BrickSpawner {
 
         // use a group here instead of the entire physcis engine
         this.matterRef = gameScene.matter;
-        this.displayCurrentBrickType();
-
+       // this.displayCurrentBrickType();
     }
 
 
@@ -97,10 +96,9 @@ class BrickSpawner {
         let objectName = availableBlocks[this.currentBlockType].type;
         let newBrick = this.spawnNewBrick(pointerX, pointerY, objectName);
         this.addToSpawnables(newBrick);
-       console.log(levelBaseBlocks[this.currentBlockType].amount);
+
         availableBlocks[this.currentBlockType].amount--;
-        console.log(levelBaseBlocks[this.currentBlockType].amount);
-        console.log(availableBlocks[this.currentBlockType].amount);
+        this.updateDisplay();
     }
 
     addToSpawnables(newBrick){
@@ -108,6 +106,8 @@ class BrickSpawner {
     }
 
     canSpawnBrick(posX, posY){
+        // we may want to manage this state to allow level complete scene
+        //if(!this.gameScene.isPlaying) return false;
         if(posY < game.config.height - 150)
         {
             if(availableBlocks[this.currentBlockType].amount > 0){
@@ -137,10 +137,10 @@ class BrickSpawner {
 
         // work out what the image was called
         let imageReference =  colour + objectName;
-        console.log(imageReference);
+
         //  create a new brick
-        // this should be done with a group instead
         let newBrick = this.matterRef.add.image(posX, posY, imageReference, 0, {shape: shape});
+
         return newBrick;
     }
 
@@ -152,23 +152,15 @@ class BrickSpawner {
         this.currentBlockType = this.currentBlockType + amount;
         if(this.currentBlockType < 0) this.currentBlockType = availableBlocks.length -1;
         if(this.currentBlockType > availableBlocks.length -1) this.currentBlockType = 0;
-
-        this.displayCurrentBrickType();
+        this.updateDisplay();
+      //  this.displayCurrentBrickType();
     }
 
-    displayCurrentBrickType(){
-
-        let currentBrickTypeInt = this.currentBlockType;
-        let currentBrickTypeTextureRef = "blue" + availableBlocks[currentBrickTypeInt].type;
-
-        this.gameScene.GUI.currentBlockTypeDisplay.setTexture(currentBrickTypeTextureRef);
-        // this.image(blockTypes[this.currentBlockType]);
-        this.gameScene.GUI.cursorBlockDisplay.setTexture(currentBrickTypeTextureRef);
-
+    updateDisplay(){
+        this.gameScene.updateUI();
     }
-    onUpdate(){
 
-    }
+
 
 }
 

@@ -4,6 +4,7 @@ class Controller{
 
         gameScene.input.on('pointerdown', function(event) {
             //    this.spawnCurrentBlockTypeAtCursorPosition();
+            console.log("spawnpressex");
             gameScene.brickSpawner.spawnBrickAtCursorLocation();
         });
 
@@ -31,7 +32,7 @@ class Controller{
         keySpace.on('down', function(event) {
             // this.brickSpawner.changeBlockType(1);
             console.log("spawner")
-            gameScene.dodoSpawner.spawnMunchkin(100,100);
+            gameScene.munchkinSpawner.spawnMunchkin(100,100);
         });
     }
 
