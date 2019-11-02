@@ -68,9 +68,15 @@ class GameScene extends Phaser.Scene {
 
 
     completeLevel(){
-        this.levelSpawner.currentLevel = level2;
+
+        // move these
+        this.levelSpawner.level++;
+        if(this.levelSpawner.level >= levels.length) this.levelSpawner.level = 0;
+        this.levelSpawner.setCurrentLevel();
+
         this.removeAllSpawnables();
         this.levelSpawner.loadLevel();
+        this.brickSpawner.resetSelectedBlock();
     }
 
     updateUI(){

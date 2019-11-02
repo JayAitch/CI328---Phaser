@@ -156,6 +156,10 @@ class BrickSpawner {
       //  this.displayCurrentBrickType();
     }
 
+    resetSelectedBlock(){
+        this.currentBlockType = 0;
+        this.updateDisplay();
+    }
     updateDisplay(){
         this.gameScene.updateUI();
     }

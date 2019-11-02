@@ -28,7 +28,7 @@ class GUI{
 
 
             //naughty duplicate code!!!!!!!!!!!!!
-            gameScene.brickSpawner.changeBlockType(1);
+            this.brickSpawner.changeBlockType(1);
         });
 
 
@@ -38,7 +38,7 @@ class GUI{
         dwnBtn.on('pointerdown', () => {
 
             //naughty duplicate code!!!!!!!!!!!!!!!!!
-            gameScene.brickSpawner.changeBlockType(-1);
+            this.brickSpawner.changeBlockType(-1);
         });
 
         let resetBtn = gameScene.add.image((game.config.width / 2) - 300, game.config.height - 55, "blackshort1");
@@ -76,3 +76,4 @@ class GUI{
         this.currentBlockTypeDisplay.setTexture(currentBrickTypeTextureRef);
     }
 }
+//TODO: make a button class with image ref

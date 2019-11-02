@@ -1,5 +1,23 @@
 const level1 =
     {
+        "available-blocks":   [
+            {"amount":10, "type":"short1"},
+            {"amount":10, "type":"short2"},
+            {"amount":10, "type":"short3"},
+            {"amount":10, "type":"short4"},
+            {"amount":10, "type":"tall1"},
+            {"amount":10, "type":"tall2"},
+            {"amount":10, "type":"tall3"},
+            {"amount":10, "type":"tall4"},
+            {"amount":10, "type":"bottom-sloped1"},
+            {"amount":10, "type":"bottom-sloped2"},
+            {"amount":10, "type":"bottom-sloped3"},
+            {"amount":10, "type":"bottom-sloped4"},
+            {"amount":10, "type":"top-sloped1"},
+            {"amount":10, "type":"top-sloped2"},
+            {"amount":10, "type":"top-sloped3"},
+            {"amount":10, "type":"top-sloped4"}
+        ],
         "objectives":[
             {
                 "x": 700,
@@ -66,6 +84,12 @@ const level1 =
 
 const level2 =
     {
+        "available-blocks":   [
+            {"amount":10, "type":"short1"},
+            {"amount":10, "type":"bottom-sloped1"},
+            {"amount":10, "type":"top-sloped1"},
+
+        ],
         "objectives":[
             {
                 "x": 200,
@@ -157,7 +181,234 @@ const level2 =
     }
 
 
+const levels=[
+    {
+        "available-blocks":   [
+            {"amount":1, "type":"short1"},
+            {"amount":2, "type":"short2"},
+            {"amount":3, "type":"short3"},
+            {"amount":3, "type":"short4"},
+            {"amount":4, "type":"tall1"},
+            {"amount":5, "type":"tall2"},
+            {"amount":6, "type":"tall3"},
+            {"amount":7, "type":"tall4"},
+            {"amount":8, "type":"bottom-sloped1"},
+            {"amount":12, "type":"bottom-sloped2"},
+            {"amount":1, "type":"bottom-sloped3"},
+            {"amount":32, "type":"bottom-sloped4"},
+            {"amount":3, "type":"top-sloped1"},
+            {"amount":120, "type":"top-sloped2"},
+            {"amount":103, "type":"top-sloped3"},
+            {"amount":410, "type":"top-sloped4"}
+        ],
+        "objectives":[
+            {
+                "x": 700,
+                "y": 400,
+            }
+        ],
+        "static": [
+            {
+                "colour": "blue",
+                "type": "tall4",
+                "x":0,
+                "y":300,
+            },
+            {
+                "colour": "blue",
+                "type": "tall4",
+                "x":193,
+                "y":357,
+            },
+            {
+                "colour": "blue",
+                "type": "tall4",
+                "x":385,
+                "y":414,
+            },
+            {
+                "colour": "blue",
+                "type": "tall4",
+                "x":579,
+                "y":471,
+            },
+            {
+                "colour": "blue",
+                "type": "tall4",
+                "x":772,
+                "y":500,
+            },
 
+        ],
+        "dynamic":[/**
+         {
+                "colour": "blue",
+                "type": "tall4",
+                "x":97,
+                "y":300,
+            },
+         {
+                "colour": "blue",
+                "type": "tall4",
+                "x":289,
+                "y":300,
+            },
+         {
+                "colour": "blue",
+                "type": "top-sloped4",
+                "x":56,
+                "y":230,
+            }**/
+        ]
+    },
+
+    {
+        "available-blocks":   [
+            {"amount":2, "type":"short1"},
+            {"amount":4, "type":"bottom-sloped1"},
+            {"amount":8, "type":"top-sloped1"},
+
+        ],
+        "objectives":[
+            {
+                "x": 200,
+                "y": 400,
+            }
+        ],
+        "static": [
+            {
+                "colour": "blue",
+                "type": "tall4",
+                "x":0,
+                "y":500,
+            },
+            {
+                "colour": "blue",
+                "type": "tall4",
+                "x":192,
+                "y":500,
+            },
+            {
+                "colour": "blue",
+                "type": "tall4",
+                "x":384,
+                "y":500,
+            },
+            {
+                "colour": "blue",
+                "type": "tall4",
+                "x":576,
+                "y":500,
+            },
+            {
+                "colour": "blue",
+                "type": "tall4",
+                "x":768,
+                "y":500,
+            },
+            {
+                "colour": "blue",
+                "type": "short4",
+                "x":0,
+                "y":200,
+            },
+            {
+                "colour": "blue",
+                "type": "short4",
+                "x":192,
+                "y":200,
+            },
+            {
+                "colour": "blue",
+                "type": "short4",
+                "x":384,
+                "y":200,
+            },
+            {
+                "colour": "blue",
+                "type": "short4",
+                "x":384,
+                "y":200,
+            },
+            {
+                "colour": "blue",
+                "type": "short4",
+                "x":576,
+                "y":200,
+            }
+        ],
+        "dynamic":[/**
+         {
+                "colour": "blue",
+                "type": "tall4",
+                "x":97,
+                "y":300,
+            },
+         {
+                "colour": "blue",
+                "type": "tall4",
+                "x":289,
+                "y":300,
+            },
+         {
+                "colour": "blue",
+                "type": "top-sloped4",
+                "x":56,
+                "y":230,
+            }**/
+        ]
+    },
+    {
+        "available-blocks":   [
+            {"amount":1, "type":"short1"},
+            {"amount":1, "type":"bottom-sloped1"},
+            {"amount":1, "type":"top-sloped1"},
+
+        ],
+        "objectives":[
+            {
+                "x": 200,
+                "y": 400,
+            }
+        ],
+        "static": [
+            {
+                "colour": "blue",
+                "type": "tall4",
+                "x":0,
+                "y":500,
+            },
+            {
+                "colour": "blue",
+                "type": "tall4",
+                "x":192,
+                "y":500,
+            },
+            {
+                "colour": "blue",
+                "type": "tall4",
+                "x":384,
+                "y":500,
+            },
+            {
+                "colour": "blue",
+                "type": "tall4",
+                "x":576,
+                "y":500,
+            },
+            {
+                "colour": "blue",
+                "type": "tall4",
+                "x":768,
+                "y":500,
+            }
+        ],
+        "dynamic":[
+        ]
+    }
+
+
+];
 
 class LevelSpawner{
 
@@ -165,11 +416,16 @@ class LevelSpawner{
         this.blockSpawner = gameScene.brickSpawner;
         this.gameScene = gameScene;
         this.levelObjects = new Phaser.GameObjects.Group(this);
-        this.currentLevel = level1;
-
+        this.level = 0
+        this.setCurrentLevel();
         this.loadLevel();
     }
-    
+
+    setCurrentLevel(){
+        this.currentLevel = levels[this.level]
+    }
+
+
     loadLevel() {
         this.removeAllLevelBlocks();
 
@@ -239,8 +495,14 @@ class LevelSpawner{
             this.createObjective(currentObjectiveJSON);
         }
 
-
+        this.assignAvailableBlocksFromLevel();
    //     let finishDude = this.gameScene.matter.add.sprite(700, 400, "dude", 0, {shape: levelFinishTriggerVolume});
+
+    }
+    assignAvailableBlocksFromLevel(){
+        levelBaseBlocks = this.currentLevel["available-blocks"];
+        availableBlocks = JSON.parse(JSON.stringify( levelBaseBlocks ));
+     //   this.gameScene.removeAllSpawnables();
 
     }
 
@@ -260,7 +522,6 @@ class LevelSpawner{
         for(var currentLevelObjectIterator = 0; currentLevelObjectIterator < objectsLength; currentLevelObjectIterator++){
 
             let currentLevelObject = currentLevelObjects.get(currentLevelObjectIterator);
-            console.log(currentLevelObject);
             currentLevelObject.destroy();
         }
 
