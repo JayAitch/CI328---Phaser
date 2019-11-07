@@ -19,6 +19,7 @@ class MenuScene extends Phaser.Scene {
     playgame(){
         // play the main game, this may need to be the level loader scene instead when we go to modifying levels with tile data
         this.scene.start("maingame");
+        //this.scene.bringToTop("maingame")
     }
 
 }

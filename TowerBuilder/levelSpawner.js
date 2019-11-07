@@ -264,15 +264,16 @@ const levels=[
 
     {
         "available-blocks":   [
-            {"amount":2, "type":"short1"},
+            {"amount":2, "type":"short4"},
+            {"amount":4, "type":"tall2"},
             {"amount":4, "type":"bottom-sloped1"},
-            {"amount":8, "type":"top-sloped1"},
-
+            {"amount":4, "type":"top-sloped3"},
+            {"amount":4, "type":"top-sloped1"}
         ],
         "objectives":[
             {
                 "x": 200,
-                "y": 400,
+                "y": 450,
             }
         ],
         "static": [
@@ -310,31 +311,25 @@ const levels=[
                 "colour": "blue",
                 "type": "short4",
                 "x":0,
-                "y":200,
+                "y":300,
             },
             {
                 "colour": "blue",
                 "type": "short4",
                 "x":192,
-                "y":200,
+                "y":300,
             },
             {
                 "colour": "blue",
                 "type": "short4",
                 "x":384,
-                "y":200,
+                "y":300,
             },
             {
                 "colour": "blue",
                 "type": "short4",
                 "x":384,
-                "y":200,
-            },
-            {
-                "colour": "blue",
-                "type": "short4",
-                "x":576,
-                "y":200,
+                "y":300,
             }
         ],
         "dynamic":[/**

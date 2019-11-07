@@ -45,7 +45,7 @@ class BootScene extends Phaser.Scene
             }
         },
         autoCenter: Phaser.Scale.CENTER_BOTH,
-        scene:[BootScene, PreloadScene, MenuScene,  GameScene],
+        scene:[BootScene, PreloadScene, MenuScene,  GameScene, LevelCompleteScene],
         
 
         physics: {

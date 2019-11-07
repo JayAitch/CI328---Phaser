@@ -1,5 +1,40 @@
 // store this against "levels" construct levels with json? tiled?
+class LevelCompleteScene extends Phaser.Scene {
 
+
+    constructor() {
+        super('LevelCompleteScene');
+    }
+    create () {
+        const MainGameScene = this.scene.get('maingame');
+
+        this.add.image(400, 300, 'sky')
+        const textStyle = {
+            fill: '#000',
+            fontFamily: '"Roboto Condensed"',
+            fontSize: "50px",
+            fontWeight: "bolder"
+        };
+
+        this.add.text((game.config.width / 2) -150, game.config.height/ 2, 'Level Complete', textStyle);
+        const nextBtn = this.add.text((game.config.width / 2) - 100, game.config.height/2  + 200, 'next', textStyle);
+        const replayBtn = this.add.text((game.config.width / 2) + 100, game.config.height/2  + 200, 'replay', textStyle);
+
+        nextBtn.setInteractive();
+        nextBtn.on('pointerdown', () => {
+            MainGameScene.nextLevel();
+            this.scene.bringToTop("maingame");
+        });
+
+        replayBtn.setInteractive();
+        replayBtn.on('pointerdown', () => {
+
+            MainGameScene.replayLevel();
+            this.scene.bringToTop("maingame");
+        });
+
+    }
+}
 
 
 //TODO: move logic for the brick creation to a seperate class
@@ -68,12 +103,21 @@ class GameScene extends Phaser.Scene {
 
 
     completeLevel(){
+        this.scene.launch("LevelCompleteScene");
+        this.scene.bringToTop("LevelCompleteScene");
+    }
 
-        // move these
+    nextLevel(){
         this.levelSpawner.level++;
         if(this.levelSpawner.level >= levels.length) this.levelSpawner.level = 0;
         this.levelSpawner.setCurrentLevel();
 
+        this.removeAllSpawnables();
+        this.levelSpawner.loadLevel();
+        this.brickSpawner.resetSelectedBlock();
+    }
+
+    replayLevel(){
         this.removeAllSpawnables();
         this.levelSpawner.loadLevel();
         this.brickSpawner.resetSelectedBlock();
