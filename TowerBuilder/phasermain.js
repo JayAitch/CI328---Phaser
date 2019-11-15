@@ -60,4 +60,4 @@ class BootScene extends Phaser.Scene
 
 	// pass game configuration
     game = new Phaser.Game(config);
-	console.log(Matter.Events)
+//	console.log(Matter.Events)

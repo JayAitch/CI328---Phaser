@@ -15,6 +15,9 @@ class LevelCompleteScene extends Phaser.Scene {
             fontSize: "50px",
             fontWeight: "bolder"
         };
+        this.createScoreTable(MainGameScene.gameStats.gameStats);
+
+
 
         this.add.text((game.config.width / 2) -150, game.config.height/ 2, 'Level Complete', textStyle);
         const nextBtn = this.add.text((game.config.width / 2) - 100, game.config.height/2  + 200, 'next', textStyle);
@@ -22,29 +25,33 @@ class LevelCompleteScene extends Phaser.Scene {
 
         nextBtn.setInteractive();
         nextBtn.on('pointerdown', () => {
+            MainGameScene.gameStats.resetScore();
             MainGameScene.nextLevel();
             this.scene.bringToTop("maingame");
         });
 
         replayBtn.setInteractive();
         replayBtn.on('pointerdown', () => {
-
+            MainGameScene.gameStats.resetScore();
             MainGameScene.replayLevel();
             this.scene.bringToTop("maingame");
         });
 
     }
+
+
+    createScoreTable(scores){
+        let listPosition = 10;
+        for (var key in scores) {
+            if (scores.hasOwnProperty(key)) {
+                let scoretext = "" + key + " :  " + scores[key]
+                let scoreRow = this.add.text((game.config.width / 2) - 100, listPosition, scoretext, textStyle);
+                listPosition = listPosition + 50;
+            }
+        }
+    }
+
 }
-
-
-//TODO: move logic for the brick creation to a seperate class
-//      move HUD logic to another scene to a scene
-//      promote screen center and and such methods to a UI class
-//      create button class
-//      change blocks to spritesheet
-//      find some button asets
-//      create a generic scene potentially running at all time with the background and music?
-//      creted generic interface for spawnables
 
 
 
@@ -53,56 +60,47 @@ class GameScene extends Phaser.Scene {
 
     constructor () {
         super('maingame');
+        this.gameStats = new GameScore();
     }
 
 
     create ()  {
         this.add.image(400, 300, 'sky')
 
-        this.spawnables = new Phaser.GameObjects.Group(this);
+ //       this.spawnables = new Phaser.GameObjects.Group(this);
 
 		// created simulated physics world at the origin, no physics object can pass these bounds
         this.matter.world.setBounds(0, -100, game.config.width, game.config.height);
 
 
-        // create brick spawner
-        this.brickSpawner = new BrickSpawner(this);
 
-        // create any ui graphics
-        this.GUI = new GUI(this);
-
-        // create the munchkin spawner
-        this.munchkinSpawner = new MunchkinSpawner(this);
 
         // create a new collision handler
         this.collisionHandler = new CollisionHandler(this);
 
+
+
+
+        this.physicsSpawner = new PhysicsSpawner(this);
+
+        // create any ui graphics
+        this.GUI = new GUI(this);
+
         // create keyboard/pointer controls
-		this.controller = new Controller(this);
+        this.controller = new Controller(this.physicsSpawner, this.input);
+        this.GUI.createButtons(this.controller);
+
+
 
 		// create the level spawner + spawn
         this.levelSpawner = new LevelSpawner(this);
-
         this.updateUI();
     }
 
 
-
-    // we may need this yet when dealing with multiple volumes on the same object
-	//http://labs.phaser.io/edit.html?src=src/game%20objects/tilemap/collision/matter%20detect%20collision%20with%20tile.js
-
-	getRootBody(body)
-	{
-		if (body.parent === body) { return body; }
-		while (body.parent !== body)
-		{
-			body = body.parent;
-		}
-		return body;
-	}
-
-
     completeLevel(){
+        this.gameStats.addBlocksUsed(availableBlocks);
+        this.physicsSpawner.removeAllSpawnables();
         this.scene.launch("LevelCompleteScene");
         this.scene.bringToTop("LevelCompleteScene");
     }
@@ -111,39 +109,51 @@ class GameScene extends Phaser.Scene {
         this.levelSpawner.level++;
         if(this.levelSpawner.level >= levels.length) this.levelSpawner.level = 0;
         this.levelSpawner.setCurrentLevel();
-
-        this.removeAllSpawnables();
-        this.levelSpawner.loadLevel();
-        this.brickSpawner.resetSelectedBlock();
+        this.triggerLevelLoad();
     }
 
     replayLevel(){
-        this.removeAllSpawnables();
+        this.triggerLevelLoad();
+    }
+
+    triggerLevelLoad(){
         this.levelSpawner.loadLevel();
-        this.brickSpawner.resetSelectedBlock();
+        this.physicsSpawner.resetBricks();
+        this.updateUI();
     }
 
     updateUI(){
-       // if(this.GUI)
         this.GUI.updateUI();
     }
 
+    update() {
+        this.GUI.updateCursorPosition(this.controller.getCursorPos())
+        // need a cleaner way of doing this
+        //this.brickSpawner.updateBrickCursorPosition()
+    }
+
+
+}
+
+class PhysicsSpawner{
+
+    constructor(gameScene){
+        this.gameScene = gameScene;
+        this.spawnables = new Phaser.GameObjects.Group(gameScene);
+        this.brickSpawner = new BrickSpawner(gameScene, this.spawnables);
+        this.munchkinSpawner = new MunchkinSpawner(gameScene, this.spawnables);
+
+    }
+
+    resetBricks(){
+        this.brickSpawner.resetSelectedBlock();
+    }
 
     // remove munchkins and bricks set the available blocks to be the levels max
     removeAllSpawnables(){
 
         let currentSpawnables = this.spawnables.children;
         let amntCurrentSpawnables = currentSpawnables.entries.length;
-
-
-        /**
-        this.spawnables.children.iterate(function(spawnable){
-            console.log(spawnable);
-            if(spawnable){
-                spawnable.destroy();
-            }
-        });
-         **/
 
         for(var currentSpawnableNum = 0; currentSpawnableNum < amntCurrentSpawnables; currentSpawnableNum++){
 
@@ -152,7 +162,13 @@ class GameScene extends Phaser.Scene {
         }
         // duplicate the array instead of passing by reference
         availableBlocks = JSON.parse(JSON.stringify( levelBaseBlocks ));
+        this.gameScene.gameStats.addToCount("resets"); // this is firing on level changes aswell
         this.updateUI()
+    }
+
+    spawnBrickAtLocation(pointerPos){
+        this.brickSpawner.spawnBrickAtLocation(pointerPos);
+        this.updateUI();
     }
 
     removeLastSpawnable(){
@@ -161,22 +177,73 @@ class GameScene extends Phaser.Scene {
         console.log(currentSpawnables);
         if(amntCurrentSpawnables <= 0) return;
 
-        let currentSpawnable = currentSpawnables[amntCurrentSpawnables - 1];
-        currentSpawnable.destroy();
+        let spawnableToRemove = currentSpawnables[amntCurrentSpawnables - 1];
+        spawnableToRemove.destroy();
+        this.updateUI();
     }
 
-    update() {
-
-        // need a cleaner way of doing this
-        this.brickSpawner.updateBrickCursorPosition()
+    changeBlockUp(){
+        this.brickSpawner.changeBlockType(1);
+        this.updateUI();
     }
 
-    
+    changeBlockDown(){
+        this.brickSpawner.changeBlockType(-1);
+        this.updateUI();
+    }
+
+
+    updateUI(){
+        // we should
+        this.gameScene.updateUI();
+    }
+
+    spawnMunchkin(){
+        this.munchkinSpawner.spawnMunchkin(100,100)
+        this.gameScene.gameStats.addToCount("munchkins");
+        this.updateUI();
+    }
 }
+baseScore = {"resets":0, "munchkins":0, "blocks-used":{}}
+
+class GameScore{
+    constructor(gameStats){
+        if(gameStats)
+        {
+            this.gameStats = gameStats;
+        }
+        else{
+            this.resetScore();
+        }
+    }
+
+    resetScore() {
+        this.gameStats = JSON.parse(JSON.stringify( baseScore ));
+
+    }
+
+    addToCount(type){
+        this.gameStats[type]++;
+    }
+
+    addBlocksUsed(blockJson){
+        for (var key in blockJson) {
+            if (blockJson.hasOwnProperty(key)) {
+                if (levelBaseBlocks.hasOwnProperty(key)) {
+                   // let blocksLeft =
+                    let baseBlocks = blockJson[key].type;
+                    let baseBlocksAmount = levelBaseBlocks[key].amount;
+                    let amountRemaining = blockJson[key].amount;
+                    let blocksUsed = baseBlocksAmount - amountRemaining;
+                    if(blocksUsed > 0){
+                        this.gameStats["blocks-used"][baseBlocks] = blocksUsed;
+                    }
 
 
 
-
-
-
-
+                }
+            }
+        }
+        console.log(this.gameStats);
+    }
+}

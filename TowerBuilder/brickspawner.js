@@ -38,7 +38,7 @@ let levelBaseBlocks = [
 ]
 //let availableBlocks = levelBaseBlocks;
 
-
+// move to brickspawner
 let availableBlocks = [
     {"amount":10, "type":"short1"},
     {"amount":10, "type":"short2"},
@@ -66,43 +66,41 @@ class BrickSpawner {
     // most of this constructor is unessisary, there is some intense coupling with this and the maingame scene.
     // need a way of constructing game objects seperately
     // UI needs its own classes, eg brick placing cursor
-    constructor(gameScene){
+    constructor(gameScene, spawnables){
         this.currentBlockType = 0;
-        this.gameScene = gameScene;
-        this.pointer = gameScene.input.activePointer;//this.input.activePointer;
+
+        this.spawnables = spawnables;
         this.blockPhysics = gameScene.cache.json.get('brick-physics');
 
         // use a group here instead of the entire physcis engine
         this.matterRef = gameScene.matter;
-       // this.displayCurrentBrickType();
+
     }
 
-
-    updateBrickCursorPosition(){
-        let pointerX = this.pointer.x;
-        let pointerY = this.pointer.y;
-        this.gameScene.GUI.cursorBlockDisplay.x = pointerX;
-        this.gameScene.GUI.cursorBlockDisplay.y = pointerY;
-        this.gameScene.GUI.cursorBlockDisplay.setTint(0x0f0fff);
-    }
-
-    spawnBrickAtCursorLocation(){
-        let pointerX = this.pointer.x;
-        let pointerY = this.pointer.y;
+    spawnBrickAtLocation(position){
+        let posX = position.x;
+        let posY = position.y;
 
         // make sure there is space to spawn one and we arn't off screen
-        if(!this.canSpawnBrick(pointerX, pointerY)) return;
+        if(!this.canSpawnBrick(posX, posY)) return;
 
-        let objectName = availableBlocks[this.currentBlockType].type;
-        let newBrick = this.spawnNewBrick(pointerX, pointerY, objectName);
+       // let objectName = availableBlocks[this.currentBlockType].type;
+        let objectName = this.getCurrentBlockName();
+        let newBrick = this.spawnNewBrick(posX, posY, objectName);
         this.addToSpawnables(newBrick);
 
         availableBlocks[this.currentBlockType].amount--;
-        this.updateDisplay();
+    }
+
+    getCurrentBlockName(){
+        return availableBlocks[this.currentBlockType].type;
+    }
+    getCurrentBlockAmount(){
+        return availableBlocks[this.currentBlockType].amount;
     }
 
     addToSpawnables(newBrick){
-        this.gameScene.spawnables.add(newBrick);
+        this.spawnables.add(newBrick);
     }
 
     canSpawnBrick(posX, posY){
@@ -140,28 +138,17 @@ class BrickSpawner {
 
         //  create a new brick
         let newBrick = this.matterRef.add.image(posX, posY, imageReference, 0, {shape: shape});
-
         return newBrick;
     }
 
     changeBlockType(amount){
-//        this.currentBlockType = this.currentBlockType + amount;
-//        if(this.currentBlockType < 0) this.currentBlockType = Object.keys(blockTypes).length -1;
-       // if(this.currentBlockType > Object.keys(blockTypes).length -1) this.currentBlockType = 0;
-
         this.currentBlockType = this.currentBlockType + amount;
         if(this.currentBlockType < 0) this.currentBlockType = availableBlocks.length -1;
         if(this.currentBlockType > availableBlocks.length -1) this.currentBlockType = 0;
-        this.updateDisplay();
-      //  this.displayCurrentBrickType();
     }
 
     resetSelectedBlock(){
         this.currentBlockType = 0;
-        this.updateDisplay();
-    }
-    updateDisplay(){
-        this.gameScene.updateUI();
     }
 
 

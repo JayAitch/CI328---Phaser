@@ -96,6 +96,11 @@ const level2 =
                 "y": 400,
             }
         ],
+        "spawn-location":{
+            "x": 200,
+            "y": 450,
+        }
+        ,
         "static": [
             {
                 "colour": "blue",
@@ -207,6 +212,11 @@ const levels=[
                 "y": 400,
             }
         ],
+        "spawn-location":{
+            "x": 0,
+            "y": 0,
+        }
+        ,
         "static": [
             {
                 "colour": "blue",
@@ -276,6 +286,11 @@ const levels=[
                 "y": 450,
             }
         ],
+        "spawn-location":{
+            "x": 0,
+            "y": 0,
+            }
+        ,
         "static": [
             {
                 "colour": "blue",
@@ -366,6 +381,11 @@ const levels=[
                 "y": 400,
             }
         ],
+        "spawn-location":{
+            "x": 0,
+            "y": 0,
+        }
+        ,
         "static": [
             {
                 "colour": "blue",
@@ -408,7 +428,8 @@ const levels=[
 class LevelSpawner{
 
     constructor (gameScene) {
-        this.blockSpawner = gameScene.brickSpawner;
+        this.physicsSpawner = gameScene.physicsSpawner;
+        // fixing the reliance of spawning finish point on gamescene we can remove this reference
         this.gameScene = gameScene;
         this.levelObjects = new Phaser.GameObjects.Group(this);
         this.level = 0
@@ -489,7 +510,8 @@ class LevelSpawner{
 
             this.createObjective(currentObjectiveJSON);
         }
-
+        console.log(this.currentLevel["spawn-location"]);
+        this.physicsSpawner.munchkinSpawner.spawnLocation = this.currentLevel["spawn-location"];
         this.assignAvailableBlocksFromLevel();
    //     let finishDude = this.gameScene.matter.add.sprite(700, 400, "dude", 0, {shape: levelFinishTriggerVolume});
 
@@ -506,14 +528,6 @@ class LevelSpawner{
         let currentLevelObjects = this.levelObjects.children;
         let objectsLength = currentLevelObjects.entries.length;
 
-        /**
-         this.spawnables.children.iterate(function(spawnable){
-            console.log(spawnable);
-            if(spawnable){
-                spawnable.destroy();
-            }
-        });
-         **/
         for(var currentLevelObjectIterator = 0; currentLevelObjectIterator < objectsLength; currentLevelObjectIterator++){
 
             let currentLevelObject = currentLevelObjects.get(currentLevelObjectIterator);
@@ -531,12 +545,12 @@ class LevelSpawner{
     
     
     createStaticBlock(brickSpawnJson){
-        let newBrick = this.blockSpawner.spawnNewBrick(brickSpawnJson.x, brickSpawnJson.y,brickSpawnJson.type, true);
+        let newBrick = this.physicsSpawner.brickSpawner.spawnNewBrick(brickSpawnJson.x, brickSpawnJson.y,brickSpawnJson.type, true);
         this.levelObjects.add(newBrick);
     }
 
     createDynamicBlock(brickSpawnJson){
-        let newBrick = this.blockSpawner.spawnNewBrick(brickSpawnJson.x, brickSpawnJson.y,brickSpawnJson.type, false);
+        let newBrick = this.physicsSpawner.brickSpawner.spawnNewBrick(brickSpawnJson.x, brickSpawnJson.y,brickSpawnJson.type, false);
         this.levelObjects.add(newBrick);
        // this.blockSpawner.addToSpawnables(newBrick);
     }

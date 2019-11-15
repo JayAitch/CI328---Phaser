@@ -1,13 +1,15 @@
 
 class MunchkinSpawner{
-    constructor(gameScene)
+    constructor(gameScene, spawnables)
     {
-        this.sceneRef = gameScene;
+        this.spawnables = spawnables;
         this.matterRef = gameScene.matter;
+        this.spawnLocation = {"x":0, "y":0};
     }
 
     spawnMunchkin(posX, posY){
 
+        let spawnLocation = this.spawnLocation;
         const shape = {
             "type": "fromPhysicsEditor",
             "label": "munchkin",
@@ -36,7 +38,8 @@ class MunchkinSpawner{
         }
 
 
-        let newDodo = this.matterRef.add.sprite(posX, posY, "munchkin",0, {shape: shape});
-        this.sceneRef.spawnables.add(newDodo);
+        let newMunchkin = this.matterRef.add.sprite(spawnLocation.x, spawnLocation.y, "munchkin",0, {shape: shape});
+        this.spawnables.add(newMunchkin);
+
     }
 }

@@ -139,7 +139,7 @@ class PreloadScene extends Phaser.Scene{
             // potentially add to a collection
             let gameReference = `${brickColour}${currentBrickType}`;
             this.load.image(gameReference, fileLocation);
-            console.log(fileLocation + "" + gameReference);
+  //          console.log(fileLocation + "" + gameReference);
         }
 
 

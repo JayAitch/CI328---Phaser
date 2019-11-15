@@ -1,44 +1,67 @@
 
 class Controller{
-    constructor(gameScene) {
+    constructor(physicsSpawner, input) {
+        this.physicsSpawner = physicsSpawner;
+        this.activePointer = input.activePointer;
 
-        gameScene.input.on('pointerdown', function(event) {
-            //    this.spawnCurrentBlockTypeAtCursorPosition();
-            console.log("spawnpressex");
-            gameScene.brickSpawner.spawnBrickAtCursorLocation();
+        input.on('pointerdown', (event) => {
+            let pointerPos = this.getCursorPos();
+            physicsSpawner.spawnBrickAtLocation(pointerPos);
         });
 
         // change the type of block about to be placed
-        let keyE = gameScene.input.keyboard.addKey('E');
-        keyE.on('down', function(event) {
-            gameScene.brickSpawner.changeBlockType(-1);
+        let keyE = input.keyboard.addKey('E');
+        keyE.on('down', (event) => {
+            this._changeBlockDown();
+
         });
 
-        let keyQ = gameScene.input.keyboard.addKey('Q');
-        keyQ.on('down', function(event) {
-            gameScene.brickSpawner.changeBlockType(1);
+        let keyQ = input.keyboard.addKey('Q');
+        keyQ.on('down', (event) => {
+            this._changeBlockUp();
         });
-        let keyT = gameScene.input.keyboard.addKey('T');
-        keyT.on('down', function(event) {
-            gameScene.removeAllSpawnables();
-        });
-
-        let keyY = gameScene.input.keyboard.addKey('Y');
-        keyY.on('down', function(event) {
-            gameScene.removeLastSpawnable();
+        let keyT = input.keyboard.addKey('T');
+        keyT.on('down', (event) => {
+            this._resetBlocks();
         });
 
-        let keyC = gameScene.input.keyboard.addKey('C');
-        keyC.on('down', function(event) {
-            gameScene.completeLevel();
+        let keyY = input.keyboard.addKey('Y');
+        keyY.on('down', (event) => {
+            physicsSpawner.removeLastSpawnable();
         });
 
-        let keySpace = gameScene.input.keyboard.addKey('SPACE');
-        keySpace.on('down', function(event) {
-            // this.brickSpawner.changeBlockType(1);
-            console.log("spawner")
-            gameScene.munchkinSpawner.spawnMunchkin(100,100);
+        let keyC = input.keyboard.addKey('C');
+        keyC.on('down', (event) => {
+     //       physicsSpawner.completeLevel();
         });
+
+        let keySpace = input.keyboard.addKey('SPACE');
+        keySpace.on('down', (event) => {
+            this._spawnAMunchkin();
+
+        });
+    }
+
+    getCursorPos(){
+        let posVector = {
+            "x":this.activePointer.x,
+            "y":this.activePointer.y
+        }
+        return posVector;
+    }
+
+    _changeBlockUp(){
+        this.physicsSpawner.changeBlockUp();
+    };
+
+    _changeBlockDown(){
+        this.physicsSpawner.changeBlockDown();
+    };
+    _resetBlocks(){
+        this.physicsSpawner.removeAllSpawnables();
+    }
+    _spawnAMunchkin(){
+        this.physicsSpawner.spawnMunchkin();
     }
 
 }
