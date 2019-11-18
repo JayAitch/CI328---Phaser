@@ -28,7 +28,6 @@ class GUI {
         this.currentBlockTypeDisplayText = gameScene.add.text((game.config.width / 2), game.config.height - 40, '-', textStyle);
         // spawn the cursor block display offscreen, we dont want to see it until it has the right block
         this.cursorBlockDisplay = gameScene.add.image((game.config.width * 20), game.config.height * 20, "blue" + availableBlocks[this.currentBlockType]).setScale(1);
-
     }
 
 
@@ -47,7 +46,7 @@ class GUI {
 
 
         let blockResetAction = this.gameScene.removeAllSpawnables;
-        let blockResetBtn = new ImageButton((game.config.width / 2) - 300, game.config.height - 55, "blackshort1", this.gameScene, blockResetAction);
+        let blockResetBtn = new ImageButton((game.config.width / 2) - 300, game.config.height - 55, "restart-btn", this.gameScene, blockResetAction);
 
     }
 
@@ -61,6 +60,7 @@ class GUI {
         this.cursorBlockDisplay.setTexture(currentBrickTypeTextureRef);
 
         this.currentBlockTypeDisplay.setTexture(currentBrickTypeTextureRef);
+
     }
 /**
 // concider a push update like so::
@@ -85,12 +85,24 @@ class GUI {
 
 class ImageButton{
     constructor(xPos, yPos, imageRef, gameScene, action){
-        let newBtn = gameScene.add.image(xPos, yPos,  imageRef).setScale(2);
+        let newBtn = gameScene.add.image(xPos, yPos,  imageRef);
         newBtn.setInteractive();
         console.log("btn");
         newBtn.on('pointerdown', () => {
 
             action();
         });
+
+        newBtn.on('pointerover',function(pointer){
+            newBtn.tint = 0x00ffff;
+        });
+    ﻿
+
+
+        newBtn.on('pointerout',function(pointer){
+            newBtn.tint = -1;
+        });
+
+
     }
 }

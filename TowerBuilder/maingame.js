@@ -20,22 +20,39 @@ class LevelCompleteScene extends Phaser.Scene {
 
 
         this.add.text((game.config.width / 2) -150, game.config.height/ 2, 'Level Complete', textStyle);
-        const nextBtn = this.add.text((game.config.width / 2) - 100, game.config.height/2  + 200, 'next', textStyle);
-        const replayBtn = this.add.text((game.config.width / 2) + 100, game.config.height/2  + 200, 'replay', textStyle);
+     //  const nextBtn = this.add.text((game.config.width / 2) - 100, game.config.height/2  + 200, 'next', textStyle);
+     //   const replayBtn = this.add.text((game.config.width / 2) + 100, game.config.height/2  + 200, 'replay', textStyle);
 
-        nextBtn.setInteractive();
-        nextBtn.on('pointerdown', () => {
+
+        let nextLevelAction = ()=>{
             MainGameScene.gameStats.resetScore();
             MainGameScene.nextLevel();
             this.scene.bringToTop("maingame");
-        });
+        };
 
-        replayBtn.setInteractive();
-        replayBtn.on('pointerdown', () => {
+        let nextLevelButton = new ImageButton(
+            (game.config.width / 2) + 100,
+            game.config.height/2  + 200,
+            "skip-btn",
+            this,
+            nextLevelAction
+        );
+
+        let resetLevelAction = () => {
             MainGameScene.gameStats.resetScore();
             MainGameScene.replayLevel();
             this.scene.bringToTop("maingame");
-        });
+        };
+
+        let resetLevelBtn = new ImageButton(
+            (game.config.width / 2) - 100,
+            game.config.height/2+200,
+            "restart-btn",
+            this,
+            resetLevelAction
+        );
+
+
 
     }
 

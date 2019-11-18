@@ -213,8 +213,8 @@ const levels=[
             }
         ],
         "spawn-location":{
-            "x": 0,
-            "y": 0,
+            "x": 100,
+            "y": 100,
         }
         ,
         "static": [
@@ -287,9 +287,9 @@ const levels=[
             }
         ],
         "spawn-location":{
-            "x": 0,
-            "y": 0,
-            }
+            "x": 100,
+            "y": 100,
+        }
         ,
         "static": [
             {
@@ -382,8 +382,8 @@ const levels=[
             }
         ],
         "spawn-location":{
-            "x": 0,
-            "y": 0,
+            "x": 100,
+            "y": 100,
         }
         ,
         "static": [
@@ -511,7 +511,8 @@ class LevelSpawner{
             this.createObjective(currentObjectiveJSON);
         }
         console.log(this.currentLevel["spawn-location"]);
-        this.physicsSpawner.munchkinSpawner.spawnLocation = this.currentLevel["spawn-location"];
+        let munchkinSpawnLocation = this.currentLevel["spawn-location"]
+        this.assignSpawnPoint(munchkinSpawnLocation);
         this.assignAvailableBlocksFromLevel();
    //     let finishDude = this.gameScene.matter.add.sprite(700, 400, "dude", 0, {shape: levelFinishTriggerVolume});
 
@@ -537,9 +538,22 @@ class LevelSpawner{
     }
     
     
-    
+    assignSpawnPoint(location){
+
+        this.physicsSpawner.munchkinSpawner.spawnLocation = location;
+        if(this.spawnPositonDisplay){
+            this.spawnPositonDisplay.x = location.x;
+            this.spawnPositonDisplay.y = location.y;
+        }else{
+            this.spawnPositonDisplay = this.gameScene.add.image(location.x,location.y, "arrow").setScale(.1)
+            this.spawnPositonDisplay.angle = 90;
+        }
+
+
+    }
+
     createObjective(objectiveJSON){
-        let finishDude = this.gameScene.matter.add.sprite(objectiveJSON.x, objectiveJSON.y, "dude", 0, {shape: this.levelFinishTriggerVolume});
+        let finishDude = this.gameScene.matter.add.sprite(objectiveJSON.x, objectiveJSON.y, "target", 0, {shape: this.levelFinishTriggerVolume});
         this.levelObjects.add(finishDude);
     }
     

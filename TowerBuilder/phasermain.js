@@ -51,8 +51,8 @@ class BootScene extends Phaser.Scene
         physics: {
             default: 'matter',
             matter: {
-          //     gravity: { y: 300 },
-                debug: true
+               gravity: { y: 1.5 },
+                //debug: true
             }
         },
 

@@ -5,6 +5,7 @@ class MunchkinSpawner{
         this.spawnables = spawnables;
         this.matterRef = gameScene.matter;
         this.spawnLocation = {"x":0, "y":0};
+
     }
 
     spawnMunchkin(posX, posY){
