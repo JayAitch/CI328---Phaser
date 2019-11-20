@@ -289,9 +289,9 @@ class LevelSpawner{
                     "label": "levelChangeTrigger",
                     "isSensor": true,
                     "circle": {
-                        "x": 32,
-                        "y": 32,
-                        "radius": 20
+                        "x": 45,
+                        "y": 45,
+                        "radius": 45
                     }
                 }
             ]
