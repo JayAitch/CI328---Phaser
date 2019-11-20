@@ -7,7 +7,7 @@ class MenuScene extends Phaser.Scene {
   
     create ()  {
 
-        this.add.image(400, 300, 'sky');
+        this.add.image(800, 400, 'sky');
         const playBtn = this.add.text(100, 100, 'Play', { fill: '#000' });
         playBtn.setInteractive();     
         playBtn.on('pointerdown', () => { this.playgame(); });

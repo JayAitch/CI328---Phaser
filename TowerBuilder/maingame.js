@@ -1,3 +1,4 @@
+
 // store this against "levels" construct levels with json? tiled?
 class LevelCompleteScene extends Phaser.Scene {
 
@@ -8,7 +9,7 @@ class LevelCompleteScene extends Phaser.Scene {
     create () {
         const MainGameScene = this.scene.get('maingame');
 
-        this.add.image(400, 300, 'sky')
+        this.add.image(800, 400, 'sky');
         const textStyle = {
             fill: '#000',
             fontFamily: '"Roboto Condensed"',
@@ -78,12 +79,13 @@ class GameScene extends Phaser.Scene {
     constructor () {
         super('maingame');
         this.gameStats = new GameScore();
+
     }
 
 
     create ()  {
-        this.add.image(400, 300, 'sky')
 
+        this.add.image(800, 400, 'sky');
  //       this.spawnables = new Phaser.GameObjects.Group(this);
 
 		// created simulated physics world at the origin, no physics object can pass these bounds
@@ -145,6 +147,8 @@ class GameScene extends Phaser.Scene {
 
     update() {
         this.GUI.updateCursorPosition(this.controller.getCursorPos())
+
+
         // need a cleaner way of doing this
         //this.brickSpawner.updateBrickCursorPosition()
     }

@@ -14,7 +14,7 @@ class GUI {
     constructor(gameScene) {
 
         // change GUI to have a display of each of the remaining blocks, control display through pull?
-
+        //dont think we need this anymore
         this.gameScene = gameScene;
         // create a text object to display the score
         this.scoreText = gameScene.add.text(16, 16, 'score: 0', {fontSize: '16px', fill: '#000'});
@@ -34,19 +34,26 @@ class GUI {
     createButtons(controller) {
 
         let blockUpAction = function () {
-            controller._changeBlockUp()
+            controller._changeBlockUp();
         };
         let blockUpBtn = new ImageButton((game.config.width / 2) + 200, game.config.height - 55, "greenshort1", this.gameScene, blockUpAction);
 
 
         let blockDownAction = function () {
-            controller._changeBlockDown()
+            controller._changeBlockDown();
         };
         let blockDownBtn = new ImageButton((game.config.width / 2) - 200, game.config.height - 55, "blackshort1", this.gameScene, blockDownAction);
 
 
-        let blockResetAction = this.gameScene.removeAllSpawnables;
+        let blockResetAction = function () {
+            controller._resetBlocks();
+        };
         let blockResetBtn = new ImageButton((game.config.width / 2) - 300, game.config.height - 55, "restart-btn", this.gameScene, blockResetAction);
+
+        let munchkinSpawnAction = function () {
+            controller._spawnAMunchkin();
+        };
+        let munchkinSpawnBtn = new ImageButton((game.config.width / 2) - 400, game.config.height - 55, "munchkin", this.gameScene, munchkinSpawnAction);
 
     }
 

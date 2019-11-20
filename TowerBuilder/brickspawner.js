@@ -154,10 +154,3 @@ class BrickSpawner {
 
 
 }
-
-class Brick{
-    constructor(){
-
-
-    }
-}

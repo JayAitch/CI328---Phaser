@@ -18,7 +18,7 @@ class PreloadScene extends Phaser.Scene{
         this.loadAssetFromJson(this.cache.json.get('assets'));
 
         // add background image to the page
-        this.add.image(this.centerX(), this.centerY(), 'sky');
+        this.add.image(800, 400, 'sky');
         
         // show the player the loading state
         this.createProgressbar(this.centerX(), this.centerY());   

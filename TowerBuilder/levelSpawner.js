@@ -1,4 +1,22 @@
-const level1 =
+/**
+{"amount":5, "type":"short1"},
+{"amount":5, "type":"short2"},
+{"amount":5, "type":"short3"},
+{"amount":5, "type":"short4"},
+{"amount":5, "type":"tall1"},
+{"amount":2, "type":"tall2"},
+{"amount":2, "type":"tall3"},
+{"amount":2, "type":"tall4"},
+{"amount":0, "type":"bottom-sloped1"},
+{"amount":0, "type":"bottom-sloped2"},
+{"amount":0, "type":"bottom-sloped3"},
+{"amount":0, "type":"bottom-sloped4"},
+{"amount":0, "type":"top-sloped1"},
+{"amount":0, "type":"top-sloped2"},
+{"amount":0, "type":"top-sloped3"},
+{"amount":0, "type":"top-sloped4"}
+ **/
+const levels=[
     {
         "available-blocks":   [
             {"amount":10, "type":"short1"},
@@ -6,205 +24,10 @@ const level1 =
             {"amount":10, "type":"short3"},
             {"amount":10, "type":"short4"},
             {"amount":10, "type":"tall1"},
-            {"amount":10, "type":"tall2"},
-            {"amount":10, "type":"tall3"},
-            {"amount":10, "type":"tall4"},
-            {"amount":10, "type":"bottom-sloped1"},
-            {"amount":10, "type":"bottom-sloped2"},
-            {"amount":10, "type":"bottom-sloped3"},
-            {"amount":10, "type":"bottom-sloped4"},
-            {"amount":10, "type":"top-sloped1"},
-            {"amount":10, "type":"top-sloped2"},
-            {"amount":10, "type":"top-sloped3"},
-            {"amount":10, "type":"top-sloped4"}
-        ],
-        "objectives":[
-            {
-                "x": 700,
-                "y": 400,
-            }
-        ],
-        "static": [
-            {
-                "colour": "blue",
-                "type": "tall4",
-                "x":0,
-                "y":300,
-            },
-            {
-                "colour": "blue",
-                "type": "tall4",
-                "x":193,
-                "y":357,
-            },
-            {
-                "colour": "blue",
-                "type": "tall4",
-                "x":385,
-                "y":414,
-            },
-            {
-                "colour": "blue",
-                "type": "tall4",
-                "x":579,
-                "y":471,
-            },
-           {
-                "colour": "blue",
-                "type": "tall4",
-                "x":772,
-                "y":500,
-            },
-
-        ],
-        "dynamic":[/**
-         {
-                "colour": "blue",
-                "type": "tall4",
-                "x":97,
-                "y":300,
-            },
-         {
-                "colour": "blue",
-                "type": "tall4",
-                "x":289,
-                "y":300,
-            },
-         {
-                "colour": "blue",
-                "type": "top-sloped4",
-                "x":56,
-                "y":230,
-            }**/
-        ]
-    }
-
-
-
-
-const level2 =
-    {
-        "available-blocks":   [
-            {"amount":10, "type":"short1"},
-            {"amount":10, "type":"bottom-sloped1"},
-            {"amount":10, "type":"top-sloped1"},
-
-        ],
-        "objectives":[
-            {
-                "x": 200,
-                "y": 400,
-            }
-        ],
-        "spawn-location":{
-            "x": 200,
-            "y": 450,
-        }
-        ,
-        "static": [
-            {
-                "colour": "blue",
-                "type": "tall4",
-                "x":0,
-                "y":500,
-            },
-            {
-                "colour": "blue",
-                "type": "tall4",
-                "x":192,
-                "y":500,
-            },
-            {
-                "colour": "blue",
-                "type": "tall4",
-                "x":384,
-                "y":500,
-            },
-            {
-                "colour": "blue",
-                "type": "tall4",
-                "x":576,
-                "y":500,
-            },
-            {
-                "colour": "blue",
-                "type": "tall4",
-                "x":768,
-                "y":500,
-            },
-            {
-                "colour": "blue",
-                "type": "short4",
-                "x":0,
-                "y":200,
-            },
-            {
-                "colour": "blue",
-                "type": "short4",
-                "x":192,
-                "y":200,
-            },
-            {
-                "colour": "blue",
-                "type": "short4",
-                "x":384,
-                "y":200,
-            },
-            {
-                "colour": "blue",
-                "type": "short4",
-                "x":384,
-                "y":200,
-            },
-            {
-                "colour": "blue",
-                "type": "short4",
-                "x":576,
-                "y":200,
-            }
-        ],
-        "dynamic":[/**
-            {
-                "colour": "blue",
-                "type": "tall4",
-                "x":97,
-                "y":300,
-            },
-            {
-                "colour": "blue",
-                "type": "tall4",
-                "x":289,
-                "y":300,
-            },
-            {
-                "colour": "blue",
-                "type": "top-sloped4",
-                "x":56,
-                "y":230,
-            }**/
-        ]
-    }
-
-
-const levels=[
-    {
-        "available-blocks":   [
-            {"amount":1, "type":"short1"},
-            {"amount":2, "type":"short2"},
-            {"amount":3, "type":"short3"},
-            {"amount":3, "type":"short4"},
-            {"amount":4, "type":"tall1"},
             {"amount":5, "type":"tall2"},
-            {"amount":6, "type":"tall3"},
-            {"amount":7, "type":"tall4"},
-            {"amount":8, "type":"bottom-sloped1"},
-            {"amount":12, "type":"bottom-sloped2"},
-            {"amount":1, "type":"bottom-sloped3"},
-            {"amount":32, "type":"bottom-sloped4"},
-            {"amount":3, "type":"top-sloped1"},
-            {"amount":120, "type":"top-sloped2"},
-            {"amount":103, "type":"top-sloped3"},
-            {"amount":410, "type":"top-sloped4"}
+            {"amount":5, "type":"tall3"},
+            {"amount":5, "type":"tall4"},
+
         ],
         "objectives":[
             {
@@ -222,31 +45,31 @@ const levels=[
                 "colour": "blue",
                 "type": "tall4",
                 "x":0,
-                "y":300,
+                "y":500,
             },
             {
                 "colour": "blue",
                 "type": "tall4",
                 "x":193,
-                "y":357,
+                "y":557,
             },
             {
                 "colour": "blue",
                 "type": "tall4",
                 "x":385,
-                "y":414,
+                "y":614,
             },
             {
                 "colour": "blue",
                 "type": "tall4",
                 "x":579,
-                "y":471,
+                "y":671,
             },
             {
                 "colour": "blue",
                 "type": "tall4",
                 "x":772,
-                "y":500,
+                "y":700,
             },
 
         ],

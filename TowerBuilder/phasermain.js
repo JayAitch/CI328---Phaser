@@ -13,7 +13,7 @@ class BootScene extends Phaser.Scene
         this.load.json('assets', 'assets/assets.json');
         this.load.json('animations', 'assets/animations.json');
         this.load.json("brick-physics", "assets/brick-physics.json");
-        this.load.image('sky', 'assets/sky.png');
+        this.load.image('sky', 'assets/sky1.png');
     }
 
     create ()
@@ -30,20 +30,10 @@ class BootScene extends Phaser.Scene
     var config = {
         type: Phaser.AUTO,
 
-        scale: {
-            mode: Phaser.Scale.FIT,
-            parent: 'phaser-example',
-            width: 800,
-            height: 600,
-            min: {
-                width: 800,
-                height: 600
-            },
-            max: {
-                width: 1600,
-                height: 1200
-            }
-        },
+
+            width: 1200,
+            height: 1000,
+
         autoCenter: Phaser.Scale.CENTER_BOTH,
         scene:[BootScene, PreloadScene, MenuScene,  GameScene, LevelCompleteScene],
         
@@ -52,7 +42,7 @@ class BootScene extends Phaser.Scene
             default: 'matter',
             matter: {
                gravity: { y: 1.5 },
-                //debug: true
+                debug: true
             }
         },
 
