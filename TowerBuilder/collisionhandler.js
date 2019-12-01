@@ -17,9 +17,9 @@ class CollisionHandler{
                     bodyB.label === 'levelChangeTrigger' && bodyA.label === 'munchkin')
                 {
                     gameScene.completeLevel();
-                    alert('levelcomplete	');
                 }
             }
         })
     }
 }
+

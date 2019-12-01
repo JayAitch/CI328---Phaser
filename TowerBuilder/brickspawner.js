@@ -74,7 +74,6 @@ class BrickSpawner {
 
         // use a group here instead of the entire physcis engine
         this.matterRef = gameScene.matter;
-
     }
 
     spawnBrickAtLocation(position){
@@ -105,16 +104,69 @@ class BrickSpawner {
 
     canSpawnBrick(posX, posY){
         // we may want to manage this state to allow level complete scene
-        //if(!this.gameScene.isPlaying) return false;
-        if(posY < game.config.height - 150)
+        let isSpaceToSpawn = this.isSpaceToSpawnBlock(posX,posY);
+
+        if(isSpaceToSpawn && posY < game.config.height - 150)
         {
             if(availableBlocks[this.currentBlockType].amount > 0){
+
                 return true;
             }
 
         }
+
         return false;
     }
+
+
+    isSpaceToSpawnBlock(posX, posY){
+
+        let objectName = this.getCurrentBlockName();
+
+        // work out what the block image is called
+        let imageReference =  "blue" + objectName;
+
+
+        //  create a brick to run bounds checking against
+        // this could use the GUIs cursor icon instead, need to change to push GUI update
+        let spawnCheckRectangle = this.matterRef.add.image(posX, posY, imageReference, 0);
+        spawnCheckRectangle.body.label = "spawncheckvolume"
+
+        // create a rectangle from the temporarily spawned rectangle
+        let newRectangle = new Phaser.Geom.Rectangle(posX, posY, spawnCheckRectangle.width, spawnCheckRectangle.height);
+
+        // we have the values we ned destroy the block
+        spawnCheckRectangle.destroy();
+
+
+        // get all bodies currently in the world
+        let worldBodies  = this.matterRef.world.engine.world.bodies;
+
+        // go through them
+        for(let pairsIterator = 0; pairsIterator < worldBodies.length; pairsIterator++) {
+            let currentBody  = worldBodies[pairsIterator];
+                // assign the body as we go through
+                let bodyToCheckBounds = currentBody.bounds
+
+                // get the outer bounds of the body, dont actually care about any complex collisions
+                let left = bodyToCheckBounds.min.x
+                let right = bodyToCheckBounds.max.x
+                let top = bodyToCheckBounds.min.y
+                let bottom = bodyToCheckBounds.max.y
+
+                // check if our test rectangle intsects
+                let doesIntersect = Phaser.Geom.Intersects.RectangleToValues(newRectangle, left, right, top, bottom, -10);
+
+                // an intersection has been found, return false and stop looking
+                if(doesIntersect){
+                    return false;
+                }
+
+        }
+        // no intersections found, there is space to spawn
+        return true;
+    }
+
 
     roleABlockColour(){
         // get these values from somwhere

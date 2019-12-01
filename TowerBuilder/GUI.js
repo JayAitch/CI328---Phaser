@@ -22,10 +22,13 @@ class GUI {
 
 
         // move this to a class so we can create on for each block type and pass the object type by reference
-        this.currentBlockTypeDisplay = gameScene.add.image((game.config.width / 2), game.config.height - 55, "blueshort1").setScale(1);
+        this.currentBlockTypeDisplay = gameScene.add.image((game.config.width / 2), game.config.height - 55, "blueshort1");
         this.currentBlockTypeDisplayText = gameScene.add.text((game.config.width / 2), game.config.height - 40, '-', textStyle);
         // spawn the cursor block display offscreen, we dont want to see it until it has the right block
-        this.cursorBlockDisplay = gameScene.add.image((game.config.width * 20), game.config.height * 20, "blue" + availableBlocks[this.currentBlockType]).setScale(1);
+
+
+        this.cursorBlockDisplay = gameScene.add.image((game.config.width * 20), game.config.height * 20, "blue"+ this.brickSpawner.getCurrentBlockName(), 0);
+
     }
 
 
@@ -59,33 +62,16 @@ class GUI {
     updateUI() {
 
         let currentBrickTypeTextureRef = "blue" + this.brickSpawner.getCurrentBlockName();
-
-
         this.currentBlockTypeDisplayText.setText(this.brickSpawner.getCurrentBlockAmount());
         this.cursorBlockDisplay.setTexture(currentBrickTypeTextureRef);
-
-        this.currentBlockTypeDisplay.setTexture(currentBrickTypeTextureRef);
-
-    }
-
-    /**
-     // concider a push update like so::
-     updateUI(currentBrickTextureRef, amountLeft) {
-
-        let currentBrickTypeTextureRef = "blue" + currentBrickTextureRef;
-
-
-        this.currentBlockTypeDisplayText.setText(amountLeft);
-        this.cursorBlockDisplay.setTexture(currentBrickTypeTextureRef);
-
         this.currentBlockTypeDisplay.setTexture(currentBrickTypeTextureRef);
     }
-     **/
 
     updateCursorPosition(pos) {
         this.cursorBlockDisplay.x = pos.x;
         this.cursorBlockDisplay.y = pos.y;
     }
+
 }
 
 

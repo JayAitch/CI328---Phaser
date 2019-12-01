@@ -41,6 +41,7 @@ var config = {
 
 };
 
+
 // pass game configuration
 game = new Phaser.Game(config);
 let difficulty = 0;
@@ -53,10 +54,12 @@ let difficulty = 0;
     playtest levels
     fix file structure
      seperate levels in json
-     sortout score
+     sortout scor
      fix menu screan
      check for block placement
      cap on munchkin volumes
      combine spawners
     spawn in level complete screen
+    error checking on json parsing
+    new munchkin from kenny
  **/
