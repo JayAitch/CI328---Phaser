@@ -1,5 +1,3 @@
-
-
 // condense the style out into a config object
 const textStyle = {
     fill: '#000',
@@ -69,9 +67,10 @@ class GUI {
         this.currentBlockTypeDisplay.setTexture(currentBrickTypeTextureRef);
 
     }
-/**
-// concider a push update like so::
-    updateUI(currentBrickTextureRef, amountLeft) {
+
+    /**
+     // concider a push update like so::
+     updateUI(currentBrickTextureRef, amountLeft) {
 
         let currentBrickTypeTextureRef = "blue" + currentBrickTextureRef;
 
@@ -81,18 +80,18 @@ class GUI {
 
         this.currentBlockTypeDisplay.setTexture(currentBrickTypeTextureRef);
     }
-**/
+     **/
 
-    updateCursorPosition(pos){
+    updateCursorPosition(pos) {
         this.cursorBlockDisplay.x = pos.x;
         this.cursorBlockDisplay.y = pos.y;
     }
 }
 
 
-class ImageButton{
-    constructor(xPos, yPos, imageRef, gameScene, action){
-        let newBtn = gameScene.add.image(xPos, yPos,  imageRef);
+class ImageButton {
+    constructor(xPos, yPos, imageRef, gameScene, action) {
+        let newBtn = gameScene.add.image(xPos, yPos, imageRef);
         newBtn.setInteractive();
         console.log("btn");
         newBtn.on('pointerdown', () => {
@@ -100,13 +99,13 @@ class ImageButton{
             action();
         });
 
-        newBtn.on('pointerover',function(pointer){
+        newBtn.on('pointerover', function (pointer) {
             newBtn.tint = 0x00ffff;
         });
     ﻿
 
 
-        newBtn.on('pointerout',function(pointer){
+        newBtn.on('pointerout', function (pointer) {
             newBtn.tint = -1;
         });
 

@@ -1,13 +1,9 @@
-
-class BootScene extends Phaser.Scene
-{
-    constructor ()
-    {
-        super({ key: 'boot' });
+class BootScene extends Phaser.Scene {
+    constructor() {
+        super({key: 'boot'});
     }
 
-    preload ()
-    {
+    preload() {
         // load all files necessary for the loading screen
         // our game assets will be loaded via parsing assets json
         this.load.json('assets', 'assets/assets.json');
@@ -16,38 +12,51 @@ class BootScene extends Phaser.Scene
         this.load.image('sky', 'assets/sky1.png');
     }
 
-    create ()
-    {
+    create() {
         // trigger asset load from json
         this.scene.start('preload');
     }
 }
 
 
+// settup game configuration settings
+var config = {
+    type: Phaser.AUTO,
 
 
-    // settup game configuration settings
-    var config = {
-        type: Phaser.AUTO,
+    width: 1200,
+    height: 1000,
+
+    autoCenter: Phaser.Scale.CENTER_BOTH,
+    scene: [BootScene, PreloadScene, MenuScene, GameScene, LevelCompleteScene],
 
 
-            width: 1200,
-            height: 1000,
+    physics: {
+        default: 'matter',
+        matter: {
+            gravity: {y: 1.5},
+            debug: true
+        }
+    },
 
-        autoCenter: Phaser.Scale.CENTER_BOTH,
-        scene:[BootScene, PreloadScene, MenuScene,  GameScene, LevelCompleteScene],
-        
+};
 
-        physics: {
-            default: 'matter',
-            matter: {
-               gravity: { y: 1.5 },
-                debug: true
-            }
-        },
-
-    };
-
-	// pass game configuration
-    game = new Phaser.Game(config);
+// pass game configuration
+game = new Phaser.Game(config);
+let difficulty = 0;
 //	console.log(Matter.Events)
+
+
+/**
+ * TODO:
+    add sounds
+    playtest levels
+    fix file structure
+     seperate levels in json
+     sortout score
+     fix menu screan
+     check for block placement
+     cap on munchkin volumes
+     combine spawners
+    spawn in level complete screen
+ **/
