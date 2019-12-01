@@ -144,7 +144,11 @@ class BrickSpawner {
 
         // go through them
         for(let pairsIterator = 0; pairsIterator < worldBodies.length; pairsIterator++) {
-            let currentBody  = worldBodies[pairsIterator];
+
+            let currentBody = worldBodies[pairsIterator];
+            console.log(currentBody.label)
+            if(currentBody.label !== 'levelChangeTrigger') {
+
                 // assign the body as we go through
                 let bodyToCheckBounds = currentBody.bounds
 
@@ -158,10 +162,10 @@ class BrickSpawner {
                 let doesIntersect = Phaser.Geom.Intersects.RectangleToValues(newRectangle, left, right, top, bottom, -10);
 
                 // an intersection has been found, return false and stop looking
-                if(doesIntersect){
+                if (doesIntersect) {
                     return false;
                 }
-
+            }
         }
         // no intersections found, there is space to spawn
         return true;
@@ -172,8 +176,8 @@ class BrickSpawner {
         // get these values from somwhere
         // potentially store a collection somewhere when loading them
         // consider using a single brick asset (white) and running a mask over it
-        let colours = ["black","blue","green"];
-        let colourNumber =  Math.random() * 3;
+        let colours = ["black","blue","green", "red", "white","yellow"];
+        let colourNumber =  Math.random() * 6;
         colourNumber = Math.trunc(colourNumber);
         return colours[colourNumber];
     }

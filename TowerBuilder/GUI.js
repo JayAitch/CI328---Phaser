@@ -54,7 +54,7 @@ class GUI {
         let munchkinSpawnAction = function () {
             controller._spawnAMunchkin();
         };
-        let munchkinSpawnBtn = new ImageButton((game.config.width / 2) - 400, game.config.height - 55, "munchkin", this.gameScene, munchkinSpawnAction);
+        let munchkinSpawnBtn = new ImageButton((game.config.width / 2) - 400, game.config.height - 55, "munchkin", this.gameScene, munchkinSpawnAction).setScale(0.5);
 
     }
 
@@ -85,16 +85,16 @@ class ImageButton {
             action();
         });
 
-        newBtn.on('pointerover', function (pointer) {
+        newBtn.on('pointerover', (pointer) => {
             newBtn.tint = 0x00ffff;
         });
     ﻿
 
 
-        newBtn.on('pointerout', function (pointer) {
+        newBtn.on('pointerout',  (pointer) => {
             newBtn.tint = -1;
         });
 
-
+        return newBtn;
     }
 }

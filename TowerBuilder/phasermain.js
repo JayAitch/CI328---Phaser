@@ -9,6 +9,7 @@ class BootScene extends Phaser.Scene {
         this.load.json('assets', 'assets/assets.json');
         this.load.json('animations', 'assets/animations.json');
         this.load.json("brick-physics", "assets/brick-physics.json");
+        this.load.json("levels", "assets/levels.json");
         this.load.image('sky', 'assets/sky1.png');
     }
 
@@ -53,13 +54,14 @@ let difficulty = 0;
     add sounds
     playtest levels
     fix file structure
-     seperate levels in json
+        +seperate levels in json
      sortout scor
      fix menu screan
-     check for block placement
+        +check for block placement
      cap on munchkin volumes
      combine spawners
     spawn in level complete screen
     error checking on json parsing
-    new munchkin from kenny
+        +new munchkin from kenny
+    rename physics blocks and move end box
  **/

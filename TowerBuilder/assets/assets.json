@@ -1,37 +1,14 @@
 {
     "image": {
-        "munchkin": "assets/munchkins/MunchkinPink.png",
-        "bomb": "assets/bomb.png",
-        "platform": "assets/platform.png",
-        "star":"assets/star.png",
+        "munchkin": "assets/munchkins/bear.png",
         "arrow": "assets/arrow.png",
        "target": "assets/target.png",
         "back-btn": "assets/UI Buttons/Back.png",
         "options-btn": "assets/UI Buttons/Options.png",
        "restart-btn": "assets/UI Buttons/Restart.png",
         "skip-btn": "assets/UI Buttons/Skip.png",
-       "start-btn": "assets/UI Buttons/Start.png",
-		"brickBlack01": "assets/bricks/White/brickWhite01.png",
-		"brickBlack02": "assets/bricks/Black/brickBlack02.png",
-		"brickBlack03": "assets/bricks/Black/brickBlack03.png",
-        "brickBlack04": "assets/bricks/Black/brickBlack04.png",
-        "brickBlack05": "assets/bricks/Black/brickBlack05.png",
-        "brickBlack06": "assets/bricks/Black/brickBlack06.png",
-        "brickBlack07": "assets/bricks/Black/brickBlack07.png",
-        "brickBlack08": "assets/bricks/Black/brickBlack08.png",
-        "brickBlack09": "assets/bricks/Black/brickBlack09.png",
-        "brickBlack10": "assets/bricks/Black/brickBlack10.png",
-        "brickBlack11": "assets/bricks/Black/brickBlack11.png",
-        "brickBlack12": "assets/bricks/Black/brickBlack12.png",
-        "brickBlack13": "assets/bricks/Black/brickBlack13.png",
-        "brickBlack14": "assets/bricks/Black/brickBlack14.png",
-        "brickBlack15": "assets/bricks/Black/brickBlack15.png",
-        "brickBlack16": "assets/bricks/Black/brickBlack16png",
-        "brickBlack17": "assets/bricks/Black/brickBlack17.png"
-
+       "start-btn": "assets/UI Buttons/Start.png"
     },
-
-    "TODO": "we may not want to have actual images for the bricks and instead use a mask over the white ones, should save on cache size and memory use infact yes do that",
     "bricks": {
       "black": [
         "short1",
@@ -86,13 +63,67 @@
         "top-sloped3",
         "top-sloped4",
         "bottom-sloped4"
+      ],
+      "red": [
+        "short1",
+        "short2",
+        "short3",
+        "short4",
+        "tall1",
+        "tall2",
+        "tall3",
+        "tall4",
+        "bottom-sloped1",
+        "top-sloped1",
+        "top-sloped2",
+        "bottom-sloped2",
+        "bottom-sloped3",
+        "top-sloped3",
+        "top-sloped4",
+        "bottom-sloped4"
+      ],
+      "white": [
+        "short1",
+        "short2",
+        "short3",
+        "short4",
+        "tall1",
+        "tall2",
+        "tall3",
+        "tall4",
+        "bottom-sloped1",
+        "top-sloped1",
+        "top-sloped2",
+        "bottom-sloped2",
+        "bottom-sloped3",
+        "top-sloped3",
+        "top-sloped4",
+        "bottom-sloped4"
+      ],
+       "yellow": [
+        "short1",
+        "short2",
+        "short3",
+        "short4",
+        "tall1",
+        "tall2",
+        "tall3",
+        "tall4",
+        "bottom-sloped1",
+        "top-sloped1",
+        "top-sloped2",
+        "bottom-sloped2",
+        "bottom-sloped3",
+        "top-sloped3",
+        "top-sloped4",
+        "bottom-sloped4"
       ]
     },
-	
+
     "spritesheet" : {
         "dude" : ["assets/dude.png", { "frameWidth": 32, "frameHeight": 48 }]
     }
-    
+
     
 }
 

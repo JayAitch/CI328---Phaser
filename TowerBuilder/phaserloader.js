@@ -7,9 +7,8 @@ class PreloadScene extends Phaser.Scene{
     
     create(){
         // load any animations here rather then in the preload
+        // dont need this!!
         this.loadAnimations(this.cache.json.get('animations').playercharacter)
-
-
     }
     
     preload ()

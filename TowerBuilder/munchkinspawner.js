@@ -16,10 +16,10 @@ class MunchkinSpawner{
             "label": "munchkin",
             "isStatic": false,
             "density": 0.0001,
-            "restitution": 0.8,
+            "restitution": 1,
             "friction": 0.008,
-            "frictionAir": 0.0005,
-            "frictionStatic" :0.02,
+            "frictionAir": 0.0025,
+            "frictionStatic" :0.0,
             "collisionFilter": {
                 "group": 0,
                 "category": 1,
@@ -30,9 +30,9 @@ class MunchkinSpawner{
                     "label": "munchkin",
                     "isSensor": false,
                     "circle": {
-                        "x": 22,
-                        "y": 22,
-                        "radius": 20
+                        "x": 50,
+                        "y": 43,
+                        "radius": 42
                     }
                 }
             ]
@@ -40,6 +40,7 @@ class MunchkinSpawner{
 
 
         let newMunchkin = this.matterRef.add.sprite(spawnLocation.x, spawnLocation.y, "munchkin",0, {shape: shape});
+
         this.spawnables.add(newMunchkin);
 
     }
