@@ -19,43 +19,13 @@ const blockTypes = {
 };
 
 let levelBaseBlocks = [
-    {"amount":10, "type":"short1"},
-    {"amount":10, "type":"short2"},
-    {"amount":10, "type":"short3"},
-    {"amount":10, "type":"short4"},
-    {"amount":10, "type":"tall1"},
-    {"amount":10, "type":"tall2"},
-    {"amount":10, "type":"tall3"},
-    {"amount":10, "type":"tall4"},
-    {"amount":10, "type":"bottom-sloped1"},
-    {"amount":10, "type":"bottom-sloped2"},
-    {"amount":10, "type":"bottom-sloped3"},
-    {"amount":10, "type":"bottom-sloped4"},
-    {"amount":10, "type":"top-sloped1"},
-    {"amount":10, "type":"top-sloped2"},
-    {"amount":10, "type":"top-sloped3"},
-    {"amount":10, "type":"top-sloped4"}
+
 ]
 //let availableBlocks = levelBaseBlocks;
 
 // move to brickspawner
 let availableBlocks = [
-    {"amount":10, "type":"short1"},
-    {"amount":10, "type":"short2"},
-    {"amount":10, "type":"short3"},
-    {"amount":10, "type":"short4"},
-    {"amount":10, "type":"tall1"},
-    {"amount":10, "type":"tall2"},
-    {"amount":10, "type":"tall3"},
-    {"amount":10, "type":"tall4"},
-    {"amount":10, "type":"bottom-sloped1"},
-    {"amount":10, "type":"bottom-sloped2"},
-    {"amount":10, "type":"bottom-sloped3"},
-    {"amount":10, "type":"bottom-sloped4"},
-    {"amount":10, "type":"top-sloped1"},
-    {"amount":10, "type":"top-sloped2"},
-    {"amount":10, "type":"top-sloped3"},
-    {"amount":10, "type":"top-sloped4"}
+
 ]
 
 
@@ -75,26 +45,32 @@ class BrickSpawner {
         // use a group here instead of the entire physcis engine
         this.matterRef = gameScene.matter;
     }
-
+q
     spawnBrickAtLocation(position){
         let posX = position.x;
         let posY = position.y;
 
         // make sure there is space to spawn one and we arn't off screen
-        if(!this.canSpawnBrick(posX, posY)) return;
+        if(!this.canSpawnBrick(posX, posY)){
+            Audio.errorSound.play({volume: 0.1});
+            return;
+        }
 
        // let objectName = availableBlocks[this.currentBlockType].type;
         let objectName = this.getCurrentBlockName();
-        let newBrick = this.spawnNewBrick(posX, posY, objectName);
+        Audio.spawnSound.play();
+        let newBrick = this.spawnNewBrick(posX, posY, objectName,false,0);
         this.addToSpawnables(newBrick);
 
         availableBlocks[this.currentBlockType].amount--;
     }
 
     getCurrentBlockName(){
+        if(availableBlocks[this.currentBlockType])
         return availableBlocks[this.currentBlockType].type;
     }
     getCurrentBlockAmount(){
+        if(availableBlocks[this.currentBlockType])
         return availableBlocks[this.currentBlockType].amount;
     }
 
@@ -105,10 +81,10 @@ class BrickSpawner {
     canSpawnBrick(posX, posY){
         // we may want to manage this state to allow level complete scene
         let isSpaceToSpawn = this.isSpaceToSpawnBlock(posX,posY);
-
-        if(isSpaceToSpawn && posY < game.config.height - 150)
+   //
+        if(isSpaceToSpawn)
         {
-            if(availableBlocks[this.currentBlockType].amount > 0){
+            if(availableBlocks[this.currentBlockType].amount > 0 && posY < game.config.height - 120){
 
                 return true;
             }
@@ -135,7 +111,7 @@ class BrickSpawner {
         // create a rectangle from the temporarily spawned rectangle
         let newRectangle = new Phaser.Geom.Rectangle(posX, posY, spawnCheckRectangle.width, spawnCheckRectangle.height);
 
-        // we have the values we ned destroy the block
+        // we have the values we need destroy the block
         spawnCheckRectangle.destroy();
 
 
@@ -143,11 +119,12 @@ class BrickSpawner {
         let worldBodies  = this.matterRef.world.engine.world.bodies;
 
         // go through them
-        for(let pairsIterator = 0; pairsIterator < worldBodies.length; pairsIterator++) {
+        for(let bodiesIterator = 0; bodiesIterator < worldBodies.length; bodiesIterator++) {
 
-            let currentBody = worldBodies[pairsIterator];
-            console.log(currentBody.label)
-            if(currentBody.label !== 'levelChangeTrigger') {
+            let currentBody = worldBodies[bodiesIterator];
+
+            // ignore the levelchange trigger and right bounds box????? whateve it is
+            if(currentBody.label !== 'levelChangeTrigger'&& currentBody.label !== 'Rectangle Body') {
 
                 // assign the body as we go through
                 let bodyToCheckBounds = currentBody.bounds
@@ -159,10 +136,11 @@ class BrickSpawner {
                 let bottom = bodyToCheckBounds.max.y
 
                 // check if our test rectangle intsects
-                let doesIntersect = Phaser.Geom.Intersects.RectangleToValues(newRectangle, left, right, top, bottom, -10);
+                let doesIntersect = Phaser.Geom.Intersects.RectangleToValues(newRectangle, left, right, top, bottom);
 
                 // an intersection has been found, return false and stop looking
                 if (doesIntersect) {
+
                     return false;
                 }
             }
@@ -182,7 +160,7 @@ class BrickSpawner {
         return colours[colourNumber];
     }
 
-    spawnNewBrick(posX, posY, objectName, isStatic){
+    spawnNewBrick(posX, posY, objectName, isStatic, angle){
         //role a colour from the ones available
         let colour = this.roleABlockColour();
 
@@ -194,6 +172,7 @@ class BrickSpawner {
 
         //  create a new brick
         let newBrick = this.matterRef.add.image(posX, posY, imageReference, 0, {shape: shape});
+        newBrick.angle = angle;
         return newBrick;
     }
 

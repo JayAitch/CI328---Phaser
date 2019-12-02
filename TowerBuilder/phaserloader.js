@@ -103,7 +103,9 @@ class PreloadScene extends Phaser.Scene{
                         
                         this.load[group](key, value);
                         break;
-                        
+                    case 'audio':
+                        this.load[group](key, value);
+                        break;
                     case 'spritesheet':
 
                         this.load[group](key, value[0], value[1]);

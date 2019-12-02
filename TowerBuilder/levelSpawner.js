@@ -27,7 +27,7 @@ class LevelSpawner{
         // fixing the reliance of spawning finish point on gamescene we can remove this reference
         this.gameScene = gameScene;
         this.levelObjects = new Phaser.GameObjects.Group(this);
-        this.level = 0;
+        this.level = 1;
         this.setCurrentLevel();
         this.loadLevel();
     }
@@ -42,7 +42,7 @@ class LevelSpawner{
 
         this.levelFinishTriggerVolume = {
             "type": "fromPhysicsEditor",
-            "label": "top-sloped4",
+            "label": "levelChangeTrigger",
             //"inertia": Infinity,
             "isStatic": true,
             "density": 0.10000000149011612,
@@ -93,30 +93,24 @@ class LevelSpawner{
 
         }
 
+        // go through any objectives
         let objectives = this.currentLevel.objectives;
         for(let objectiveNum = 0; objectiveNum < objectives.length; objectiveNum++){
-            //   console.log(staticBlocks[blockNum]);
-            //   let objectName = staticBlocks[blockNum].type;
-
-            //   let shape = this.blockPhysics[objectName];
-//
             let currentObjectiveJSON = objectives[objectiveNum]
-            //this.createDynamicBlock(currentNewBlockJSON);
-
             this.createObjective(currentObjectiveJSON);
+
         }
-        console.log(this.currentLevel["spawn-location"]);
+
         let munchkinSpawnLocation = this.currentLevel["spawn-location"]
         this.assignSpawnPoint(munchkinSpawnLocation);
         this.assignAvailableBlocksFromLevel();
-   //     let finishDude = this.gameScene.matter.add.sprite(700, 400, "dude", 0, {shape: levelFinishTriggerVolume});
-
     }
-    assignAvailableBlocksFromLevel(){
-        levelBaseBlocks = this.currentLevel["available-blocks"][difficulty];
-        availableBlocks = JSON.parse(JSON.stringify( levelBaseBlocks ));
-     //   this.gameScene.removeAllSpawnables();
 
+    assignAvailableBlocksFromLevel(){
+        // assign blocks from level definition of difficulty
+        levelBaseBlocks = this.currentLevel["available-blocks"][difficulty];
+        // prevent pass by reference, copy object into new reference
+        availableBlocks = JSON.parse(JSON.stringify( levelBaseBlocks ));
     }
 
     removeAllLevelBlocks(){
@@ -154,12 +148,14 @@ class LevelSpawner{
     
     
     createStaticBlock(brickSpawnJson){
-        let newBrick = this.physicsSpawner.brickSpawner.spawnNewBrick(brickSpawnJson.x, brickSpawnJson.y,brickSpawnJson.type, true);
+        let angle = brickSpawnJson.angle || 0;
+        let newBrick = this.physicsSpawner.brickSpawner.spawnNewBrick(brickSpawnJson.x, brickSpawnJson.y,brickSpawnJson.type, true, angle);
         this.levelObjects.add(newBrick);
     }
 
     createDynamicBlock(brickSpawnJson){
-        let newBrick = this.physicsSpawner.brickSpawner.spawnNewBrick(brickSpawnJson.x, brickSpawnJson.y,brickSpawnJson.type, false);
+        let angle = brickSpawnJson.angle || 0;
+        let newBrick = this.physicsSpawner.brickSpawner.spawnNewBrick(brickSpawnJson.x, brickSpawnJson.y,brickSpawnJson.type, false, angle);
         this.levelObjects.add(newBrick);
        // this.blockSpawner.addToSpawnables(newBrick);
     }

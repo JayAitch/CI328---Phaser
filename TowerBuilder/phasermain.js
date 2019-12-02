@@ -1,3 +1,4 @@
+
 class BootScene extends Phaser.Scene {
     constructor() {
         super({key: 'boot'});
@@ -50,18 +51,24 @@ let difficulty = 0;
 
 
 /**
+ * DONE:
+ *         +leveltrigger blocking placement
+ *         +seperate levels in json
+ *         +check for block placement
+ *         +new munchkin from kenny
+ *         +cap on munchkin volumes
+ *         +add sounds
  * TODO:
-    add sounds
     playtest levels
     fix file structure
-        +seperate levels in json
-     sortout scor
+    sortout score
      fix menu screan
-        +check for block placement
-     cap on munchkin volumes
+    particles
      combine spawners
     spawn in level complete screen
     error checking on json parsing
-        +new munchkin from kenny
-    rename physics blocks and move end box
+    rename physics blocks and move end box and munchkin
+    add level with multiple objectives and dynamic blocks
+    finetune munchkin physics
+
  **/

@@ -1,4 +1,18 @@
 
+let Audio;
+let Matter;
+
+class AudioPlayer{
+    constructor(){
+        this.levelCompleteSound = game.sound.add("level-complete");
+        this.spawnSound = game.sound.add("place-brick-pop");
+        this.errorSound = game.sound.add("error-sound");
+    }
+    static playSound(soundRef){
+
+    }
+}
+
 // store this against "levels" construct levels with json? tiled?
 class LevelCompleteScene extends Phaser.Scene {
 
@@ -91,12 +105,9 @@ class GameScene extends Phaser.Scene {
 		// created simulated physics world at the origin, no physics object can pass these bounds
         this.matter.world.setBounds(0, -100, game.config.width, game.config.height);
 
-
-
-
+        Audio = new AudioPlayer();
         // create a new collision handler
         this.collisionHandler = new CollisionHandler(this);
-
 
 
 
@@ -118,6 +129,7 @@ class GameScene extends Phaser.Scene {
 
 
     completeLevel(){
+        Audio.levelCompleteSound.play();
         this.gameStats.addBlocksUsed(availableBlocks);
         this.physicsSpawner.removeAllSpawnables();
         this.scene.launch("LevelCompleteScene");
@@ -126,7 +138,7 @@ class GameScene extends Phaser.Scene {
 
     nextLevel(){
         this.levelSpawner.level++;
-        if(this.levelSpawner.level >= levels.length) this.levelSpawner.level = 0;
+        if(this.levelSpawner.level >= this.levelSpawner.levels.length) this.levelSpawner.level = 0;
         this.levelSpawner.setCurrentLevel();
         this.triggerLevelLoad();
     }
@@ -183,6 +195,7 @@ class PhysicsSpawner{
         }
         // duplicate the array instead of passing by reference
         availableBlocks = JSON.parse(JSON.stringify( levelBaseBlocks ));
+        this.munchkinSpawner.currentMunchkins = 0;
         this.gameScene.gameStats.addToCount("resets"); // this is firing on level changes aswell
         this.updateUI()
     }
@@ -220,7 +233,7 @@ class PhysicsSpawner{
     }
 
     spawnMunchkin(){
-        this.munchkinSpawner.spawnMunchkin(100,100)
+        this.munchkinSpawner.spawnMunchkin(100,100);
         this.gameScene.gameStats.addToCount("munchkins");
         this.updateUI();
     }

@@ -5,10 +5,11 @@ class MunchkinSpawner{
         this.spawnables = spawnables;
         this.matterRef = gameScene.matter;
         this.spawnLocation = {"x":0, "y":0};
-
+        this.maxMunchkins = 3;
+        this.currentMunchkins = 0;
     }
 
-    spawnMunchkin(posX, posY){
+    spawnMunchkin(){
 
         let spawnLocation = this.spawnLocation;
         const shape = {
@@ -38,10 +39,19 @@ class MunchkinSpawner{
             ]
         }
 
+        if(this.canSpawnMunchkin()){
+            let newMunchkin = this.matterRef.add.sprite(spawnLocation.x, spawnLocation.y, "munchkin",0, {shape: shape});
+            this.spawnables.add(newMunchkin);
+            Audio.spawnSound.play();
+            this.currentMunchkins++;
+        }
+        else{
+            Audio.errorSound.play({volume:0.1});
+        }
 
-        let newMunchkin = this.matterRef.add.sprite(spawnLocation.x, spawnLocation.y, "munchkin",0, {shape: shape});
+    }
 
-        this.spawnables.add(newMunchkin);
-
+    canSpawnMunchkin(){
+        return (this.currentMunchkins < this.maxMunchkins);
     }
 }

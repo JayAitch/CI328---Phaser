@@ -9,6 +9,11 @@
         "skip-btn": "assets/UI Buttons/Skip.png",
        "start-btn": "assets/UI Buttons/Start.png"
     },
+    "audio": {
+      "level-complete": "assets/sounds/level_complete.wav",
+      "place-brick-pop": "assets/sounds/brick_place_pop.mp3",
+      "error-sound": "assets/sounds/error_sound.wav"
+    },
     "bricks": {
       "black": [
         "short1",

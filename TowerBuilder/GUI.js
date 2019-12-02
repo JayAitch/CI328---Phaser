@@ -15,7 +15,7 @@ class GUI {
         //dont think we need this anymore
         this.gameScene = gameScene;
         // create a text object to display the score
-        this.scoreText = gameScene.add.text(16, 16, 'score: 0', {fontSize: '16px', fill: '#000'});
+
         this.brickSpawner = gameScene.physicsSpawner.brickSpawner;
 
         // this coupling with brick spawner is really bad

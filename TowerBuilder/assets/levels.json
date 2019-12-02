@@ -48,31 +48,26 @@
   ,
     "static": [
       {
-        "colour": "blue",
         "type": "tall4",
         "x":0,
         "y":500
       },
       {
-        "colour": "blue",
         "type": "tall4",
         "x":193,
         "y":557
       },
       {
-        "colour": "blue",
         "type": "tall4",
         "x":385,
         "y":614
       },
       {
-        "colour": "blue",
         "type": "tall4",
         "x":579,
         "y":671
       },
       {
-        "colour": "blue",
         "type": "tall4",
         "x":772,
         "y":700
@@ -156,22 +151,26 @@
       {
         "type": "short4",
         "x":0,
-        "y":300
+        "y":300,
+        "angle": 10
       },
       {
         "type": "short4",
         "x":192,
-        "y":300
+        "y":334,
+        "angle": 10
       },
       {
         "type": "short4",
         "x":384,
-        "y":364
+        "y":368,
+        "angle": 10
       },
       {
         "type": "short4",
         "x":576,
-        "y":428
+        "y":402,
+        "angle": 10
       },
       {
         "type": "short4",
