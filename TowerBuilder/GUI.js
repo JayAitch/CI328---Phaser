@@ -12,6 +12,7 @@ const textStyles = {
     }
 };
 
+
 // consider creating these on a seperate scene and managing the block spawner object
 class GameHUD {
     // TODO fix coupling issue with this and the brick spawner
