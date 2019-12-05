@@ -7,82 +7,11 @@ class AudioPlayer{
         this.levelCompleteSound = game.sound.add("level-complete");
         this.spawnSound = game.sound.add("place-brick-pop");
         this.errorSound = game.sound.add("error-sound");
+        this.uiClick = game.sound.add("ui-click");
     }
     static playSound(soundRef){
 
     }
-}
-
-// store this against "levels" construct levels with json? tiled?
-class LevelCompleteScene extends Phaser.Scene {
-
-
-    constructor() {
-        super('LevelCompleteScene');
-    }
-    create () {
-        const MainGameScene = this.scene.get('maingame');
-
-        this.add.image(800, 400, 'sky');
-        const textStyle = {
-            fill: '#000',
-            fontFamily: '"Roboto Condensed"',
-            fontSize: "50px",
-            fontWeight: "bolder"
-        };
-        this.createScoreTable(MainGameScene.gameStats.gameStats);
-
-
-
-        this.add.text((game.config.width / 2) -150, game.config.height/ 2, 'Level Complete', textStyle);
-     //  const nextBtn = this.add.text((game.config.width / 2) - 100, game.config.height/2  + 200, 'next', textStyle);
-     //   const replayBtn = this.add.text((game.config.width / 2) + 100, game.config.height/2  + 200, 'replay', textStyle);
-
-
-        let nextLevelAction = ()=>{
-            MainGameScene.gameStats.resetScore();
-            MainGameScene.nextLevel();
-            this.scene.bringToTop("maingame");
-        };
-
-        let nextLevelButton = new ImageButton(
-            (game.config.width / 2) + 100,
-            game.config.height/2  + 200,
-            "skip-btn",
-            this,
-            nextLevelAction
-        );
-
-        let resetLevelAction = () => {
-            MainGameScene.gameStats.resetScore();
-            MainGameScene.replayLevel();
-            this.scene.bringToTop("maingame");
-        };
-
-        let resetLevelBtn = new ImageButton(
-            (game.config.width / 2) - 100,
-            game.config.height/2+200,
-            "restart-btn",
-            this,
-            resetLevelAction
-        );
-
-
-
-    }
-
-
-    createScoreTable(scores){
-        let listPosition = 10;
-        for (var key in scores) {
-            if (scores.hasOwnProperty(key)) {
-                let scoretext = "" + key + " :  " + scores[key]
-                let scoreRow = this.add.text((game.config.width / 2) - 100, listPosition, scoretext, textStyle);
-                listPosition = listPosition + 50;
-            }
-        }
-    }
-
 }
 
 
@@ -105,7 +34,7 @@ class GameScene extends Phaser.Scene {
 		// created simulated physics world at the origin, no physics object can pass these bounds
         this.matter.world.setBounds(0, -100, game.config.width, game.config.height);
 
-        Audio = new AudioPlayer();
+
         // create a new collision handler
         this.collisionHandler = new CollisionHandler(this);
 
@@ -114,7 +43,7 @@ class GameScene extends Phaser.Scene {
         this.physicsSpawner = new PhysicsSpawner(this);
 
         // create any ui graphics
-        this.GUI = new GUI(this);
+        this.GUI = new GameHUD(this);
 
         // create keyboard/pointer controls
         this.controller = new Controller(this.physicsSpawner, this.input);

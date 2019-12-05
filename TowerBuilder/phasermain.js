@@ -19,7 +19,15 @@ class BootScene extends Phaser.Scene {
         this.scene.start('preload');
     }
 }
-
+// if i find this being used in other places i will move it up to main
+function gameCenterX ()
+{
+    return game.config.width / 2;
+}
+function gameCenterY ()
+{
+    return game.config.height / 2;
+}
 
 // settup game configuration settings
 var config = {
@@ -58,11 +66,11 @@ let difficulty = 0;
  *         +new munchkin from kenny
  *         +cap on munchkin volumes
  *         +add sounds
+ *         +fix menu screan
  * TODO:
     playtest levels
     fix file structure
     sortout score
-     fix menu screan
     particles
      combine spawners
     spawn in level complete screen

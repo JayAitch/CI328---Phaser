@@ -2,10 +2,12 @@
 class PreloadScene extends Phaser.Scene{
     
     constructor(){
-        super({ key: 'preload' });      
+        super({ key: 'preload' });
+
     }
     
     create(){
+        Audio = new AudioPlayer();
         // load any animations here rather then in the preload
         // dont need this!!
         this.loadAnimations(this.cache.json.get('animations').playercharacter)
@@ -20,19 +22,12 @@ class PreloadScene extends Phaser.Scene{
         this.add.image(800, 400, 'sky');
         
         // show the player the loading state
-        this.createProgressbar(this.centerX(), this.centerY());   
+        this.createProgressbar(gameCenterX(), gameCenterY());
 
     }
-    
-    // if i find this being used in other places i will move it up to main
-    centerX ()
-    {
-        return this.sys.game.config.width / 2;
-    }
-    centerY ()
-    {
-        return this.sys.game.config.height / 2;
-    }
+
+
+
     
     
     // create a progress bar in the center of the screen and append complete and progress update listeners
@@ -100,19 +95,18 @@ class PreloadScene extends Phaser.Scene{
                 // now we can store any property we want against the asset location
                 switch(group) {
                     case 'image':
-                        
                         this.load[group](key, value);
                         break;
+
                     case 'audio':
                         this.load[group](key, value);
                         break;
-                    case 'spritesheet':
 
+                    case 'spritesheet':
                         this.load[group](key, value[0], value[1]);
                         break;
                         
                     case 'animation':
-                        
                       //  this.loadAnimations(key, value)
                         break;
 
