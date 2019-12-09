@@ -13,7 +13,7 @@
       "small-button-green-bg": "assets/UI Buttons/kennyUIPack/green_button08.png",
       "small-button-orange-bg": "assets/UI Buttons/kennyUIPack/red_button05.png",
       "small-button-yellow-bg": "assets/UI Buttons/kennyUIPack/yellow_button08.png",
-      "menu-bg": "assets/UI Buttons/kennyUIPack/grey_panel.png"
+      "menu-bg": "assets/menubackground.png"
     },
     "audio": {
       "level-complete": "assets/sounds/level_complete.wav",

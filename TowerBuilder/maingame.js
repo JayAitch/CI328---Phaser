@@ -22,14 +22,16 @@ class GameScene extends Phaser.Scene {
     constructor () {
         super('maingame');
         this.gameStats = new GameScore();
+        this.background=[];
 
     }
 
 
     create ()  {
 
-        this.add.image(900, 600, 'sky');
- //       this.spawnables = new Phaser.GameObjects.Group(this);
+        this.background = this.add.image(240, 600, 'sky');
+        this.background2 = this.add.image(-1680, 600, 'sky').setScale(-1,1);
+        this.background3 = this.add.image(-3600, 600, 'sky');
 
 		// created simulated physics world at the origin, no physics object can pass these bounds
         this.matter.world.setBounds(0, -100, game.config.width, game.config.height);
@@ -87,11 +89,21 @@ class GameScene extends Phaser.Scene {
     }
 
     update() {
+        let cloudSpeed = 0.1;
+        this.background.x +=cloudSpeed;
+        this.background2.x +=cloudSpeed;
+        this.background3.x +=cloudSpeed;
+
+
+        if(this.background2.x >= 2160){
+            this.background.x = 240;
+            this.background2.x = -1680;
+            this.background3.x = -3600;
+            console.log("moveds");
+        }
         this.GUI.updateCursorPosition(this.controller.getCursorPos())
 
 
-        // need a cleaner way of doing this
-        //this.brickSpawner.updateBrickCursorPosition()
     }
 
 

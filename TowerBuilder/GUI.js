@@ -9,8 +9,26 @@ const textStyles = {
         fill: '#999',
         fontFamily: "kenvector_future_thin",
         fontSize: "14px",
+    },
+    "list":{
+        fill: '#333',
+        fontFamily: "kenvector_future_thin",
+        fontSize: "18px",
     }
 };
+const instructions = {
+    "Goal":"get the munkin to the target zone",
+    "Hint":"score more points by using fewer blocks / resets",
+    "click/touch":" release a block",
+    "Q and E/touchcontrolsimage":"change block type",
+    "Space /'munchkinbutton'":" to release a munchkin",
+    "T /'resetimage'":" to remove start again",
+    "R / 'backimage'":" button to remove the last placed block"
+}
+
+
+
+
 
  var currentBlockCursor;
 
@@ -94,7 +112,7 @@ class LevelCompleteScene extends Phaser.Scene {
     create () {
         const MainGameScene = this.scene.get('maingame');
 
-        const background =  this.add.image(gameCenterX(), gameCenterY(), 'menu-bg').setScale(6);
+        const background =  this.add.image(gameCenterX(), gameCenterY(), 'menu-bg');
 
         this.createScoreTable(MainGameScene.gameStats.gameStats);
 
@@ -178,7 +196,7 @@ class MenuScene extends Phaser.Scene {
 
     createGenericUI() {
 
-        const background = this.add.image(gameCenterX(), gameCenterY(), 'menu-bg').setScale(6);
+        const background = this.add.image(gameCenterX(), gameCenterY(), 'menu-bg');
         let titleText = this.add.text(gameCenterX(), gameCenterY() - 250, 'Munchkin Rescue', textStyles.header);
         offsetTextByWidth(titleText);
 
@@ -256,6 +274,22 @@ class MenuScene extends Phaser.Scene {
     }
 
     setUpInstructionsScreen(){
+
+        let yTextPos = gameCenterY() - 200;
+        for(let instruction in instructions){
+            let textControl = instruction;
+
+            let newInstructionControlText =  this.add.text(gameCenterX() - 200, yTextPos, textControl, textStyles.list);
+            //offsetTextByWidth(newInstructionControlText);
+            yTextPos+= 25
+            let textAction = instructions[instruction];
+            let newInstructionText =  this.add.text(gameCenterX() - 200, yTextPos, textAction, textStyles.button);
+            //offsetTextByWidth(newInstructionText);
+            yTextPos+= 35
+            this.menuScreens.instructions.push(newInstructionText);
+            this.menuScreens.instructions.push(newInstructionControlText);
+        }
+
     }
     switchScene(){
 
@@ -278,7 +312,6 @@ class MenuScene extends Phaser.Scene {
                 let UIObject = currentScreen[currentUIObjectKey];
                 UIObject.visible = false;
                 UIObject.active = false;
-                console.log(UIObject);
             }
         }
     }
@@ -308,8 +341,7 @@ class ImageButton {
             this.newTxt = scene.add.text(xPos, yPos, text, textStyles.button);
             // make the text appear in the centre of the button
             offsetTextByHeight(this.newTxt);
-            offsetTextByWidth(this.newTxt)
-            console.log(this.newTxt);
+            offsetTextByWidth(this.newTxt);
         }
 
         this.newBtn.setInteractive();
