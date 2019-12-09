@@ -12,7 +12,7 @@ const textStyles = {
     }
 };
 
-
+ var currentBlockCursor;
 
 // consider creating these on a seperate scene and managing the block spawner object
 class GameHUD {
@@ -33,6 +33,7 @@ class GameHUD {
 
 
         this.cursorBlockDisplay = gameScene.add.image((game.config.width * 20), game.config.height * 20, "blue"+ this.brickSpawner.getCurrentBlockName(), 0);
+        currentBlockCursor = this.cursorBlockDisplay;
 
     }
 
@@ -166,7 +167,7 @@ class MenuScene extends Phaser.Scene {
 
     create() {
 
-        this.add.image(800, 400, 'sky');
+        this.add.image(900, 600, 'sky');
         this.createGenericUI();
         this.setUpMainScreen();
         this.setUpSettingsScreen();

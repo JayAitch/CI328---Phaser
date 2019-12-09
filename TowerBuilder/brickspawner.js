@@ -99,21 +99,7 @@ q
 
         let objectName = this.getCurrentBlockName();
 
-        // work out what the block image is called
-        let imageReference =  "blue" + objectName;
-
-
-        //  create a brick to run bounds checking against
-        // this could use the GUIs cursor icon instead, need to change to push GUI update
-        let spawnCheckRectangle = this.matterRef.add.image(posX, posY, imageReference, 0);
-        spawnCheckRectangle.body.label = "spawncheckvolume"
-
-        // create a rectangle from the temporarily spawned rectangle
-        let newRectangle = new Phaser.Geom.Rectangle(posX, posY, spawnCheckRectangle.width, spawnCheckRectangle.height);
-
-        // we have the values we need destroy the block
-        spawnCheckRectangle.destroy();
-
+        let newRectangle = new Phaser.Geom.Rectangle(posX - (currentBlockCursor.width/2), posY -(currentBlockCursor.height/2) , currentBlockCursor.width,  currentBlockCursor.height);
 
         // get all bodies currently in the world
         let worldBodies  = this.matterRef.world.engine.world.bodies;

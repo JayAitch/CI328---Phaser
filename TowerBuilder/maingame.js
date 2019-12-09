@@ -28,7 +28,7 @@ class GameScene extends Phaser.Scene {
 
     create ()  {
 
-        this.add.image(800, 400, 'sky');
+        this.add.image(900, 600, 'sky');
  //       this.spawnables = new Phaser.GameObjects.Group(this);
 
 		// created simulated physics world at the origin, no physics object can pass these bounds

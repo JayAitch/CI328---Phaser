@@ -27,7 +27,7 @@ class LevelSpawner{
         // fixing the reliance of spawning finish point on gamescene we can remove this reference
         this.gameScene = gameScene;
         this.levelObjects = new Phaser.GameObjects.Group(this);
-        this.level = 2;
+        this.level = 1;
         this.setCurrentLevel();
         this.loadLevel();
     }

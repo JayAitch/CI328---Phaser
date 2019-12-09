@@ -28,7 +28,7 @@ function gameCenterY ()
 {
     return game.config.height / 2;
 }
-
+/**
 // settup game configuration settings
 var config = {
     type: Phaser.AUTO,
@@ -50,6 +50,35 @@ var config = {
     },
 
 };
+
+**/
+var config = {
+    type: Phaser.AUTO,
+
+
+    width: 1200,
+    height: 1100,
+    scale: {
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH
+    },
+    autoRound: false,
+
+    scene: [BootScene, PreloadScene, MenuScene, GameScene, LevelCompleteScene],
+
+
+    physics: {
+        default: 'matter',
+        matter: {
+            gravity: {y: 1.5},
+            debug: true
+        }
+    },
+
+};
+
+
+
 
 
 // pass game configuration
