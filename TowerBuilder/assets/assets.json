@@ -13,7 +13,11 @@
       "small-button-green-bg": "assets/UI Buttons/kennyUIPack/green_button08.png",
       "small-button-orange-bg": "assets/UI Buttons/kennyUIPack/red_button05.png",
       "small-button-yellow-bg": "assets/UI Buttons/kennyUIPack/yellow_button08.png",
-      "menu-bg": "assets/menubackground.png"
+      "small-button-blue-bg": "assets/UI Buttons/kennyUIPack/blue_button082.png",
+      "left-button": "assets/UI Buttons/kennyUIPack/blue_sliderLeft.png",
+      "right-button": "assets/UI Buttons/kennyUIPack/blue_sliderRight.png",
+      "menu-bg": "assets/menubackground.png",
+      "hud-bg": "assets/HUDPanel.png"
     },
     "audio": {
       "level-complete": "assets/sounds/level_complete.wav",

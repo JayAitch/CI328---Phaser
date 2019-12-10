@@ -5,8 +5,11 @@ class Controller{
         this.activePointer = input.activePointer;
 
         input.on('pointerdown', (event) => {
-            let pointerPos = this.getCursorPos();
-            physicsSpawner.spawnBrickAtLocation(pointerPos);
+            if(MainGameScene.isPlaying) {
+                let pointerPos = this.getCursorPos();
+                physicsSpawner.spawnBrickAtLocation(pointerPos);
+
+            }
         });
 
         // change the type of block about to be placed
@@ -27,12 +30,12 @@ class Controller{
 
         let keyY = input.keyboard.addKey('Y');
         keyY.on('down', (event) => {
-            physicsSpawner.removeLastSpawnable();
+            this._undoPlacement()
         });
 
         let keyC = input.keyboard.addKey('C');
         keyC.on('down', (event) => {
-     //       physicsSpawner.completeLevel();
+            MainGameScene.completeLevel();
         });
 
         let keySpace = input.keyboard.addKey('SPACE');
@@ -51,17 +54,30 @@ class Controller{
     }
 
     _changeBlockUp(){
-        this.physicsSpawner.changeBlockUp();
+        if(MainGameScene.isPlaying) {
+            this.physicsSpawner.changeBlockUp();
+        }
     };
 
     _changeBlockDown(){
-        this.physicsSpawner.changeBlockDown();
+        if(MainGameScene.isPlaying) {
+            this.physicsSpawner.changeBlockDown();
+        }
     };
     _resetBlocks(){
-        this.physicsSpawner.removeAllSpawnables();
+        if(MainGameScene.isPlaying) {
+            this.physicsSpawner.removeAllSpawnables();
+        }
+    }
+    _undoPlacement(){
+        if(MainGameScene.isPlaying) {
+            this.physicsSpawner.removeLastSpawnable();
+        }
     }
     _spawnAMunchkin(){
-        this.physicsSpawner.spawnMunchkin();
+        if(MainGameScene.isPlaying) {
+            this.physicsSpawner.spawnMunchkin();
+        }
     }
 
 }

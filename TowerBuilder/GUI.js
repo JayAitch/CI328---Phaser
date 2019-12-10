@@ -3,14 +3,19 @@ const textStyles = {
     "header":{
         fill: '#777',
         fontFamily: "kenvector_future",
-        fontSize: "32px",
+        fontSize: "48px",
     },
     "button":{
         fill: '#999',
         fontFamily: "kenvector_future_thin",
-        fontSize: "14px",
+        fontSize: "18px",
     },
-    "list":{
+    "list-item":{
+        fill: '#222',
+        fontFamily: "kenvector_future_thin",
+        fontSize: "16px",
+    },
+    "list-header":{
         fill: '#333',
         fontFamily: "kenvector_future_thin",
         fontSize: "18px",
@@ -26,7 +31,7 @@ const instructions = {
     "R / 'backimage'":" button to remove the last placed block"
 }
 
-
+const HUDBaseDepth = 5000;
 
 
 
@@ -36,7 +41,6 @@ const instructions = {
 class GameHUD {
     // TODO fix coupling issue with this and the brick spawner
     constructor(gameScene) {
-
         // change GUI to have a display of each of the remaining blocks, control display through pull?
         //dont think we need this anymore
         this.gameScene = gameScene;
@@ -44,17 +48,36 @@ class GameHUD {
 
         this.brickSpawner = gameScene.physicsSpawner.brickSpawner;
 
+        let hudBG = gameScene.add.image(gameCenterX(), game.config.height - 55, "hud-bg");
+        hudBG.depth  = HUDBaseDepth;
+
         this.currentBlockTypeDisplay = gameScene.add.image(gameCenterX(), game.config.height - 55, "blueshort1");
+        this.currentBlockTypeDisplay.depth = HUDBaseDepth + 1;
 
         this.currentBlockTypeDisplayText = gameScene.add.text(gameCenterX(), game.config.height - 40, '-', textStyles.header);
+        this.currentBlockTypeDisplayText.depth = HUDBaseDepth + 1;
         // spawn the cursor block display offscreen, we dont want to see it until it has the right block
 
 
-        this.cursorBlockDisplay = gameScene.add.image((game.config.width * 20), game.config.height * 20, "blue"+ this.brickSpawner.getCurrentBlockName(), 0);
+        this.cursorBlockDisplay = gameScene.add.image((game.config.width * 2), game.config.height * 20, "blue"+ this.brickSpawner.getCurrentBlockName(), 0);
+
         currentBlockCursor = this.cursorBlockDisplay;
+        currentBlockCursor.setDepth(HUDBaseDepth - 1);
+        this.createCursorTween();
 
     }
 
+
+
+    createCursorTween(){
+        this.cursorTween = MainGameScene.tweens.add({
+            targets: this.cursorBlockDisplay,
+            duration: 100,
+            paused: true,
+            scale:1.2,
+            yoyo:true
+        })
+    }
 
     createButtons(controller) {
 
@@ -62,32 +85,39 @@ class GameHUD {
             controller._changeBlockUp();
         };
 
-        let blockUpBtn = new ImageButton(gameCenterX() + 200, game.config.height - 55, "greenshort1", this.gameScene, blockUpAction);
-
+        let blockUpBtn = new ImageButton(gameCenterX() + 150, game.config.height - 55, "right-button", this.gameScene, blockUpAction);
+        blockUpBtn.scale = 1.5;
 
         let blockDownAction = function () {
             controller._changeBlockDown();
         };
-        let blockDownBtn = new ImageButton(gameCenterX() - 200, game.config.height - 55, "blackshort1", this.gameScene, blockDownAction);
-
+        let blockDownBtn = new ImageButton(gameCenterX() - 150, game.config.height - 55, "left-button", this.gameScene, blockDownAction);
+        blockDownBtn.scale = 1.5;
 
         let blockResetAction = function () {
             controller._resetBlocks();
         };
-        let blockResetBtn = new ImageButton(gameCenterX() - 300, game.config.height - 55, "restart-btn", this.gameScene, blockResetAction);
+        let blockResetBtn = new ImageButton(gameCenterX() - 300, game.config.height - 55, "small-button-blue-bg", this.gameScene, blockResetAction,"","restart-btn");
+
+        let blockUndoAction = function () {
+            controller._undoPlacement();
+        };
+        let blockUndoBtn = new ImageButton(gameCenterX() + 300, game.config.height - 55, "small-button-blue-bg", this.gameScene, blockUndoAction,"","back-btn");
 
         let munchkinSpawnAction = function () {
             controller._spawnAMunchkin();
         };
-        let munchkinSpawnBtn = new ImageButton(gameCenterX() - 400, game.config.height - 55, "munchkin", this.gameScene, munchkinSpawnAction);
+        let munchkinSpawnBtn = new ImageButton(gameCenterX() - 400, game.config.height - 55, "small-button-blue-bg", this.gameScene, munchkinSpawnAction,"", "start-btn");
 
     }
 
     // control all UI changes here rather than on the spawner
     updateUI() {
-
+        this.cursorTween.play();
         let currentBrickTypeTextureRef = "blue" + this.brickSpawner.getCurrentBlockName();
         this.currentBlockTypeDisplayText.setText(this.brickSpawner.getCurrentBlockAmount());
+        this.currentBlockTypeDisplayText.x = gameCenterX();
+        offsetTextByWidth(this.currentBlockTypeDisplayText);
         this.cursorBlockDisplay.setTexture(currentBrickTypeTextureRef);
         this.currentBlockTypeDisplay.setTexture(currentBrickTypeTextureRef);
     }
@@ -118,19 +148,21 @@ class LevelCompleteScene extends Phaser.Scene {
 
 
 
-        let levelCompleteText = this.add.text(gameCenterX(), gameCenterY()-250, 'Level Complete', textStyles.header);
+        let levelCompleteText = this.add.text(gameCenterX(), gameCenterY()-350, 'Level Complete', textStyles.header);
         offsetTextByWidth(levelCompleteText);
 
 
         let nextLevelAction = ()=>{
-            MainGameScene.gameStats.resetScore();
-            MainGameScene.nextLevel();
-            this.scene.bringToTop("maingame");
+            if(!MainGameScene.isPlaying) {
+                MainGameScene.gameStats.resetScore();
+                MainGameScene.nextLevel();
+                this.scene.bringToTop("maingame");
+            }
         };
 
         let nextLevelButton = new ImageButton(
-            (game.config.width / 2) + 100,
-            game.config.height/2  + 200,
+            gameCenterX() + 100,
+            gameCenterY()+ 350,
             "large-button-white-bg",
             this,
             nextLevelAction,
@@ -138,14 +170,16 @@ class LevelCompleteScene extends Phaser.Scene {
         );
 
         let resetLevelAction = () => {
-            MainGameScene.gameStats.resetScore();
-            MainGameScene.replayLevel();
-            this.scene.bringToTop("maingame");
+            if(!MainGameScene.isPlaying) {
+                MainGameScene.gameStats.resetScore();
+                MainGameScene.replayLevel();
+                this.scene.bringToTop("maingame");
+            }
         };
 
         let resetLevelBtn = new ImageButton(
-            (game.config.width / 2) - 100,
-            game.config.height/2+200,
+            gameCenterX() - 100,
+            gameCenterY() + 350,
             "large-button-white-bg",
             this,
             resetLevelAction,
@@ -158,17 +192,67 @@ class LevelCompleteScene extends Phaser.Scene {
 
 
     createScoreTable(scores){
-        let listPosition =  gameCenterY() -200;
-        for (var key in scores) {
-            if (scores.hasOwnProperty(key)) {
-                let scoretext = "" + key + " :  " + scores[key]
-                let scoreRow = this.add.text(gameCenterX() -150, listPosition, scoretext, textStyles.button);
-                //offsetTextByWidth(scoreRow);
-                listPosition = listPosition + 50;
-            }
+        let listPosition =  gameCenterY() -100;
+        let listOffset = 40;
+        let baseScore = 500 * (difficulty + 1);
+        let score = baseScore;
+
+        let resets = scores.resets - 1 || 0;
+        let munchkinsUsed = scores.munchkins || 0;
+        let remainingBlocks = scores["blocks-remaining"] || {};
+
+
+        let resetPenalty = resets * 200;
+        let munchkinPenalty = munchkinsUsed * 100
+        let blocksRemainingBonus = this.calculateBonusFromRemainingBlocks(remainingBlocks)
+
+
+        this.createScoreRow(listPosition, `completion bonus`, baseScore)
+        listPosition = listPosition + listOffset;
+
+
+        this.createScoreRow(listPosition, `resets used ${resets}:`, resetPenalty * -1)
+        listPosition = listPosition + listOffset;
+
+         score = score - resetPenalty;
+
+        this.createScoreRow(listPosition, `munchkins used ${munchkinsUsed}:`,munchkinPenalty * -1)
+        listPosition = listPosition + listOffset;
+
+         score = score - munchkinPenalty;
+
+        this.createScoreRow(listPosition, `blocks bonus:`, blocksRemainingBonus)
+        listPosition = listPosition + listOffset;
+
+        if(score < 0) score = 0
+        score = score + blocksRemainingBonus;
+        this.createScoreRow(listPosition, `score:`, score)
+
+    }
+    calculateBonusFromRemainingBlocks(blocksScore){
+        let blocksScoreNumber = 0;
+        let pointsPerBlock = 100;
+        for(let blocksRemaining in blocksScore){
+            blocksScoreNumber += blocksScore[blocksRemaining] * pointsPerBlock;
         }
+
+        return blocksScoreNumber;
     }
 
+
+    createScoreRow(yPosition, headerText, value){
+            this.createScoreHeader(yPosition, headerText);
+            this.createScoreValue(yPosition, value);
+    }
+
+
+    createScoreHeader(yPosition, text){
+        this.add.text(gameCenterX() -250, yPosition, text, textStyles["list-header"]);
+    }
+
+    createScoreValue(yPosition, text){
+        this.add.text(gameCenterX() +150, yPosition, text, textStyles["list-item"]);
+    }
 }
 
 
@@ -197,14 +281,14 @@ class MenuScene extends Phaser.Scene {
     createGenericUI() {
 
         const background = this.add.image(gameCenterX(), gameCenterY(), 'menu-bg');
-        let titleText = this.add.text(gameCenterX(), gameCenterY() - 250, 'Munchkin Rescue', textStyles.header);
+        let titleText = this.add.text(gameCenterX(), gameCenterY() - 350, 'Munchkin Rescue', textStyles.header);
         offsetTextByWidth(titleText);
 
         let backBtnAction = () => {
             this.currentScreen = this.menuScreens.main;
             this.switchScene();
         };
-        const backButton = new ImageButton(gameCenterX(), gameCenterY() + 250, 'large-button-white-bg', this, backBtnAction, "back");
+        const backButton = new ImageButton(gameCenterX(), gameCenterY() + 350, 'large-button-white-bg', this, backBtnAction, "back");
         this.menuScreens.settings.push(backButton);
         this.menuScreens.instructions.push(backButton);
         this.menuScreens.credits.push(backButton);
@@ -279,12 +363,12 @@ class MenuScene extends Phaser.Scene {
         for(let instruction in instructions){
             let textControl = instruction;
 
-            let newInstructionControlText =  this.add.text(gameCenterX() - 200, yTextPos, textControl, textStyles.list);
-            //offsetTextByWidth(newInstructionControlText);
+            let newInstructionControlText =  this.add.text(gameCenterX() - 200, yTextPos, textControl, textStyles["list-header"]);
+
             yTextPos+= 25
             let textAction = instructions[instruction];
             let newInstructionText =  this.add.text(gameCenterX() - 200, yTextPos, textAction, textStyles.button);
-            //offsetTextByWidth(newInstructionText);
+;
             yTextPos+= 35
             this.menuScreens.instructions.push(newInstructionText);
             this.menuScreens.instructions.push(newInstructionControlText);
@@ -333,7 +417,7 @@ class MenuScene extends Phaser.Scene {
 class ImageButton {
 
 
-    constructor(xPos, yPos, imageRef, scene, action, text) {
+    constructor(xPos, yPos, imageRef, scene, action, text, buttonIcon) {
         this.newBtn = scene.add.image(xPos, yPos, imageRef);
         this.baseTint = -1;
 
@@ -342,9 +426,17 @@ class ImageButton {
             // make the text appear in the centre of the button
             offsetTextByHeight(this.newTxt);
             offsetTextByWidth(this.newTxt);
+            this.newTxt.depth = HUDBaseDepth + 2;
+        }
+
+        if(buttonIcon){
+            this.btnIcon = scene.add.image(xPos, yPos, buttonIcon);
+            this.btnIcon.depth = HUDBaseDepth + 2;
         }
 
         this.newBtn.setInteractive();
+        this.newBtn.depth = HUDBaseDepth + 1;
+
 
         this.newBtn.on('pointerdown', () => {
             Audio.uiClick.play();
@@ -352,6 +444,7 @@ class ImageButton {
         });
 
         this.newBtn.on('pointerover', (pointer) => {
+            if(this.btnIcon) this.btnIcon.tint = 0xeeeeee;
             this.newBtn.tint = 0xeeeeee;
         });
     ﻿
@@ -360,18 +453,30 @@ class ImageButton {
         this.newBtn.on('pointerout', (pointer) => {
             this.newBtn.tint = this.baseTint;
         });
+
+
     }
 
 
     // hide and show both text and image components of the button
     set visible(isVisible){
         if(this.newTxt) this.newTxt.visible = isVisible;
+        if(this.btnIcon) this.btnIcon.visibile = isVisible;
+
         this.newBtn.visible = isVisible;
+
     }
 
     set active(isActive){
         if(this.newTxt)this.newTxt.active = isActive;
+        if(this.btnIcon) this.btnIcon.active = isActive;
         this.newBtn.active = isActive;
+    }
+
+    set scale(scale){
+        if(this.newTxt)this.newTxt.setScale(scale);
+        if(this.btnIcon) this.newTxt.setScale(scale);
+        this.newBtn.setScale(scale);
     }
 }
 

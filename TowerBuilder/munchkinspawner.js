@@ -19,8 +19,8 @@ class MunchkinSpawner{
             "density": 0.0001,
             "restitution": 1,
             "friction": 0.008,
-            "frictionAir": 0.0025,
-            "frictionStatic" :0.0,
+            "frictionAir": 0.00025,
+            "frictionStatic" :0.08,
             "collisionFilter": {
                 "group": 0,
                 "category": 1,
@@ -40,7 +40,7 @@ class MunchkinSpawner{
         }
 
         if(this.canSpawnMunchkin()){
-            let newMunchkin = this.matterRef.add.sprite(spawnLocation.x, spawnLocation.y, "munchkin",0, {shape: shape});
+            let newMunchkin = this.matterRef.add.image(spawnLocation.x, spawnLocation.y, "munchkin",0, {shape: shape});
             this.spawnables.add(newMunchkin);
             Audio.spawnSound.play();
             this.currentMunchkins++;
@@ -53,5 +53,10 @@ class MunchkinSpawner{
 
     canSpawnMunchkin(){
         return (this.currentMunchkins < this.maxMunchkins);
+    }
+
+    removeMunchkin(munchkin){
+        munchkin.destroy();
+        this.currentMunchkins--;
     }
 }

@@ -44,12 +44,19 @@ class BrickSpawner {
 
         // use a group here instead of the entire physcis engine
         this.matterRef = gameScene.matter;
+
+ //       this.placementParticleEmitter = game.add.emitter(0,0,200);
+ //       this.placementParticleEmitter.setAlpha(0.3,0.8);
+  //      this.placementParticleEmitter.setScale(0.5, 1);
+ //       this.placementParticleEmitter.gravity= 200;
     }
 q
     spawnBrickAtLocation(position){
         let posX = position.x;
         let posY = position.y;
 
+        // dont try if its they are clicking on the menu
+        if(posY >= 950) return;
         // make sure there is space to spawn one and we arn't off screen
         if(!this.canSpawnBrick(posX, posY)){
             Audio.errorSound.play({volume: 0.1});
@@ -104,6 +111,7 @@ q
         // get all bodies currently in the world
         let worldBodies  = this.matterRef.world.engine.world.bodies;
 
+        // we dont want to play any noise when the user is tapping the bottom menu
         // go through them
         for(let bodiesIterator = 0; bodiesIterator < worldBodies.length; bodiesIterator++) {
 
@@ -171,7 +179,17 @@ q
     resetSelectedBlock(){
         this.currentBlockType = 0;
     }
+    removeBlock(block){
+        let blockType = block.body.label;
 
+        for(let availableBlock in availableBlocks){
+            if(availableBlocks[availableBlock].type === blockType){
+                availableBlocks[availableBlock].amount++;
+            }
+        }
+        console.log(availableBlocks);
+        block.destroy();
+    }
 
 
 }

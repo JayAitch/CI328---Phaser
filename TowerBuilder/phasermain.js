@@ -70,14 +70,12 @@ var config = {
     physics: {
         default: 'matter',
         matter: {
-            gravity: {y: 1.5},
-            debug: true
+            gravity: {y: 1.1}
+            //debug: true
         }
     },
 
 };
-
-
 
 
 
@@ -96,16 +94,21 @@ let difficulty = 0;
  *         +cap on munchkin volumes
  *         +add sounds
  *         +fix menu screan
+ *         +spawn in level complete screen
+ *         +HUD layoring and clarity
+ *             finetune munchkin physics
+ *          particles
+ *          undo button
+ *       particles
+ *           sortout score
  * TODO:
     playtest levels
     fix file structure
-    sortout score
-    particles
-     combine spawners
-    spawn in level complete screen
+
+    combine spawners
     error checking on json parsing
     rename physics blocks and move end box and munchkin
     add level with multiple objectives and dynamic blocks
-    finetune munchkin physics
+
 
  **/
