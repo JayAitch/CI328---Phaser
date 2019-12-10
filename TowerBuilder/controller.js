@@ -4,7 +4,7 @@ class Controller{
         this.physicsSpawner = physicsSpawner;
         this.activePointer = input.activePointer;
 
-        input.on('pointerdown', (event) => {
+        input.on('pointerup', (event) => {
             if(MainGameScene.isPlaying) {
                 let pointerPos = this.getCursorPos();
                 physicsSpawner.spawnBrickAtLocation(pointerPos);
