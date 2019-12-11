@@ -8,9 +8,6 @@ class PreloadScene extends Phaser.Scene{
     
     create(){
         Audio = new AudioPlayer();
-        // load any animations here rather then in the preload
-        // dont need this!!
-        this.loadAnimations(this.cache.json.get('animations').playercharacter)
     }
     
     preload ()
@@ -22,7 +19,7 @@ class PreloadScene extends Phaser.Scene{
         this.add.image(900, 600, 'sky');
         
         // show the player the loading state
-        this.createProgressbar(gameCenterX(), gameCenterY());
+        this.createProgressbar();
 
     }
 
@@ -33,7 +30,7 @@ class PreloadScene extends Phaser.Scene{
     // create a progress bar in the center of the screen and append complete and progress update listeners
     // @number: screen X center
     // @number: screen Y center
-    createProgressbar(xCenter, yCenter){
+    createProgressbar(){
         
         
         // fully loaded size of the progress bar
@@ -41,8 +38,8 @@ class PreloadScene extends Phaser.Scene{
         let height = 50;
         
         // position the bar in the center of the screen
-        let xStartpos = xCenter - width / 2;
-        let yStartPos = yCenter - height /2;
+        let xStartpos = gameCenterX() - width / 2;
+        let yStartPos = gameCenterY() - height /2;
         
         // create the rectangle
         let borderRect = new Phaser.Geom.Rectangle(
@@ -60,7 +57,7 @@ class PreloadScene extends Phaser.Scene{
         let updateProgressbar = function(percentComplete)
         {
             progressbar.clear();
-            progressbar.fillStyle(0xffffff, 1);
+            progressbar.fillStyle(0xeeeeee, 1);
             progressbar.fillRect(xStartpos, yStartPos, percentComplete * width, height);
             
         };
@@ -141,6 +138,8 @@ class PreloadScene extends Phaser.Scene{
     }
 
 
+    // currently unused, this is how animations would be used
+    // see assets/animation.json for an example of how the data format would look
     loadAnimations(json){
         // go through the json
         Object.keys(json).forEach( function(objectKey) {  

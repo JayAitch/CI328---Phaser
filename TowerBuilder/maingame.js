@@ -21,11 +21,10 @@ class AudioPlayer{
 class GameScene extends Phaser.Scene {
     
     isPlaying = false;
+
     constructor () {
         super('maingame');
         this.gameStats = new GameScore();
-        this.background=[];
-
     }
 
 
@@ -44,7 +43,7 @@ class GameScene extends Phaser.Scene {
 
 
 
-        this.physicsSpawner = new PhysicsSpawner(this);
+        this.physicsSpawner = new PhysicsWorld(this);
 
         // create any ui graphics
         this.GUI = new GameHUD(this);
@@ -158,13 +157,12 @@ class GameScene extends Phaser.Scene {
 
 }
 
-class PhysicsSpawner{
+class PhysicsWorld{
 
-    constructor(gameScene){
-        this.gameScene = gameScene;
-        this.spawnables = new Phaser.GameObjects.Group(gameScene);
-        this.brickSpawner = new BrickSpawner(gameScene, this.spawnables);
-        this.munchkinSpawner = new MunchkinSpawner(gameScene, this.spawnables);
+    constructor(){
+        this.spawnables = new Phaser.GameObjects.Group(MainGameScene);
+        this.brickSpawner = new BrickSpawner(this.spawnables);
+        this.munchkinSpawner = new MunchkinSpawner(this.spawnables);
 
     }
 
@@ -186,7 +184,7 @@ class PhysicsSpawner{
         // duplicate the array instead of passing by reference
         availableBlocks = JSON.parse(JSON.stringify( levelBaseBlocks ));
         this.munchkinSpawner.currentMunchkins = 0;
-        this.gameScene.gameStats.addToCount("resets"); // this is firing on level changes aswell
+        MainGameScene.gameStats.addToCount("resets"); // this is firing on level changes aswell
         this.updateUI()
     }
 
@@ -225,12 +223,12 @@ class PhysicsSpawner{
 
     updateUI(){
         // we should
-        this.gameScene.updateUI();
+        MainGameScene.updateUI();
     }
 
     spawnMunchkin(){
         this.munchkinSpawner.spawnMunchkin(100,100);
-        this.gameScene.gameStats.addToCount("munchkins");
+        MainGameScene.gameStats.addToCount("munchkins");
         this.updateUI();
     }
 }

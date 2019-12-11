@@ -19,40 +19,14 @@ class BootScene extends Phaser.Scene {
         this.scene.start('preload');
     }
 }
-// if i find this being used in other places i will move it up to main
-function gameCenterX ()
-{
-    return game.config.width / 2;
-}
-function gameCenterY ()
-{
-    return game.config.height / 2;
-}
-/**
-// settup game configuration settings
-var config = {
-    type: Phaser.AUTO,
+
+let difficulty = 0;
+let game;
 
 
-    width: 1200,
-    height: 1000,
-
-    autoCenter: Phaser.Scale.CENTER_BOTH,
-    scene: [BootScene, PreloadScene, MenuScene, GameScene, LevelCompleteScene],
 
 
-    physics: {
-        default: 'matter',
-        matter: {
-            gravity: {y: 1.5},
-            debug: true
-        }
-    },
-
-};
-
-**/
-var config = {
+const config = {
     type: Phaser.AUTO,
 
 
@@ -78,11 +52,17 @@ var config = {
 };
 
 
+window.addEventListener('load', (event) => {
+    main();
+});
 
-// pass game configuration
-game = new Phaser.Game(config);
-let difficulty = 0;
-//	console.log(Matter.Events)
+function main(){
+    // pass game configuration
+    game = new Phaser.Game(config);
+}
+
+
+
 
 
 /**
@@ -104,7 +84,6 @@ let difficulty = 0;
  * TODO:
     playtest levels
     fix file structure
-
     combine spawners
     error checking on json parsing
     rename physics blocks and move end box and munchkin

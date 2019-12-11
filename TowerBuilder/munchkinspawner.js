@@ -1,9 +1,8 @@
 
 class MunchkinSpawner{
-    constructor(gameScene, spawnables)
+    constructor(spawnables)
     {
         this.spawnables = spawnables;
-        this.matterRef = gameScene.matter;
         this.spawnLocation = {"x":0, "y":0};
         this.maxMunchkins = 3;
         this.currentMunchkins = 0;
@@ -40,7 +39,7 @@ class MunchkinSpawner{
         }
 
         if(this.canSpawnMunchkin()){
-            let newMunchkin = this.matterRef.add.image(spawnLocation.x, spawnLocation.y, "munchkin",0, {shape: shape});
+            let newMunchkin = MatterScene.add.image(spawnLocation.x, spawnLocation.y, "munchkin",0, {shape: shape});
             this.spawnables.add(newMunchkin);
             Audio.spawnSound.play();
             this.currentMunchkins++;

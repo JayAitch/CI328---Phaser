@@ -8,7 +8,7 @@ const textStyles = {
     "button":{
         fill: '#999',
         fontFamily: "kenvector_future_thin",
-        fontSize: "18px",
+        fontSize: "32px",
     },
     "list-item":{
         fill: '#222',
@@ -314,10 +314,17 @@ class MenuScene extends Phaser.Scene {
             this.switchScene()
         };
 
-        const playBtn = new ImageButton(gameCenterX(), gameCenterY() - 75, 'large-button-white-bg', this, playBtnAction, "Play");
-        const instructionsBtn = new ImageButton(gameCenterX(), gameCenterY() - 25, 'large-button-white-bg', this, instructionsBtnAction, "Instructions");
-        const settingsBtn = new ImageButton(gameCenterX(), gameCenterY() + 25, 'large-button-white-bg', this, settingsBtnAction, "Settings");
-        const creditsBtn = new ImageButton(gameCenterX(), gameCenterY() + 75, 'large-button-white-bg', this, creditsBtnAction, "Credits");
+        const playBtn = new ImageButton(gameCenterX(), gameCenterY() - 150, 'large-button-white-bg', this, playBtnAction, "Play");
+        playBtn.scale = 2;
+
+        const instructionsBtn = new ImageButton(gameCenterX(), gameCenterY() - 50, 'large-button-white-bg', this, instructionsBtnAction, "Instructions");
+        instructionsBtn.scale = 2;
+
+        const settingsBtn = new ImageButton(gameCenterX(), gameCenterY() + 50, 'large-button-white-bg', this, settingsBtnAction, "Settings");
+        settingsBtn.scale = 2;
+
+        const creditsBtn = new ImageButton(gameCenterX(), gameCenterY() + 150, 'large-button-white-bg', this, creditsBtnAction, "Credits");
+        creditsBtn.scale = 2;
 
 
         this.menuScreens.main.push(creditsBtn);
@@ -474,8 +481,7 @@ class ImageButton {
     }
 
     set scale(scale){
-        if(this.newTxt)this.newTxt.setScale(scale);
-        if(this.btnIcon) this.newTxt.setScale(scale);
+        if(this.btnIcon) {this.btnIcon.size(scale)};
         this.newBtn.setScale(scale);
     }
 }
@@ -487,4 +493,12 @@ function offsetTextByHeight(text){
 
 function offsetTextByWidth(text){
     text.x = text.x - (text.width /2)
+}
+function gameCenterX ()
+{
+    return game.config.width / 2;
+}
+function gameCenterY ()
+{
+    return game.config.height / 2;
 }

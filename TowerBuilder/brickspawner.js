@@ -36,14 +36,13 @@ class BrickSpawner {
     // most of this constructor is unessisary, there is some intense coupling with this and the maingame scene.
     // need a way of constructing game objects seperately
     // UI needs its own classes, eg brick placing cursor
-    constructor(gameScene, spawnables){
+    constructor(spawnables){
         this.currentBlockType = 0;
 
         this.spawnables = spawnables;
-        this.blockPhysics = gameScene.cache.json.get('brick-physics');
+        this.blockPhysics = MainGameScene.cache.json.get('brick-physics');
 
-        // use a group here instead of the entire physcis engine
-        this.matterRef = gameScene.matter;
+
 
  //       this.placementParticleEmitter = game.add.emitter(0,0,200);
  //       this.placementParticleEmitter.setAlpha(0.3,0.8);
@@ -109,7 +108,7 @@ q
         let newRectangle = new Phaser.Geom.Rectangle(posX - (currentBlockCursor.width/2), posY -(currentBlockCursor.height/2) , currentBlockCursor.width,  currentBlockCursor.height);
 
         // get all bodies currently in the world
-        let worldBodies  = this.matterRef.world.engine.world.bodies;
+        let worldBodies  = MatterScene.world.engine.world.bodies;
 
         // we dont want to play any noise when the user is tapping the bottom menu
         // go through them
@@ -165,7 +164,7 @@ q
         let imageReference =  colour + objectName;
 
         //  create a new brick
-        let newBrick = this.matterRef.add.image(posX, posY, imageReference, 0, {shape: shape});
+        let newBrick = MatterScene.add.image(posX, posY, imageReference, 0, {shape: shape});
         newBrick.angle = angle;
         return newBrick;
     }

@@ -135,12 +135,6 @@
         "top-sloped4",
         "bottom-sloped4"
       ]
-    },
-
-    "spritesheet" : {
-        "dude" : ["assets/dude.png", { "frameWidth": 32, "frameHeight": 48 }]
     }
-
-    
 }
 
