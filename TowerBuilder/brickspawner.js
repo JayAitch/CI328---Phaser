@@ -49,7 +49,7 @@ class BrickSpawner {
   //      this.placementParticleEmitter.setScale(0.5, 1);
  //       this.placementParticleEmitter.gravity= 200;
     }
-q
+
     spawnBrickAtLocation(position){
         let posX = position.x;
         let posY = position.y;

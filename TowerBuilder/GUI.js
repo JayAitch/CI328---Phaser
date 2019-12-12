@@ -161,14 +161,14 @@ class LevelCompleteScene extends Phaser.Scene {
         };
 
         let nextLevelButton = new ImageButton(
-            gameCenterX() + 100,
+            gameCenterX() + 150,
             gameCenterY()+ 350,
             "large-button-white-bg",
             this,
             nextLevelAction,
             "Next Level"
         );
-
+        nextLevelButton.scale = 1.5;
         let resetLevelAction = () => {
             if(!MainGameScene.isPlaying) {
                 MainGameScene.gameStats.resetScore();
@@ -178,14 +178,14 @@ class LevelCompleteScene extends Phaser.Scene {
         };
 
         let resetLevelBtn = new ImageButton(
-            gameCenterX() - 100,
+            gameCenterX() - 150,
             gameCenterY() + 350,
             "large-button-white-bg",
             this,
             resetLevelAction,
             "Replay"
         );
-
+        resetLevelBtn.scale = 1.5;
 
 
     }
