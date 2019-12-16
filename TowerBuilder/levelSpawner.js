@@ -1,4 +1,6 @@
 /**
+ *
+ * this is all the blocks avaialble to the level.
 {"amount":5, "type":"short1"},
 {"amount":5, "type":"short2"},
 {"amount":5, "type":"short3"},
@@ -18,39 +20,123 @@
  **/
 
 
+
+// controls any blocks that are placed by level definitions
 class LevelSpawner{
 
-    constructor (gameScene) {
-        this.physicsSpawner = gameScene.physicsSpawner;
-        this.levels = gameScene.cache.json.get('levels')
+    constructor () {
+        this.physicsSpawner = MainGameScene.physicsSpawner;
+        this.levels = MainGameScene.cache.json.get('levels')
 
         // fixing the reliance of spawning finish point on gamescene we can remove this reference
-        this.gameScene = gameScene;
+        this.gameScene = MainGameScene;
         this.levelObjects = new Phaser.GameObjects.Group(this);
-        console.log(this.levels);
-        this.level = 2;
+
+        // level the player is currently on
+        this.level = 0;
+
+
+        // set attributes of the current level and trigger the load
         this.setCurrentLevel();
         this.loadLevel();
     }
 
+
+    // find the level in the json and set it as the current one
     setCurrentLevel(){
         this.currentLevel = this.levels[this.level]
     }
 
 
+    // parse the level json and make the game state the same as the intial level state
     loadLevel() {
+
+
+        // remove any blocks previously spawned by this
         this.removeAllLevelBlocks();
 
-        this.levelFinishTriggerVolume = {
+
+
+        // go through all static blocks defined in the json and load them
+        let staticBlocks = this.currentLevel.static;
+        for(let blockNum = 0; blockNum < staticBlocks.length; blockNum++){
+            let currentNewBlockJSON = staticBlocks[blockNum]
+            this.createStaticBlock(currentNewBlockJSON);
+        }
+
+
+        // spawn any dynamic blocks defined by the json
+        let dynamicBlocks = this.currentLevel.dynamic;
+        for(let blockNum = 0; blockNum < dynamicBlocks.length; blockNum++){
+            let currentNewBlockJSON = dynamicBlocks[blockNum]
+            this.createDynamicBlock(currentNewBlockJSON);
+
+        }
+
+        // create objective objects
+        let objectives = this.currentLevel.objectives;
+        for(let objectiveNum = 0; objectiveNum < objectives.length; objectiveNum++){
+            let currentObjectiveJSON = objectives[objectiveNum]
+            this.createObjective(currentObjectiveJSON);
+
+        }
+
+        // set where the munchkins spawn on this level
+        let munchkinSpawnLocation = this.currentLevel["spawn-location"]
+        this.assignSpawnPoint(munchkinSpawnLocation);
+
+        // assign any blocks deffined by the level
+        this.assignAvailableBlocksFromLevel();
+    }
+
+    assignAvailableBlocksFromLevel(){
+        // assign blocks from level definition of difficulty
+        levelBaseBlocks = this.currentLevel["available-blocks"][difficulty];
+        // prevent pass by reference, copy object into new reference
+        availableBlocks = JSON.parse(JSON.stringify( levelBaseBlocks ));
+    }
+
+    // destroy anything created by the level spawner
+    removeAllLevelBlocks(){
+
+        let currentLevelObjects = this.levelObjects.children;
+        let objectsLength = currentLevelObjects.entries.length;
+
+        // manually iterating as .iterator was actually leaving some blocks spawned
+        for(let currentLevelObjectIterator = 0; currentLevelObjectIterator < objectsLength; currentLevelObjectIterator++){
+
+            let currentLevelObject = currentLevelObjects.get(currentLevelObjectIterator);
+            currentLevelObject.destroy();
+        }
+
+    }
+    
+    // set the position of the spawn position display and the location the munchkin spawner uses
+    assignSpawnPoint(location){
+
+        this.physicsSpawner.munchkinSpawner.spawnLocation = location;
+        if(this.spawnPositonDisplay){
+            // we already have a spawn poition display so move it to the correct location
+            this.spawnPositonDisplay.x = location.x;
+            this.spawnPositonDisplay.y = location.y;
+        }else{
+            // this is the first level so create a new spawn positon display object
+            this.spawnPositonDisplay = this.gameScene.add.image(location.x,location.y, "arrow").setScale(.1)
+            this.spawnPositonDisplay.angle = 90;
+        }
+
+
+    }
+
+    // create objective object from the level deffinitions
+    createObjective(objectiveJSON){
+        // this shape is only ever used in this function
+        // level finish trigger shape definition notice it is a sensor and therefore doesnt block collisions
+        const levelFinishTriggerVolume = {
             "type": "fromPhysicsEditor",
             "label": "levelChangeTrigger",
             //"inertia": Infinity,
             "isStatic": true,
-            "density": 0.10000000149011612,
-            "restitution": 0,
-            "friction": 0.10000000149011612,
-            "frictionAir": 0.00999012312,
-            "frictionStatic": 0.5,
             "collisionFilter": {
                 "group": 0,
                 "category": 1,
@@ -69,95 +155,30 @@ class LevelSpawner{
                 }
             ]
         }
-
-        let staticBlocks = this.currentLevel.static;
-        for(let blockNum = 0; blockNum < staticBlocks.length; blockNum++){
-         //   console.log(staticBlocks[blockNum]);
-         //   let objectName = staticBlocks[blockNum].type;
-
-         //   let shape = this.blockPhysics[objectName];
-//
-            let currentNewBlockJSON = staticBlocks[blockNum]
-            this.createStaticBlock(currentNewBlockJSON);
-        }
+        let target = this.gameScene.matter.add.sprite(objectiveJSON.x, objectiveJSON.y, "target", 0, {shape: levelFinishTriggerVolume});
 
 
-        let dynamicBlocks = this.currentLevel.dynamic;
-        for(let blockNum = 0; blockNum < dynamicBlocks.length; blockNum++){
-            //   console.log(staticBlocks[blockNum]);
-            //   let objectName = staticBlocks[blockNum].type;
-
-            //   let shape = this.blockPhysics[objectName];
-//
-            let currentNewBlockJSON = dynamicBlocks[blockNum]
-            this.createDynamicBlock(currentNewBlockJSON);
-
-        }
-
-        // go through any objectives
-        let objectives = this.currentLevel.objectives;
-        for(let objectiveNum = 0; objectiveNum < objectives.length; objectiveNum++){
-            let currentObjectiveJSON = objectives[objectiveNum]
-            this.createObjective(currentObjectiveJSON);
-
-        }
-
-        let munchkinSpawnLocation = this.currentLevel["spawn-location"]
-        this.assignSpawnPoint(munchkinSpawnLocation);
-        this.assignAvailableBlocksFromLevel();
-    }
-
-    assignAvailableBlocksFromLevel(){
-        // assign blocks from level definition of difficulty
-        levelBaseBlocks = this.currentLevel["available-blocks"][difficulty];
-        // prevent pass by reference, copy object into new reference
-        availableBlocks = JSON.parse(JSON.stringify( levelBaseBlocks ));
-    }
-
-    removeAllLevelBlocks(){
-
-        let currentLevelObjects = this.levelObjects.children;
-        let objectsLength = currentLevelObjects.entries.length;
-
-        for(var currentLevelObjectIterator = 0; currentLevelObjectIterator < objectsLength; currentLevelObjectIterator++){
-
-            let currentLevelObject = currentLevelObjects.get(currentLevelObjectIterator);
-            currentLevelObject.destroy();
-        }
-
+        // add to the array so it can be deleted later
+        this.levelObjects.add(target);
     }
     
-    
-    assignSpawnPoint(location){
-
-        this.physicsSpawner.munchkinSpawner.spawnLocation = location;
-        if(this.spawnPositonDisplay){
-            this.spawnPositonDisplay.x = location.x;
-            this.spawnPositonDisplay.y = location.y;
-        }else{
-            this.spawnPositonDisplay = this.gameScene.add.image(location.x,location.y, "arrow").setScale(.1)
-            this.spawnPositonDisplay.angle = 90;
-        }
-
-
-    }
-
-    createObjective(objectiveJSON){
-        let finishDude = this.gameScene.matter.add.sprite(objectiveJSON.x, objectiveJSON.y, "target", 0, {shape: this.levelFinishTriggerVolume});
-        this.levelObjects.add(finishDude);
-    }
-    
-    
+    // spawn a static block as defined by json
     createStaticBlock(brickSpawnJson){
+
+        // default the angle to 0
         let angle = brickSpawnJson.angle || 0;
+
+        //spawn type and position that is defined
         let newBrick = this.physicsSpawner.brickSpawner.spawnNewBrick(brickSpawnJson.x, brickSpawnJson.y,brickSpawnJson.type, true, angle);
         this.levelObjects.add(newBrick);
     }
 
+    // spawn a dynamic block as defined by json
     createDynamicBlock(brickSpawnJson){
         let angle = brickSpawnJson.angle || 0;
+
+        //spawn type and position that is defined
         let newBrick = this.physicsSpawner.brickSpawner.spawnNewBrick(brickSpawnJson.x, brickSpawnJson.y,brickSpawnJson.type, false, angle);
         this.levelObjects.add(newBrick);
-       // this.blockSpawner.addToSpawnables(newBrick);
     }
 }

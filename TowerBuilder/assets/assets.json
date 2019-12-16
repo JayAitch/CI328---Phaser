@@ -1,4 +1,8 @@
 {
+    "json": {
+      "brick-physics": "assets/brick-physics.json",
+      "levels": "assets/levels.json"
+    },
     "image": {
           "munchkin": "assets/munchkins/bear.png",
           "arrow": "assets/arrow.png",

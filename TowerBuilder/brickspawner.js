@@ -1,29 +1,10 @@
-
-const blockTypes = {
-    0:"short1",
-    1:"short2",
-    2:"short3",
-    3:"short4",
-    4:"tall1",
-    5:"tall2",
-    6:"tall3",
-    7:"tall4",
-    8:"bottom-sloped1",
-    9:"top-sloped1",
-    10: "top-sloped2",
-    11:"bottom-sloped2",
-    12:"bottom-sloped3",
-    13: "top-sloped3",
-    14:"top-sloped4",
-    15:"bottom-sloped4"
-};
-
+// variable to store the level/difficulties base blocks, used by level create so sits outside of the class
 let levelBaseBlocks = [
 
 ]
-//let availableBlocks = levelBaseBlocks;
 
-// move to brickspawner
+
+// all blocks that the player has available to them, this is used by display elements so sits outside the class
 let availableBlocks = [
 
 ]
@@ -33,64 +14,73 @@ let availableBlocks = [
 class BrickSpawner {
 
 
-    // most of this constructor is unessisary, there is some intense coupling with this and the maingame scene.
-    // need a way of constructing game objects seperately
-    // UI needs its own classes, eg brick placing cursor
     constructor(spawnables){
         this.currentBlockType = 0;
 
         this.spawnables = spawnables;
+
+        // allow the physics shapes to be defined externaly to the code
         this.blockPhysics = MainGameScene.cache.json.get('brick-physics');
-
-
-
- //       this.placementParticleEmitter = game.add.emitter(0,0,200);
- //       this.placementParticleEmitter.setAlpha(0.3,0.8);
-  //      this.placementParticleEmitter.setScale(0.5, 1);
- //       this.placementParticleEmitter.gravity= 200;
     }
 
     spawnBrickAtLocation(position){
         let posX = position.x;
         let posY = position.y;
 
-        // dont try if its they are clicking on the menu
+        // dont try if its they are clicking on the menu, dont give warning errors when clicking buttons
         if(posY >= 950) return;
-        // make sure there is space to spawn one and we arn't off screen
+
+        // is there currently space to spawn this
         if(!this.canSpawnBrick(posX, posY)){
+
+            // make sound to  let the player know there has been an issue placing the block
             Audio.errorSound.play({volume: 0.1});
+            // dont place
             return;
         }
-
-       // let objectName = availableBlocks[this.currentBlockType].type;
+        // find which block has been selected by the player
         let objectName = this.getCurrentBlockName();
+
+        // make sound to tell the player they have placed it
         Audio.spawnSound.play();
+
+        // actually spawn the brick in game
         let newBrick = this.spawnNewBrick(posX, posY, objectName,false,0);
+
+        // keep track of this inside the spawnables group
+        // this is done here so that bricks can be spawned without being added to the group
         this.addToSpawnables(newBrick);
 
+        // reduce the amount of blocks available
         availableBlocks[this.currentBlockType].amount--;
     }
 
+    // find the image that is the currentblock number is refering to
     getCurrentBlockName(){
         if(availableBlocks[this.currentBlockType])
         return availableBlocks[this.currentBlockType].type;
     }
+
+    // find the amount of blocks that is the currentblock number is refering to
     getCurrentBlockAmount(){
         if(availableBlocks[this.currentBlockType])
         return availableBlocks[this.currentBlockType].amount;
     }
 
+    // store the new brick in the spawnables array to allow it to be removed when required
     addToSpawnables(newBrick){
         this.spawnables.add(newBrick);
     }
 
     canSpawnBrick(posX, posY){
-        // we may want to manage this state to allow level complete scene
+
+        // make sure the block isnt being spawned inside something else
         let isSpaceToSpawn = this.isSpaceToSpawnBlock(posX,posY);
-   //
+
         if(isSpaceToSpawn)
         {
-            if(availableBlocks[this.currentBlockType].amount > 0 && posY < game.config.height - 120){
+            // the block has space to spawn but is there enough blocks left
+            if(availableBlocks[this.currentBlockType].amount > 0){
 
                 return true;
             }
@@ -103,17 +93,17 @@ class BrickSpawner {
 
     isSpaceToSpawnBlock(posX, posY){
 
-        let objectName = this.getCurrentBlockName();
-
+        // create a rectangle the same size as the current cursor block
+        // this is a more accurate and quicker way of doing it over calculating its position from the block body definition
         let newRectangle = new Phaser.Geom.Rectangle(posX - (currentBlockCursor.width/2), posY -(currentBlockCursor.height/2) , currentBlockCursor.width,  currentBlockCursor.height);
 
         // get all bodies currently in the world
         let worldBodies  = MatterScene.world.engine.world.bodies;
 
-        // we dont want to play any noise when the user is tapping the bottom menu
-        // go through them
-        for(let bodiesIterator = 0; bodiesIterator < worldBodies.length; bodiesIterator++) {
 
+        // go through every body in the current world. Could potentially be restricted to groups of bodys
+        for(let bodiesIterator = 0; bodiesIterator < worldBodies.length; bodiesIterator++) {
+            // store the current iteration
             let currentBody = worldBodies[bodiesIterator];
 
             // ignore the levelchange trigger and right bounds box????? whateve it is
@@ -144,11 +134,10 @@ class BrickSpawner {
 
 
     roleABlockColour(){
-        // get these values from somwhere
-        // potentially store a collection somewhere when loading them
-        // consider using a single brick asset (white) and running a mask over it
+        // all blocks are created with a 'random' colour, this makes the game more colourful
         let colours = ["black","blue","green", "red", "white","yellow"];
         let colourNumber =  Math.random() * 6;
+        // has to be an 'integer'
         colourNumber = Math.trunc(colourNumber);
         return colours[colourNumber];
     }
@@ -160,33 +149,40 @@ class BrickSpawner {
         let shape = this.blockPhysics[objectName];
         shape.isStatic = isStatic;
 
-        // work out what the image was called
+        // work out what the image is called
         let imageReference =  colour + objectName;
 
         //  create a new brick
         let newBrick = MatterScene.add.image(posX, posY, imageReference, 0, {shape: shape});
+
+        // allow level defined blocks to be placed at angles
         newBrick.angle = angle;
         return newBrick;
     }
 
+    // store the current block as a number, keep the number inbound of the blocks array
     changeBlockType(amount){
         this.currentBlockType = this.currentBlockType + amount;
         if(this.currentBlockType < 0) this.currentBlockType = availableBlocks.length -1;
         if(this.currentBlockType > availableBlocks.length -1) this.currentBlockType = 0;
     }
 
+    // used when reassigning current blocks, prevents attempt to access out of bound blocks after changing levels
     resetSelectedBlock(){
         this.currentBlockType = 0;
     }
+
+    // used to 'undo' block placement
     removeBlock(block){
         let blockType = block.body.label;
-
+        // find which part of our block array reprisents this type of block
+        // doing it this way prevents any blocks not defined available blocks being added.
         for(let availableBlock in availableBlocks){
             if(availableBlocks[availableBlock].type === blockType){
                 availableBlocks[availableBlock].amount++;
             }
         }
-        console.log(availableBlocks);
+        // destroy the block
         block.destroy();
     }
 

@@ -28,8 +28,6 @@ class PreloadScene extends Phaser.Scene{
     
     
     // create a progress bar in the center of the screen and append complete and progress update listeners
-    // @number: screen X center
-    // @number: screen Y center
     createProgressbar(){
         
         
@@ -71,10 +69,9 @@ class PreloadScene extends Phaser.Scene{
             this.scene.start('menuscene');
         }, this);
     }
-    
-    // TODO: check that its parsable and throw something meaningfull
+
+
     // cache all assets referenced in the JSON
-    // @json json that for all the assets
     loadAssetFromJson(json){
         
         // start looking for objects from the top of the json
@@ -91,6 +88,10 @@ class PreloadScene extends Phaser.Scene{
                 // this will be different for each asset type
                 // now we can store any property we want against the asset location
                 switch(group) {
+                    case 'json':
+                        console.log("json");
+                        this.load[group](key,value);
+
                     case 'image':
                         this.load[group](key, value);
                         break;
@@ -102,17 +103,14 @@ class PreloadScene extends Phaser.Scene{
                     case 'spritesheet':
                         this.load[group](key, value[0], value[1]);
                         break;
-                        
-                    case 'animation':
-                      //  this.loadAnimations(key, value)
-                        break;
+
 
                     case 'bricks':
                         this.loadBricks(key, value);
-                        //  this.loadAnimations(key, value)
+
                         break;
                     default:
-                        // code block
+
                 } 
                 
             }, this);
@@ -131,7 +129,6 @@ class PreloadScene extends Phaser.Scene{
             // potentially add to a collection
             let gameReference = `${brickColour}${currentBrickType}`;
             this.load.image(gameReference, fileLocation);
-  //          console.log(fileLocation + "" + gameReference);
         }
 
 

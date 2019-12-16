@@ -3,7 +3,11 @@ class MunchkinSpawner{
     constructor(spawnables)
     {
         this.spawnables = spawnables;
+
+        // default the spawn location to prevent errors
         this.spawnLocation = {"x":0, "y":0};
+
+        // palyer cannot have more than 3 muchkins out at once
         this.maxMunchkins = 3;
         this.currentMunchkins = 0;
     }
@@ -11,7 +15,11 @@ class MunchkinSpawner{
     spawnMunchkin(){
 
         let spawnLocation = this.spawnLocation;
-        const shape = {
+
+
+        // shape deffinition for a munckin
+        // this is inline with code as it is the only place it is used, could by included in a json
+        const munchkinShape = {
             "type": "fromPhysicsEditor",
             "label": "munchkin",
             "isStatic": false,
@@ -38,22 +46,32 @@ class MunchkinSpawner{
             ]
         }
 
+        // make sure condiditions are met before attempting to spawn
         if(this.canSpawnMunchkin()){
-            let newMunchkin = MatterScene.add.image(spawnLocation.x, spawnLocation.y, "munchkin",0, {shape: shape});
+            // create a new object in the physics world and add to our collection
+            let newMunchkin = MatterScene.add.image(spawnLocation.x, spawnLocation.y, "munchkin",0, {shape: munchkinShape});
             this.spawnables.add(newMunchkin);
+
+            // audio queue to inform the player
             Audio.spawnSound.play();
+
+            // keep a count of the current munchkins
             this.currentMunchkins++;
         }
         else{
+
+            // let the player know somethings gone wrong with spawning
             Audio.errorSound.play({volume:0.1});
         }
 
     }
 
+    // make sure the player only has 3 munchkins
     canSpawnMunchkin(){
         return (this.currentMunchkins < this.maxMunchkins);
     }
 
+    // called by the undo action, keep track of the munchkins
     removeMunchkin(munchkin){
         munchkin.destroy();
         this.currentMunchkins--;
