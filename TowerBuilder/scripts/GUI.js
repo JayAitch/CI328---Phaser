@@ -620,19 +620,19 @@ class ImageButton {
             // feedback for button presses
             Audio.uiClick.play();
             action();
-        })
+        });
 
         // show the player the click action will be performed on this button
         this.newBtn.on('pointerover', (pointer) => {
             if(this.btnIcon) this.btnIcon.tint = 0xeeeeee;
             this.newBtn.tint = 0xeeeeee;
-        })
+        });
     ﻿
 
         // reset the tint to the base one, allow external control for example on settings screen
         this.newBtn.on('pointerout', (pointer) => {
             this.newBtn.tint = this.initialTint;
-        })
+        });
 
 
     }
