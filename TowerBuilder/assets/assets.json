@@ -4,31 +4,28 @@
       "levels": "assets/levels.json"
     },
     "image": {
-          "munchkin": "assets/munchkins/bear.png",
-          "arrow": "assets/arrow.png",
-         "target": "assets/target.png",
-          "back-btn": "assets/UI Buttons/Back.png",
-          "options-btn": "assets/UI Buttons/Options.png",
-         "restart-btn": "assets/UI Buttons/Restart.png",
-          "skip-btn": "assets/UI Buttons/Skip.png",
-       "start-btn": "assets/UI Buttons/Start.png",
-        "large-button-white-bg": "assets/UI Buttons/kennyUIPack/grey_button00.png",
-        "large-button-green-bg": "assets/UI Buttons/kennyUIPack/green_button01.png",
-        "small-button-green-bg": "assets/UI Buttons/kennyUIPack/green_button08.png",
-        "small-button-orange-bg": "assets/UI Buttons/kennyUIPack/red_button05.png",
-        "small-button-yellow-bg": "assets/UI Buttons/kennyUIPack/yellow_button08.png",
-        "small-button-blue-bg": "assets/UI Buttons/kennyUIPack/blue_button082.png",
-        "left-button": "assets/UI Buttons/kennyUIPack/blue_sliderLeft.png",
-        "right-button": "assets/UI Buttons/kennyUIPack/blue_sliderRight.png",
-        "menu-bg": "assets/menubackground.png",
-        "hud-bg": "assets/HUDPanel.png"
+        "munchkin": "assets/images/bear.png",
+        "arrow": "assets/images/arrow.png",
+        "target": "assets/images/target.png",
+        "back-btn": "assets/UI/icons/b_Restart.png",
+        "restart-btn": "assets/UI/icons/b_No.png",
+        "start-btn": "assets/UI/icons/b_Play1.png",
+        "large-button-white-bg": "assets/UI/kennyUIPack/grey_button00.png",
+        "large-button-green-bg": "assets/UI/kennyUIPack/green_button01.png",
+        "small-button-green-bg": "assets/UI/kennyUIPack/green_button08.png",
+        "small-button-orange-bg": "assets/UI/kennyUIPack/red_button05.png",
+        "small-button-yellow-bg": "assets/UI/kennyUIPack/yellow_button08.png",
+        "small-button-blue-bg": "assets/UI/kennyUIPack/blue_button082.png",
+        "left-button": "assets/UI/kennyUIPack/blue_sliderLeft.png",
+        "right-button": "assets/UI/kennyUIPack/blue_sliderRight.png",
+        "menu-bg": "assets/UI/menubackground.png",
+        "hud-bg": "assets/UI/HUDPanel.png"
     },
     "audio": {
       "level-complete": "assets/sounds/level_complete.wav",
       "place-brick-pop": "assets/sounds/brick_place_pop.mp3",
       "error-sound": "assets/sounds/error_sound.wav",
-      "ui-click": "assets/sounds/click2.ogg",
-      "ui-switch":"assets/sounds/switch2.ogg"
+      "ui-click": "assets/sounds/click2.ogg"
     },
     "bricks": {
       "black": [
