@@ -1,3 +1,10 @@
+
+
+
+// creation of this scene loader is based off
+//  the following: https://jwiese.eu/en/blog/2018/04/phaser-3-loading-screen-asset-organization/
+// created brick and animation loading
+
 // handles asset loading through json cached before starting this scene
 class PreloadScene extends Phaser.Scene{
     

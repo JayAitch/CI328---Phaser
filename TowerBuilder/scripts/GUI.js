@@ -33,7 +33,25 @@ const instructions = {
     "T /'resetimage'":" to remove start again",
     "R / 'backimage'":" button to remove the last placed block"
 }
+const credits ={
+    "art":{
+        "Kenny":"munchkin, bricks, button backgrounds CC0 1.0",
+        "GDquest":"HUD icons CC0 1.0",
+        "Kyzerole":"target CC0 1.0",
+        "Bart" : "background (no changes made) CC by 3.0",
+        "oglsdl":"arrow (no changes made) CC by 4.0"
+    },
+    "sounds":{
+        "Kenny": "Button clicks CC0 1.0",
+        "distillerystudio": "failed placement sound(no changes made) CC by 3.0",
+        "LittleRobotSoundFactory":"level finish sound (no changes made) CC by 3.0",
+        "greenvwbeetle":"spawn sound CC0 1.0"
+    },
+    "font":{
+        "Kenny":"game font CC0 1.0"
+    }
 
+}
 
 // All UI objects will be relative to the overlays depth.
 const HUDBaseDepth = 5000;
@@ -204,16 +222,20 @@ class LevelCompleteScene extends Phaser.Scene {
 
 
     constructor() {
-        super('LevelCompleteScene');
+        super('levelcompletescene');
     }
     create () {
         const background =  this.add.image(gameCenterX(), gameCenterY(), 'menu-bg');
-
+        let level = MainGameScene.levelSpawner.level + 1;
+        let lastLevel = MainGameScene.levelSpawner.levels.length;
+        let nextButtonText = "Next Level";
         this.createScoreTable(MainGameScene.gameStats.gameStats);
 
 
 
-        let levelCompleteText = this.add.text(gameCenterX(), gameCenterY()-350, 'Level Complete', textStyles.header);
+        // if its the last level show the button action properly
+        if(level === lastLevel) nextButtonText = "To Title";
+        let levelCompleteText = this.add.text(gameCenterX(), gameCenterY()-350, `Level ${level} Complete`, textStyles.header);
         offsetByWidth(levelCompleteText);
 
         // trigger the next level action
@@ -228,13 +250,14 @@ class LevelCompleteScene extends Phaser.Scene {
         };
 
         // create buttons with a background and text for a bigger touch area
+        // stored as member to allow text change when last level
         let nextLevelButton = new ImageButton(
             gameCenterX() + 150,
             gameCenterY()+ 350,
             "large-button-white-bg",
             this,
             nextLevelAction,
-            "Next Level"
+            nextButtonText
         );
 
         // rescale the object to improve touch frienlyness
@@ -369,6 +392,7 @@ class MenuScene extends Phaser.Scene {
         this.setUpMainScreen();
         this.setUpSettingsScreen();
         this.setUpInstructionsScreen();
+        this.setupCreditsScreen();
         this.switchMenuScreen();
 
     }
@@ -465,15 +489,46 @@ class MenuScene extends Phaser.Scene {
 
         creditsBtn.scale = 2;
 
-
-
         // these buttons will only show on the main page
         this.menuScreens.main.push(creditsBtn);
         this.menuScreens.main.push(instructionsBtn)
         this.menuScreens.main.push(settingsBtn);
-        this.menuScreens.main.push(playBtn)
+        this.menuScreens.main.push(playBtn);
     }
 
+    setupCreditsScreen(){
+
+        let yTextPos = gameCenterY() - 200;
+        for(let category in credits){
+            let categoryText = category;
+            let categoryRows = credits[category];
+
+            let newCreditCategoryHeader =  this.add.text(gameCenterX() - 370, yTextPos, categoryText, textStyles["list-header"]);
+            yTextPos+= 35
+
+            for(let creditKey in categoryRows){
+
+                let newCrediHeadRow =  this.add.text(gameCenterX() - 350, yTextPos, creditKey, textStyles["list-item"]);
+                let newCreditValueRow =  this.add.text(gameCenterX()  -100, yTextPos, categoryRows[creditKey], textStyles["list-item"]);
+
+                yTextPos+= 35
+                this.menuScreens.credits.push(newCrediHeadRow);
+                this.menuScreens.credits.push(newCreditValueRow);
+
+
+            }
+            yTextPos+= 10
+            this.menuScreens.credits.push(newCreditCategoryHeader);
+
+     //       yTextPos+= 25 // offset the instruction from the title
+    //        let textAction = instructions[instruction];
+     //       let newInstructionText =  this.add.text(gameCenterX() - 200, yTextPos, textAction, textStyles["list-item"]);
+   //
+             //offset the instruction from others
+     //       this.menuScreens.instructions.push(newInstructionText);
+    //        this.menuScreens.instructions.push(newInstructionControlText);
+        }
+    }
 
     setUpSettingsScreen() {
 
@@ -634,7 +689,7 @@ class ImageButton {
             this.newBtn.tint = this.initialTint;
         });
 
-
+        return this;
     }
 
 

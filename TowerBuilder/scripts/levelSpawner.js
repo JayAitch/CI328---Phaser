@@ -28,7 +28,7 @@ class LevelSpawner{
         this.physicsSpawner = MainGameScene.physicsSpawner;
         this.levels = MainGameScene.cache.json.get('levels')
 
-        // fixing the reliance of spawning finish point on gamescene we can remove this reference
+        // store as a local reference
         this.gameScene = MainGameScene;
         this.levelObjects = new Phaser.GameObjects.Group(this);
 
@@ -66,6 +66,7 @@ class LevelSpawner{
 
 
         // spawn any dynamic blocks defined by the json
+        // do this after static ones to have somewhere to place them
         let dynamicBlocks = this.currentLevel.dynamic;
         for(let blockNum = 0; blockNum < dynamicBlocks.length; blockNum++){
             let currentNewBlockJSON = dynamicBlocks[blockNum]
@@ -74,6 +75,7 @@ class LevelSpawner{
         }
 
         // create objective objects
+        // allow for multiple objectives to be defined
         let objectives = this.currentLevel.objectives;
         for(let objectiveNum = 0; objectiveNum < objectives.length; objectiveNum++){
             let currentObjectiveJSON = objectives[objectiveNum]

@@ -40,7 +40,7 @@ class Controller{
 
         let keyC = input.keyboard.addKey('C');
         keyC.on('down', (event) => {
-            MainGameScene.completeLevel();
+            this._levelComplete();
         });
 
         let keySpace = input.keyboard.addKey('SPACE');
@@ -91,6 +91,13 @@ class Controller{
     _spawnAMunchkin(){
         if(MainGameScene.isPlaying) {
             this.physicsSpawner.spawnMunchkin();
+        }
+    }
+
+    // cheat to complete level testing only not intended as part of the game
+    _levelComplete(){
+        if(MainGameScene.isPlaying) {
+            MainGameScene.completeLevel();
         }
     }
 

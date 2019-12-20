@@ -170,8 +170,10 @@ class GameScene extends Phaser.Scene {
         // wait for the fanfair to reach its climax then trigger level finished screen to appear
         setTimeout(() => {
             this.physicsSpawner.removeAllSpawnables();
-            this.scene.launch("LevelCompleteScene");
-            this.scene.bringToTop("LevelCompleteScene");
+
+            this.scene.launch("levelcompletescene");
+            this.scene.bringToTop("levelcompletescene");
+
         }, 1000)
 
 
@@ -180,11 +182,20 @@ class GameScene extends Phaser.Scene {
     // move the player onto the next level and load it
     nextLevel(){
         this.levelSpawner.level++;
-        // if we get to the end set player to the first level
-        if(this.levelSpawner.level >= this.levelSpawner.levels.length) this.levelSpawner.level = 0;
-        this.levelSpawner.setCurrentLevel();
-        this.triggerLevelLoad();
-        this.isPlaying = true;
+
+        // if we get to the end set player to the first level and bring up the main menu
+        if(this.levelSpawner.level >= this.levelSpawner.levels.length)
+        {
+            this.scene.switch("menuscene");
+            this.scene.stop("levelcompletescene");
+            this.scene.stop("maingame");
+
+        } else{
+            this.levelSpawner.setCurrentLevel();
+            this.triggerLevelLoad();
+            this.isPlaying = true;
+        }
+
     }
 
     // trigger a reload of the current level
