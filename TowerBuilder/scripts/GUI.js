@@ -25,13 +25,13 @@ const textStyles = {
 
 // quick access to instruction set, is used to print the instructions screen
 const instructions = {
-    "Goal":"get the munkin to the target zone",
-    "Hint":"score more points by using fewer blocks / resets",
-    "click/touch":" release a block",
-    "Q and E/touchcontrolsimage":"change block type",
-    "Space /'munchkinbutton'":" to release a munchkin",
-    "T /'resetimage'":" to remove start again",
-    "R / 'backimage'":" button to remove the last placed block"
+    "Goal":{text:"get the munkin to the target zone"},
+    "Hint":{text:"score more points by using fewer blocks / resets"},
+    "click/touch":{text:" release a block"},
+    "Q and E/":{text:"change block type", icons:["left-button","right-button"]},
+    "Space/":{text:" to release a munchkin", icons:["start-btn"]},
+    "T /":{text:" remove all placed blocks, start again",icons: ["restart-btn"]},
+    "Y /": {text:" remove the last placed block", icons:["back-btn"]}
 }
 const credits ={
     "art":{
@@ -498,20 +498,26 @@ class MenuScene extends Phaser.Scene {
 
     setupCreditsScreen(){
 
+        // go through all the catagories of credits
         let yTextPos = gameCenterY() - 200;
         for(let category in credits){
+
+            // display the category and go through it
             let categoryText = category;
             let categoryRows = credits[category];
 
             let newCreditCategoryHeader =  this.add.text(gameCenterX() - 370, yTextPos, categoryText, textStyles["list-header"]);
             yTextPos+= 35
 
+            //show each of the credits in the catagory
             for(let creditKey in categoryRows){
 
                 let newCrediHeadRow =  this.add.text(gameCenterX() - 350, yTextPos, creditKey, textStyles["list-item"]);
                 let newCreditValueRow =  this.add.text(gameCenterX()  -100, yTextPos, categoryRows[creditKey], textStyles["list-item"]);
 
                 yTextPos+= 35
+
+                // add to array to show and hide when switching betweeen menus
                 this.menuScreens.credits.push(newCrediHeadRow);
                 this.menuScreens.credits.push(newCreditValueRow);
 
@@ -519,14 +525,6 @@ class MenuScene extends Phaser.Scene {
             }
             yTextPos+= 10
             this.menuScreens.credits.push(newCreditCategoryHeader);
-
-     //       yTextPos+= 25 // offset the instruction from the title
-    //        let textAction = instructions[instruction];
-     //       let newInstructionText =  this.add.text(gameCenterX() - 200, yTextPos, textAction, textStyles["list-item"]);
-   //
-             //offset the instruction from others
-     //       this.menuScreens.instructions.push(newInstructionText);
-    //        this.menuScreens.instructions.push(newInstructionControlText);
         }
     }
 
@@ -585,17 +583,32 @@ class MenuScene extends Phaser.Scene {
     // create a list of instructions from the collection
     setUpInstructionsScreen(){
 
+        // create instructions from map object, to allow them to be changed quickly
         let yTextPos = gameCenterY() - 200;
         for(let instruction in instructions){
             let textControl = instruction;
-
+            let controlIconsRef =  instructions[instruction].icons;
+            let newInstructionIcon;
             let newInstructionControlText =  this.add.text(gameCenterX() - 200, yTextPos, textControl, textStyles["list-header"]);
 
-            yTextPos+= 25 // offset the instruction from the title
-            let textAction = instructions[instruction];
+            // if the instruction has associated images, like touch controls add them to the row
+            if(controlIconsRef)
+            {
+                let controlIconXPos = gameCenterX() - 100;
+                for(let iconRef in controlIconsRef){
+                    let imageRef = controlIconsRef[iconRef];
+                    newInstructionIcon = this.add.image(controlIconXPos, yTextPos, imageRef).setScale(0.8);
+                    controlIconXPos += 50;
+                    this.menuScreens.instructions.push(newInstructionIcon);
+                }
+
+            }
+
+            yTextPos+= 20 // offset the instruction from the title
+            let textAction = instructions[instruction].text;
             let newInstructionText =  this.add.text(gameCenterX() - 200, yTextPos, textAction, textStyles["list-item"]);
 ;
-            yTextPos+= 35 //offset the instruction from others
+            yTextPos+= 45 //offset the instruction from others
             this.menuScreens.instructions.push(newInstructionText);
             this.menuScreens.instructions.push(newInstructionControlText);
         }
