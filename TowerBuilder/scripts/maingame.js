@@ -1,27 +1,3 @@
-
-/**
- * DONE:
- *         +leveltrigger blocking placement
- *         +seperate levels in json
- *         +check for block placement
- *         +new munchkin from kenny
- *         +cap on munchkin volumes
- *         +add sounds
- *         +fix menu screan
- *         +spawn in level complete screen
- *         +HUD layoring and clarity
- *             finetune munchkin physics
- *          particles
- *          undo button
- *       particles
- *           sortout score
- * TODO:
-
- add level with multiple objectives and dynamic blocks
- keydown issue
- last level -> game finished
- **/
-
 let Audio;
 let MatterScene;
 let MainGameScene;
@@ -58,7 +34,7 @@ class AudioPlayer{
         this.levelCompleteSound = game.sound.add("level-complete");
         this.spawnSound = game.sound.add("place-brick-pop");
         this.errorSound = game.sound.add("error-sound");
-        this.uiClick = game.sound.add("ui-click");
+        this.uiClickSound = game.sound.add("ui-click");
     }
 
 }
@@ -67,7 +43,7 @@ class AudioPlayer{
 // main game scene, creates all game objects and is the central controller for any game actions
 class GameScene extends Phaser.Scene {
     
-    isPlaying = false;
+    isInputActive = false;
 
     constructor () {
         super('maingame');
@@ -108,11 +84,12 @@ class GameScene extends Phaser.Scene {
 
 
 
-		// create the level spawner + spawn
+		// create the level spawner
         this.levelSpawner = new LevelSpawner(this);
 
         // control whether controller takes input
-        this.isPlaying = true;
+        //this.isInputActive = true;
+        this.activateControllerInput();
         this.updateUI();
 
         // set up emitters for level complete fanfaire
@@ -165,7 +142,7 @@ class GameScene extends Phaser.Scene {
         // allow the level complete screen to calculate the blocks used
         this.gameStats.addBlockRemaining(availableBlocks);
 
-        this.isPlaying = false;
+        this.isInputActive = false;
 
         // wait for the fanfair to reach its climax then trigger level finished screen to appear
         setTimeout(() => {
@@ -193,7 +170,7 @@ class GameScene extends Phaser.Scene {
         } else{
             this.levelSpawner.setCurrentLevel();
             this.triggerLevelLoad();
-            this.isPlaying = true;
+            this.activateControllerInput();
         }
 
     }
@@ -201,9 +178,14 @@ class GameScene extends Phaser.Scene {
     // trigger a reload of the current level
     replayLevel(){
         this.triggerLevelLoad();
-        this.isPlaying = true;
+        this.activateControllerInput();
     }
 
+    activateControllerInput(){
+        setTimeout(() => {
+            this.isInputActive = true;
+        }, 500)
+    }
 
     triggerLevelLoad(){
         // load level blocks and avaivailable blocks in

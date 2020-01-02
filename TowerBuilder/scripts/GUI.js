@@ -20,18 +20,19 @@ const textStyles = {
         fontFamily: "kenvector_future_thin",
         fontSize: "18px",
     }
+
 };
 
 
 // quick access to instruction set, is used to print the instructions screen
 const instructions = {
-    "Goal":{text:"get the munkin to the target zone"},
+    "Goal":{text:"get the munchkin to the target zone"},
     "Hint":{text:"score more points by using fewer blocks / resets"},
     "click/touch":{text:" release a block"},
     "Q and E/":{text:"change block type", icons:["left-button","right-button"]},
-    "Space/":{text:" to release a munchkin", icons:["start-btn"]},
-    "T /":{text:" remove all placed blocks, start again",icons: ["restart-btn"]},
-    "Y /": {text:" remove the last placed block", icons:["back-btn"]}
+    "Space  /":{text:" to release a munchkin", icons:["start-btn"]},
+    "T      /":{text:" remove all placed blocks, start again",icons: ["restart-btn"]},
+    "Y      /": {text:" remove the last placed block", icons:["back-btn"]}
 }
 const credits ={
     "art":{
@@ -584,31 +585,32 @@ class MenuScene extends Phaser.Scene {
     setUpInstructionsScreen(){
 
         // create instructions from map object, to allow them to be changed quickly
-        let yTextPos = gameCenterY() - 200;
+        let yTextPos = gameCenterY() -190;
+        let titleYRowOffset = - 50;
         for(let instruction in instructions){
             let textControl = instruction;
+            console.log(textControl);
             let controlIconsRef =  instructions[instruction].icons;
             let newInstructionIcon;
-            let newInstructionControlText =  this.add.text(gameCenterX() - 200, yTextPos, textControl, textStyles["list-header"]);
+            let newInstructionControlText =  this.add.text(gameCenterX() - 200, yTextPos + titleYRowOffset, textControl, textStyles["button"]);
 
             // if the instruction has associated images, like touch controls add them to the row
             if(controlIconsRef)
             {
-                let controlIconXPos = gameCenterX() - 100;
+                let controlIconXPos = gameCenterX() -40;
                 for(let iconRef in controlIconsRef){
                     let imageRef = controlIconsRef[iconRef];
-                    newInstructionIcon = this.add.image(controlIconXPos, yTextPos, imageRef).setScale(0.8);
+                    newInstructionIcon = this.add.image(controlIconXPos, yTextPos -30, imageRef).setScale(0.8);
                     controlIconXPos += 50;
                     this.menuScreens.instructions.push(newInstructionIcon);
                 }
 
             }
 
-            yTextPos+= 20 // offset the instruction from the title
             let textAction = instructions[instruction].text;
             let newInstructionText =  this.add.text(gameCenterX() - 200, yTextPos, textAction, textStyles["list-item"]);
-;
-            yTextPos+= 45 //offset the instruction from others
+
+            yTextPos+= 75 //offset the instruction from others
             this.menuScreens.instructions.push(newInstructionText);
             this.menuScreens.instructions.push(newInstructionControlText);
         }
@@ -686,7 +688,7 @@ class ImageButton {
         // add a call to the defined action to DOM click event
         this.newBtn.on('pointerdown', () => {
             // feedback for button presses
-            Audio.uiClick.play();
+            Audio.uiClickSound.play();
             action();
         });
 

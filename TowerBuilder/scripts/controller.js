@@ -5,12 +5,11 @@ class Controller{
         this.physicsSpawner = physicsSpawner;
         this.activePointer = input.activePointer;
 
-
         // add input to player key presses. The functions these call are exactly the same as the HUD buttons
         // prevents repeated code and maintains a single exicution path.
 
         input.on('pointerup', (event) => {
-            if(MainGameScene.isPlaying) {
+            if(MainGameScene.isInputActive) {
                 let pointerPos = this.getCursorPos();
                 physicsSpawner.spawnBrickAtLocation(pointerPos);
 
@@ -61,42 +60,42 @@ class Controller{
 
     // action for changing the current block that is selected
     _changeBlockUp(){
-        if(MainGameScene.isPlaying) {
+        if(MainGameScene.isInputActive) {
             this.physicsSpawner.changeBlockUp();
         }
     };
 
     // action for changing the current block that is selected
     _changeBlockDown(){
-        if(MainGameScene.isPlaying) {
+        if(MainGameScene.isInputActive) {
             this.physicsSpawner.changeBlockDown();
         }
     };
 
     // action for removing all objects spawned by the player
     _resetBlocks(){
-        if(MainGameScene.isPlaying) {
+        if(MainGameScene.isInputActive) {
             this.physicsSpawner.removeAllSpawnables();
         }
     }
 
     // remove the last object placed by the player
     _undoPlacement(){
-        if(MainGameScene.isPlaying) {
+        if(MainGameScene.isInputActive) {
             this.physicsSpawner.removeLastSpawnable();
         }
     }
 
     // create a new munchkin at their spawnpoint
     _spawnAMunchkin(){
-        if(MainGameScene.isPlaying) {
+        if(MainGameScene.isInputActive) {
             this.physicsSpawner.spawnMunchkin();
         }
     }
 
     // cheat to complete level testing only not intended as part of the game
     _levelComplete(){
-        if(MainGameScene.isPlaying) {
+        if(MainGameScene.isInputActive) {
             MainGameScene.completeLevel();
         }
     }
